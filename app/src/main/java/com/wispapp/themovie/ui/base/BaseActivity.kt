@@ -9,6 +9,6 @@ abstract class BaseActivity(@LayoutRes private val contentLayoutId: Int = 0) : A
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        if (contentLayoutId != 0) setContentView(contentLayoutId)
+      //  if (contentLayoutId != 0) setContentView(contentLayoutId)
     }
 }

@@ -9,14 +9,18 @@ import androidx.fragment.app.Fragment
 
 abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : Fragment() {
 
+    protected abstract fun initView()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        if (contentLayoutId != 0) {
-            return inflater.inflate(contentLayoutId, container, false)
-        }
-        return null
+    ): View? =
+        if (contentLayoutId != 0) inflater.inflate(contentLayoutId, container, false)
+        else null
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
     }
 }

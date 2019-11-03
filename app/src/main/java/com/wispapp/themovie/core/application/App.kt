@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.facebook.stetho.Stetho
 
-class TheMovieApp : Application() {
+class App : Application() {
 
     private val koinStarter = KoinStarter()
 
@@ -28,7 +28,7 @@ class TheMovieApp : Application() {
 
     companion object {
 
-        lateinit var instance: TheMovieApp
+        lateinit var instance: App
 
         fun applicationContext(): Context = instance.applicationContext
     }

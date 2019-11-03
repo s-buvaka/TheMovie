@@ -3,8 +3,17 @@ package com.wispapp.themovie.core.viewmodel
 import androidx.annotation.CallSuper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 abstract class BaseViewModel : ViewModel() {
+
+    private val parentJob by lazy { Job() }
+
+    protected val uiScope: CoroutineScope by lazy { CoroutineScope(parentJob + Dispatchers.Main) }
+    protected val foregroundScope: CoroutineScope by lazy { CoroutineScope(parentJob + Dispatchers.IO) }
+    protected val databaseScope: CoroutineScope by lazy { CoroutineScope(parentJob + Dispatchers.IO) }
 
     /**
      * Handle data loading
@@ -15,7 +24,6 @@ abstract class BaseViewModel : ViewModel() {
      * Handle errors
      */
     val exception = MutableLiveData<Throwable>()
-
 
     @CallSuper
     override fun onCleared() {
@@ -33,4 +41,6 @@ abstract class BaseViewModel : ViewModel() {
     open fun setError(t: Throwable) {
         exception.value = t
     }
+
+    fun cancelAllRequest() = parentJob.cancel()
 }
