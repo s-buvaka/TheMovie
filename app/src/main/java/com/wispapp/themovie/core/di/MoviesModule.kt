@@ -10,7 +10,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val moviesModule = module {
-
     single<MovieRepository> { MovieRepositoryImpl(get<ApiInterface>()) }
     viewModel { MoviesViewModel(get<MovieRepository>()) }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.wispapp.themovie.R
-import com.wispapp.themovie.core.model.MovieOverview
+import com.wispapp.themovie.core.network.model.movies.MovieOverview
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import com.wispapp.themovie.ui.base.BaseFragment
 import com.wispapp.themovie.ui.base.recycler.GenericAdapter

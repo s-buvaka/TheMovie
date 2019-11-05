@@ -1,8 +1,7 @@
 package com.wispapp.themovie.core.application
 
 import android.app.Application
-import com.wispapp.themovie.core.di.networkModule
-import com.wispapp.themovie.core.di.moviesModule
+import com.wispapp.themovie.core.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.KoinApplication
@@ -34,7 +33,10 @@ class KoinStarter {
 
     private fun getModules() =
         listOf(
-            networkModule,
-            moviesModule
+            appDataModule,
+            commonModule,
+            databaseModule,
+            moviesModule,
+            networkModule
         )
 }

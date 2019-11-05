@@ -5,11 +5,10 @@ import android.view.View
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.wispapp.themovie.R
-import com.wispapp.themovie.core.model.MovieOverview
+import com.wispapp.themovie.core.network.model.movies.MovieOverview
 import com.wispapp.themovie.ui.base.recycler.BaseViewHolder
 import com.wispapp.themovie.ui.base.recycler.GenericAdapter
 import kotlinx.android.synthetic.main.item_movie_overview.view.*
-import java.lang.Exception
 
 class PopularsMovieVH(private val rootView: View) : BaseViewHolder<MovieOverview>(rootView),
     GenericAdapter.Binder<MovieOverview> {

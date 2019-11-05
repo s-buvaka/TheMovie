@@ -1,6 +1,6 @@
 package com.wispapp.themovie.core.repository
 
-import com.wispapp.themovie.core.model.MovieOverview
+import com.wispapp.themovie.core.network.model.movies.MovieOverview
 
 interface MovieRepository {
 

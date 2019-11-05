@@ -1,7 +1,7 @@
 package com.wispapp.themovie.core.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.wispapp.themovie.core.model.MovieOverview
+import com.wispapp.themovie.core.network.model.movies.MovieOverview
 import com.wispapp.themovie.core.repository.MovieRepository
 import kotlinx.coroutines.launch
 
