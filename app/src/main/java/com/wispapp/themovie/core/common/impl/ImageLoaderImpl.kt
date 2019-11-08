@@ -7,7 +7,7 @@ import com.wispapp.themovie.core.common.ImageLoader
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-object ImageLoaderImpl : ImageLoader, KoinComponent {
+class ImageLoaderImpl : ImageLoader, KoinComponent {
 
     private val picasso: Picasso by inject()
 

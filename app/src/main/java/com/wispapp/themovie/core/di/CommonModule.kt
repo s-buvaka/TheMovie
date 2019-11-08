@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 val commonModule = module {
     single<Picasso> { Picasso.get() }
-    single<ImageLoader> { ImageLoaderImpl }
+    single<ImageLoader> { ImageLoaderImpl() }
 }

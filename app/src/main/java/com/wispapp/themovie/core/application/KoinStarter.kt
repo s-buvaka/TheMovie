@@ -35,7 +35,7 @@ class KoinStarter {
         listOf(
             appDataModule,
             commonModule,
-            databaseModule,
+            //databaseModule,
             moviesModule,
             networkModule
         )

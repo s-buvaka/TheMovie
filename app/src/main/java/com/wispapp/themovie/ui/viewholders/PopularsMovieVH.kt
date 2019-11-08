@@ -1,17 +1,18 @@
 package com.wispapp.themovie.ui.viewholders
 
-import android.util.Log
 import android.view.View
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
-import com.wispapp.themovie.R
+import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.network.model.movies.MovieOverview
 import com.wispapp.themovie.ui.base.recycler.BaseViewHolder
 import com.wispapp.themovie.ui.base.recycler.GenericAdapter
 import kotlinx.android.synthetic.main.item_movie_overview.view.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class PopularsMovieVH(private val rootView: View) : BaseViewHolder<MovieOverview>(rootView),
-    GenericAdapter.Binder<MovieOverview> {
+    GenericAdapter.Binder<MovieOverview>, KoinComponent {
+
+    private val imageLoader: ImageLoader by inject()
 
     override fun bind(
         data: GenericAdapter.DataWrapper<MovieOverview>,
@@ -27,19 +28,6 @@ class PopularsMovieVH(private val rootView: View) : BaseViewHolder<MovieOverview
         }
     }
 
-    private fun setPoster(data: MovieOverview) {
-        Picasso.get()
-            .load(data.posterPath)
-            .placeholder(R.drawable.ic_favorite_border)
-            .into(rootView.poster_image, object : Callback{
-                override fun onSuccess() {
-                    Log.d("XXX", "SUCCESSFUL")
-                }
-
-                override fun onError(e: Exception?) {
-                   Log.d("XXX", "$e \n ${data.posterPath}")
-                }
-            })
-
-    }
+    private fun setPoster(data: MovieOverview) =
+        imageLoader.loadImage(data.posterPath, rootView.poster_image)
 }
