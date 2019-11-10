@@ -1,15 +1,14 @@
 package com.wispapp.themovie.core.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.wispapp.themovie.core.network.BaseNetworkProvider
+import com.wispapp.themovie.core.database.model.MovieOverviewDao
 import com.wispapp.themovie.core.network.PopularMoviesProvider
-import com.wispapp.themovie.core.network.model.movies.MovieOverview
-import com.wispapp.themovie.core.repository.MovieRepository
 import kotlinx.coroutines.launch
 
-class MoviesViewModel(/*private val movieRepo: MovieRepository*/ private val networkProvider: PopularMoviesProvider) : BaseViewModel() {
+class MoviesViewModel(/*private val movieRepo: MovieRepository*/ private val networkProvider: PopularMoviesProvider) :
+    BaseViewModel() {
 
-    val popularMovieLiveData = MutableLiveData<MutableList<MovieOverview>>()
+    val popularMovieLiveData = MutableLiveData<MutableList<MovieOverviewDao>>()
 
     fun getPopularMovie() {
         foregroundScope.launch {

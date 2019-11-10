@@ -2,7 +2,7 @@ package com.wispapp.themovie.core.network.model.movies
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieOverview(
+data class MovieOverviewResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("title") val title: String,
     @SerializedName("original_title") val originalTitle: String,

@@ -1,17 +1,11 @@
 package com.wispapp.themovie.core.repository.impl
 
-import com.wispapp.themovie.core.common.Mapper
-import com.wispapp.themovie.core.network.ApiInterface
-import com.wispapp.themovie.core.network.model.movies.MovieOverview
-import com.wispapp.themovie.core.repository.BaseRepository
-import com.wispapp.themovie.core.repository.MovieRepository
-
 //class MovieRepositoryImpl(
 //    private val api: ApiInterface,
-//    mapper: Mapper<MovieOverview, MovieOverviewModel>
-//) : BaseRepository<MovieOverview, MovieOverviewModel>(mapper), MovieRepository {
+//    mapper: Mapper<MovieOverviewResponse, MovieOverviewDao>
+//) : BaseRepository<MovieOverviewResponse, MovieOverviewDao>(mapper), MovieRepository {
 //
-//    override suspend fun getPopularMovie(): List<MovieOverview> {
+//    override suspend fun getPopularMovie(): List<MovieOverviewResponse> {
 //        val popularMovie = safeApiCall(
 //            call = { api.getPopularMoviesAsync().await() },
 //            errorMessage = {}

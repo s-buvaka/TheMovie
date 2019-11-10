@@ -4,17 +4,18 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wispapp.themovie.core.common.Mapper
+import com.wispapp.themovie.core.database.model.MoviesResultDao
 import com.wispapp.themovie.core.network.model.NetworkException
-import com.wispapp.themovie.core.network.model.movies.MovieResponse
+import com.wispapp.themovie.core.network.model.movies.MoviesResultResponse
 import retrofit2.Response
 
-abstract class BaseNetworkProvider<E, T>(/*private val mapper: Mapper<E, T>*/) {
+abstract class BaseNetworkProvider<RESPONSE, MODEL>(private val mapper: Mapper<RESPONSE, MODEL>) {
 
-    suspend fun <T : Any> safeApiCall(
-        networkCall: suspend () -> Response<T>,
+    suspend fun safeApiCall(
+        networkCall: suspend () -> Response<RESPONSE>,
         errorFunc: (exception: NetworkException) -> Unit
-    ): T? {
-        var data: T? = null
+    ): MODEL? {
+        var data: RESPONSE? = null
         val response = networkCall.invoke()
 
         if (response.isSuccessful)
@@ -22,26 +23,30 @@ abstract class BaseNetworkProvider<E, T>(/*private val mapper: Mapper<E, T>*/) {
         else
             handleError(response, errorFunc)
 
-        return data
+        return mapper.mapFrom(data)
     }
 
-    private fun <T : Any> handleError(
-        response: Response<T>,
+    private fun handleError(
+        response: Response<RESPONSE>,
         errorFunc: (exception: NetworkException) -> Unit
     ) {
         val networkException = mapToNetworkException(response)
         errorFunc.invoke(networkException)
     }
 
-    private fun <T> mapToNetworkException(response: Response<T>): NetworkException {
+    private fun mapToNetworkException(response: Response<RESPONSE>): NetworkException {
         val type = object : TypeToken<NetworkException>() {}.type
         return Gson().fromJson(response.errorBody()!!.charStream(), type)
     }
 }
 
-class PopularMoviesProvider(private val api: ApiInterface) : BaseNetworkProvider<String, String>() {
+class PopularMoviesProvider(
+    mapper: Mapper<MoviesResultResponse, MoviesResultDao>,
+    private val api: ApiInterface
+) :
+    BaseNetworkProvider<MoviesResultResponse, MoviesResultDao>(mapper) {
 
-    suspend fun getPopularMovies(): MovieResponse? {
+    suspend fun getPopularMovies(): MoviesResultDao? {
         return safeApiCall(
             networkCall = { api.getPopularMoviesAsync().await() },
             errorFunc = { errorException -> handleError(errorException) })

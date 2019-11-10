@@ -15,7 +15,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
 private const val TIMEOUT_IN_SECOND = 10
 private const val API_KEY = "api_key"
 
