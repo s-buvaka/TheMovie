@@ -13,7 +13,7 @@ interface NetworkProvider<T> {
 
     suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper
+        vararg: RequestWrapper? = null
     ): List<T>
 }
 
@@ -58,7 +58,7 @@ class PopularMoviesProvider(
 
     override suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper
+        vararg: RequestWrapper?
     ): List<MovieOverviewModel> {
         val response = parseResponse(
             response = api.getPopularMoviesAsync().await(),

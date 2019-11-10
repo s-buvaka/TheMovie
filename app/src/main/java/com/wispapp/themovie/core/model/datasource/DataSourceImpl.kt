@@ -13,7 +13,7 @@ class DataSourceImpl<DATA>(
 
     override suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper
+        vararg: RequestWrapper?
     ): List<DATA> {
         val data = database.getAll()
         val response = networkProvider.get(errorFunc, vararg)

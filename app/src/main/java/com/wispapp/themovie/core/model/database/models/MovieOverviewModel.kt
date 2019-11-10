@@ -3,16 +3,11 @@ package com.wispapp.themovie.core.model.database.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
-
-data class MoviesResultModel(
-    @SerializedName("page") val page: Int,
-    @SerializedName("total_results") val totalResults: Int,
-    @SerializedName("total_pages") val totalPages: Int,
-    @SerializedName("results") val results: List<MovieOverviewModel>
-)
+import androidx.room.TypeConverters
+import com.wispapp.themovie.core.model.database.converters.IntListConverter
 
 @Entity(tableName = "movies_overview")
+@TypeConverters(IntListConverter::class)
 data class MovieOverviewModel(
     @PrimaryKey(autoGenerate = false) val id: Int,
     @ColumnInfo(name = "title") val title: String,

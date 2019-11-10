@@ -3,17 +3,24 @@ package com.wispapp.themovie.core.model.database.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.wispapp.themovie.core.model.network.models.configs.Images
+import androidx.room.TypeConverters
+import com.wispapp.themovie.core.model.database.converters.ImagesConfigConverter
+import com.wispapp.themovie.core.model.database.converters.StringListConverter
 
 @Entity(tableName = "configs")
+@TypeConverters(
+    ImagesConfigConverter::class,
+    StringListConverter::class
+)
 data class ConfigModel(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
-    @ColumnInfo(name = "config_image") val images: Images,
+    @ColumnInfo(name = "config_image") val imagesConfig: ImagesConfigModel,
     @ColumnInfo(name = "config_change_keys") val changeKeys: List<String>
 )
 
 @Entity(tableName = "image_configs")
-data class ImagesModel(
+@TypeConverters(StringListConverter::class)
+data class ImagesConfigModel(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     @ColumnInfo(name = "base_url") val baseUrl: String,
     @ColumnInfo(name = "secure_base_url") val secureBaseUrl: String,
