@@ -1,7 +1,7 @@
-package com.wispapp.themovie.core.network
+package com.wispapp.themovie.core.model.network
 
-import com.wispapp.themovie.core.network.model.configs.ConfigResponse
-import com.wispapp.themovie.core.network.model.movies.MoviesResultResponse
+import com.wispapp.themovie.core.model.network.models.configs.ConfigResponse
+import com.wispapp.themovie.core.model.network.models.movies.MoviesResultResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET

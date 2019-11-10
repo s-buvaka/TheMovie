@@ -3,10 +3,10 @@
 package com.wispapp.themovie.core.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.wispapp.themovie.core.network.ApiDataProvider
-import com.wispapp.themovie.core.network.ApiDataProviderImpl
-import com.wispapp.themovie.core.network.ApiInterface
-import com.wispapp.themovie.core.network.ApiProvider
+import com.wispapp.themovie.core.model.network.ApiDataProvider
+import com.wispapp.themovie.core.model.network.ApiDataProviderImpl
+import com.wispapp.themovie.core.model.network.ApiInterface
+import com.wispapp.themovie.core.model.network.ApiProvider
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,4 +1,4 @@
-package com.wispapp.themovie.core.network
+package com.wispapp.themovie.core.model.network
 
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.application.App

@@ -3,8 +3,8 @@
 //package com.wispapp.themovie.core.di
 //
 //import androidx.room.Room
-//import com.wispapp.themovie.core.database.AppDataBase
-//import com.wispapp.themovie.core.database.ConfigDao
+//import com.wispapp.themovie.core.model.database.AppDataBase
+//import com.wispapp.themovie.core.model.database.ConfigDao
 //import org.koin.android.ext.koin.androidContext
 //import org.koin.core.scope.Scope
 //import org.koin.dsl.module

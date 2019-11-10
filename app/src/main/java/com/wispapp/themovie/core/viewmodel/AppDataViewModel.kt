@@ -1,8 +1,8 @@
 package com.wispapp.themovie.core.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.wispapp.themovie.core.network.model.configs.ConfigResponse
-import com.wispapp.themovie.core.repository.AppDataRepository
+import com.wispapp.themovie.core.model.network.models.configs.ConfigResponse
+import com.wispapp.themovie.core.model.repository.AppDataRepository
 import kotlinx.coroutines.launch
 
 class AppDataViewModel(private val appRepo: AppDataRepository) : BaseViewModel() {

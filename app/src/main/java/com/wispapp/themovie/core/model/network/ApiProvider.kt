@@ -1,4 +1,4 @@
-package com.wispapp.themovie.core.network
+package com.wispapp.themovie.core.model.network
 
 import retrofit2.Retrofit
 

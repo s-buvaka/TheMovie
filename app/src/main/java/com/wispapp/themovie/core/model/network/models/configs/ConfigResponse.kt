@@ -1,4 +1,4 @@
-package com.wispapp.themovie.core.network.model.configs
+package com.wispapp.themovie.core.model.network.models.configs
 
 import com.google.gson.annotations.SerializedName
 

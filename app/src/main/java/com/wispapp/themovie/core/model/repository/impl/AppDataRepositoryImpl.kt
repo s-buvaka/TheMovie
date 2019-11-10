@@ -1,17 +1,12 @@
-package com.wispapp.themovie.core.repository.impl
-
-import com.wispapp.themovie.core.network.ApiInterface
-import com.wispapp.themovie.core.network.model.configs.ConfigResponse
-import com.wispapp.themovie.core.repository.AppDataRepository
-import com.wispapp.themovie.core.repository.BaseRepository
+package com.wispapp.themovie.core.model.repository.impl
 
 //class AppDataRepositoryImpl<DATA>(
 //    private val api: ApiInterface,
-//    private val database: SourceDao<DATA>
+//    private val database: SourceDatabase<DATA>
 //) : BaseRepository(), AppDataRepository {
 //
 //    override suspend fun loadAppData(): Boolean {
-//        val configResponse = safeApiCall(
+//        val configResponse = parseResponse(
 //            call = { api.getConfigsAsync().await() },
 //            errorMessage = ""
 //        )
@@ -22,7 +17,7 @@ import com.wispapp.themovie.core.repository.BaseRepository
 //    }
 //
 //    override suspend fun getConfigs(): ConfigResponse? =
-//        safeApiCall(
+//        parseResponse(
 //            call = { api.getConfigsAsync().await() },
 //            errorMessage = ""
 //        )
