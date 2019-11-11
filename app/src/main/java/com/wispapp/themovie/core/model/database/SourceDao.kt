@@ -6,6 +6,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
+import com.wispapp.themovie.core.model.database.models.SourcesTimeStamp
+import io.reactivex.Completable
+import io.reactivex.Maybe
 
 interface SourceDatabase<SOURCE> {
 
@@ -22,6 +25,15 @@ interface SourceDatabase<SOURCE> {
     fun getById(id: Int): SOURCE
 
     fun deleteById(id: Int)
+
+//    @Insert
+//    fun setTimestamp(timestampModel: SourcesTimeStamp)
+//
+//    @Query("SELECT timeStamp FROM source_timestamp WHERE source_type Like :type")
+//    fun getTimestamp(type: String): String
+//
+//    @Query("DELETE FROM source_timestamp WHERE source_type Like :type")
+//    fun delTimestamp(type: String)
 }
 
 @Dao

@@ -3,10 +3,12 @@ package com.wispapp.themovie.core.model.network
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wispapp.themovie.core.common.Mapper
+import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
+import com.wispapp.themovie.core.model.network.models.ConfigResponse
+import com.wispapp.themovie.core.model.network.models.MovieOverviewResponse
+import com.wispapp.themovie.core.model.network.models.MoviesResultResponse
 import com.wispapp.themovie.core.model.network.models.NetworkException
-import com.wispapp.themovie.core.model.network.models.movies.MovieOverviewResponse
-import com.wispapp.themovie.core.model.network.models.movies.MoviesResultResponse
 import retrofit2.Response
 
 interface NetworkProvider<T> {
@@ -73,4 +75,29 @@ class PopularMoviesProvider(
     override fun mapData(source: MoviesResultResponse): List<MovieOverviewModel> =
         source.results.map { mapper.mapFrom(it) }
 
+}
+
+class ConfigsProvider(
+    private val mapper: Mapper<ConfigResponse, ConfigModel>,
+    private val api: ApiInterface
+) : BaseNetworkProvider<ConfigResponse, ConfigModel>(),
+    NetworkProvider<ConfigModel> {
+
+    override suspend fun get(
+        errorFunc: (exception: NetworkException) -> Unit,
+        vararg: RequestWrapper?
+    ): List<ConfigModel> {
+        val response = parseResponse(
+            response = api.getConfigsAsync().await(),
+            errorFunc = { errorException -> errorFunc(errorException) }
+        )
+
+        if (response != null)
+            return mapData(response)
+        else
+            throw NetworkException(statusMessage = "Generated Network Error Something went wrong")
+    }
+
+    override fun mapData(source: ConfigResponse): List<ConfigModel> =
+        listOf(mapper.mapFrom(source))
 }

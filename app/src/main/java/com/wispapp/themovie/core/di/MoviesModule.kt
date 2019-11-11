@@ -2,35 +2,36 @@
 
 package com.wispapp.themovie.core.di
 
-import com.wispapp.themovie.core.common.Mapper
-import com.wispapp.themovie.core.model.database.MoviesOverviewDao
 import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
-import com.wispapp.themovie.core.model.datasource.DataSource
-import com.wispapp.themovie.core.model.datasource.DataSourceImpl
+import com.wispapp.themovie.core.model.datasource.RemoteDataSourceImpl
 import com.wispapp.themovie.core.model.network.ApiInterface
 import com.wispapp.themovie.core.model.network.NetworkProvider
 import com.wispapp.themovie.core.model.network.PopularMoviesProvider
 import com.wispapp.themovie.core.model.network.mappers.MoviesOverviewMapper
-import com.wispapp.themovie.core.model.network.models.movies.MovieOverviewResponse
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+
+private const val DATA_SOURCE_MOVIES_OVERVIEW = "data_source_movies_overview"
+private const val MAPPER_MOVIES_OVERVIEW = "mapper_movies_overview"
 
 val moviesModule = module {
 
-    factory<Mapper<MovieOverviewResponse, MovieOverviewModel>> { MoviesOverviewMapper() }
+    factory(named(MAPPER_MOVIES_OVERVIEW)) { MoviesOverviewMapper() }
 
-    factory<DataSource<MovieOverviewModel>> {
-        DataSourceImpl<MovieOverviewModel>(
-            get<NetworkProvider<MovieOverviewModel>>(),
-            get<MoviesOverviewDao>()
-        )
-    }
-    single {
+    single<NetworkProvider<MovieOverviewModel>> {
         PopularMoviesProvider(
-            get<Mapper<MovieOverviewResponse, MovieOverviewModel>>(),
+            get(named(MAPPER_MOVIES_OVERVIEW)),
             get<ApiInterface>()
         )
     }
-    viewModel { MoviesViewModel(get<DataSource<MovieOverviewModel>>()) }
+
+    factory(named(DATA_SOURCE_MOVIES_OVERVIEW)) {
+        RemoteDataSourceImpl<MovieOverviewModel>(
+            get<NetworkProvider<MovieOverviewModel>>()
+        )
+    }
+
+    viewModel { MoviesViewModel(get(named(DATA_SOURCE_MOVIES_OVERVIEW))) }
 }

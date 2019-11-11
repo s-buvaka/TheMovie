@@ -2,6 +2,7 @@ package com.wispapp.themovie.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.viewmodel.AppDataViewModel
@@ -21,13 +22,14 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun initViewModel() {
-        appDataViewModel.getConfigs()
+        appDataViewModel.loadAppData()
         appDataViewModel.appDataLoaderLiveData.observe(this, Observer { isDataLoaded ->
             if (isDataLoaded) startMainScreen()
         })
     }
 
     private fun startMainScreen() {
+        Log.d("XXX", "Successful load")
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

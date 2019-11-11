@@ -2,7 +2,7 @@ package com.wispapp.themovie.core.model.network.mappers
 
 import com.wispapp.themovie.core.common.Mapper
 import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
-import com.wispapp.themovie.core.model.network.models.movies.MovieOverviewResponse
+import com.wispapp.themovie.core.model.network.models.MovieOverviewResponse
 
 class MoviesOverviewMapper : Mapper<MovieOverviewResponse, MovieOverviewModel> {
 
