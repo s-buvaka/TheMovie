@@ -1,20 +1,11 @@
 package com.wispapp.themovie.core.model.cache
 
-interface TimeoutCachePolicy {
-    fun isValid(): Boolean
-    fun setTimeStamp(timeStamp: Long)
-    fun getTimeStamp(): Long
+interface CacheProvider<T> {
+    suspend fun get(): CacheState<T>
+    suspend fun put(data: List<T>)
 }
 
-class TimeoutCachePolicyImpl(private val cacheTimeOut: Long) : TimeoutCachePolicy {
-
-    private var lastKnownTimeStamp = 0L
-
-    override fun isValid() = (System.currentTimeMillis() - lastKnownTimeStamp) < cacheTimeOut
-
-    override fun setTimeStamp(timeStamp: Long) {
-        lastKnownTimeStamp = timeStamp
-    }
-
-    override fun getTimeStamp() = lastKnownTimeStamp
+sealed class CacheState<T> {
+    data class Actual<T>(val data: List<T>) : CacheState<T>()
+    class Empty<T> : CacheState<T>()
 }

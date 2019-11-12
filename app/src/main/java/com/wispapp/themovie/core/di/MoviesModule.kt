@@ -6,7 +6,7 @@ import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
 import com.wispapp.themovie.core.model.datasource.RemoteDataSourceImpl
 import com.wispapp.themovie.core.model.network.ApiInterface
 import com.wispapp.themovie.core.model.network.NetworkProvider
-import com.wispapp.themovie.core.model.network.PopularMoviesProvider
+import com.wispapp.themovie.core.model.network.PopularMoviesRemoteProvider
 import com.wispapp.themovie.core.model.network.mappers.MoviesOverviewMapper
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -21,7 +21,7 @@ val moviesModule = module {
     factory(named(MAPPER_MOVIES_OVERVIEW)) { MoviesOverviewMapper() }
 
     single<NetworkProvider<MovieOverviewModel>> {
-        PopularMoviesProvider(
+        PopularMoviesRemoteProvider(
             get(named(MAPPER_MOVIES_OVERVIEW)),
             get<ApiInterface>()
         )

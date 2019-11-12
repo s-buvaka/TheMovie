@@ -26,14 +26,14 @@ interface SourceDatabase<SOURCE> {
 
     fun deleteById(id: Int)
 
-//    @Insert
-//    fun setTimestamp(timestampModel: SourcesTimeStamp)
-//
-//    @Query("SELECT timeStamp FROM source_timestamp WHERE source_type Like :type")
-//    fun getTimestamp(type: String): String
-//
-//    @Query("DELETE FROM source_timestamp WHERE source_type Like :type")
-//    fun delTimestamp(type: String)
+    @Insert
+    fun setTimestamp(timestampModel: SourcesTimeStamp)
+
+    @Query("SELECT timeStamp FROM source_timestamp WHERE source_type Like :type")
+    fun getTimestamp(type: String): Long?
+
+    @Query("DELETE FROM source_timestamp WHERE source_type Like :type")
+    fun delTimestamp(type: String)
 }
 
 @Dao

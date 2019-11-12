@@ -19,7 +19,7 @@ interface NetworkProvider<T> {
     ): List<T>
 }
 
-abstract class BaseNetworkProvider<RESPONSE, MODEL> :
+abstract class BaseRemoteProvider<RESPONSE, MODEL> :
     NetworkProvider<MODEL> {
 
     protected fun parseResponse(
@@ -52,10 +52,10 @@ abstract class BaseNetworkProvider<RESPONSE, MODEL> :
     }
 }
 
-class PopularMoviesProvider(
+class PopularMoviesRemoteProvider(
     private val mapper: Mapper<MovieOverviewResponse, MovieOverviewModel>,
     private val api: ApiInterface
-) : BaseNetworkProvider<MoviesResultResponse, MovieOverviewModel>(),
+) : BaseRemoteProvider<MoviesResultResponse, MovieOverviewModel>(),
     NetworkProvider<MovieOverviewModel> {
 
     override suspend fun get(
@@ -77,10 +77,10 @@ class PopularMoviesProvider(
 
 }
 
-class ConfigsProvider(
+class ConfigsRemoteProvider(
     private val mapper: Mapper<ConfigResponse, ConfigModel>,
     private val api: ApiInterface
-) : BaseNetworkProvider<ConfigResponse, ConfigModel>(),
+) : BaseRemoteProvider<ConfigResponse, ConfigModel>(),
     NetworkProvider<ConfigModel> {
 
     override suspend fun get(
