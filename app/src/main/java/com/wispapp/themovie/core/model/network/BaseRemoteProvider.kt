@@ -4,18 +4,16 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wispapp.themovie.core.common.Mapper
 import com.wispapp.themovie.core.model.database.models.ConfigModel
+import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
-import com.wispapp.themovie.core.model.network.models.ConfigResponse
-import com.wispapp.themovie.core.model.network.models.MovieOverviewResponse
-import com.wispapp.themovie.core.model.network.models.MoviesResultResponse
-import com.wispapp.themovie.core.model.network.models.NetworkException
+import com.wispapp.themovie.core.model.network.models.*
 import retrofit2.Response
 
 interface NetworkProvider<T> {
 
     suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper? = null
+        args: RequestWrapper
     ): List<T>
 }
 
@@ -25,7 +23,7 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL> :
     protected fun parseResponse(
         response: Response<RESPONSE>,
         errorFunc: (exception: NetworkException) -> Unit
-    ): RESPONSE? {
+    ): RESPONSE {
         var data: RESPONSE? = null
 
         if (response.isSuccessful)
@@ -33,10 +31,13 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL> :
         else
             handleError(response, errorFunc)
 
-        return data
+        if (data != null)
+            return data
+        else
+            throw NetworkException(statusMessage = "Generated Network Error Something went wrong")
     }
 
-    abstract fun mapData(source: RESPONSE): List<MODEL>
+    protected abstract fun mapData(source: RESPONSE): List<MODEL>
 
     private fun handleError(
         response: Response<RESPONSE>,
@@ -60,16 +61,13 @@ class PopularMoviesRemoteProvider(
 
     override suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper?
+        args: RequestWrapper
     ): List<MovieOverviewModel> {
         val response = parseResponse(
             response = api.getPopularMoviesAsync().await(),
             errorFunc = { errorException -> errorFunc(errorException) })
 
-        if (response != null)
-            return mapData(response)
-        else
-            throw NetworkException(statusMessage = "Generated Network Error Something went wrong")
+        return mapData(response)
     }
 
     override fun mapData(source: MoviesResultResponse): List<MovieOverviewModel> =
@@ -85,19 +83,39 @@ class ConfigsRemoteProvider(
 
     override suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper?
+        args: RequestWrapper
     ): List<ConfigModel> {
         val response = parseResponse(
             response = api.getConfigsAsync().await(),
             errorFunc = { errorException -> errorFunc(errorException) }
         )
 
-        if (response != null)
-            return mapData(response)
-        else
-            throw NetworkException(statusMessage = "Generated Network Error Something went wrong")
+        return mapData(response)
     }
 
     override fun mapData(source: ConfigResponse): List<ConfigModel> =
+        listOf(mapper.mapFrom(source))
+}
+
+class MoviesDetailsProvider(
+    private val mapper: Mapper<MovieDetailsResponse, MovieDetailsModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<MovieDetailsResponse, MovieDetailsModel>(),
+    NetworkProvider<MovieDetailsModel> {
+
+    override suspend fun get(
+        errorFunc: (exception: NetworkException) -> Unit,
+        args: RequestWrapper
+    ): List<MovieDetailsModel> {
+        val movieId = (args as MovieId).movieId
+        val response = parseResponse(
+            response = api.searchByIdAsync(movieId).await(),
+            errorFunc = { errorException -> errorFunc(errorException) }
+        )
+
+        return mapData(response)
+    }
+
+    override fun mapData(source: MovieDetailsResponse): List<MovieDetailsModel> =
         listOf(mapper.mapFrom(source))
 }

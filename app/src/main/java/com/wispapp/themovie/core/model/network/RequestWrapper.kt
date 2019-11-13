@@ -1,4 +1,5 @@
 package com.wispapp.themovie.core.model.network
 
-interface RequestWrapper {
-}
+interface RequestWrapper
+
+data class MovieId(val movieId: Int) : RequestWrapper

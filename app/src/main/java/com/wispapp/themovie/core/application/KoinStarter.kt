@@ -33,8 +33,8 @@ class KoinStarter {
 
     private fun getModules() =
         listOf(
-            appDataModule,
             commonModule,
+            configsModule,
             dataModule,
             moviesModule,
             networkModule

@@ -7,6 +7,6 @@ interface DataSource<T> {
 
     suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper? = null
+        args: RequestWrapper
     ): List<T>
 }

@@ -13,9 +13,9 @@ class RemoteDataSourceImpl<DATA>(
 
     override suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper?
+        args: RequestWrapper
     ): List<DATA> {
-        return networkProvider.get(errorFunc, vararg)
+        return networkProvider.get(errorFunc, args)
     }
 }
 
@@ -26,23 +26,20 @@ class CachedDataSourceImpl<DATA>(
 
     override suspend fun get(
         errorFunc: (exception: NetworkException) -> Unit,
-        vararg: RequestWrapper?
+        args: RequestWrapper
     ): List<DATA> {
-        val data: List<DATA>
-        val cacheState = cacheProvider.get()
 
-        when(cacheState){
-            is CacheState.Actual ->  data = cacheState.data
-            is CacheState.Empty-> data = emptyList()
+        return when (val cacheState = cacheProvider.get()) {
+            is CacheState.Actual -> getCachedData(cacheState)
+            is CacheState.Empty -> getFromRemote(errorFunc, args)
         }
-        val response = networkProvider.get(errorFunc, vararg)
-       // cacheProvider.insertAll(response)
-
-        return if (data.isNotEmpty()) data
-        else response
     }
 
-//    private fun getData(): List<DATA>  {
-//
-//    }
+    private fun getCachedData(cacheState: CacheState.Actual<DATA>) =
+        cacheState.data
+
+    private suspend fun getFromRemote(
+        errorFunc: (exception: NetworkException) -> Unit,
+        args: RequestWrapper
+    ) = networkProvider.get(errorFunc, args)
 }

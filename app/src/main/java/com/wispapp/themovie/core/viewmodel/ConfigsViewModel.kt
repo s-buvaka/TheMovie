@@ -6,18 +6,9 @@ import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.datasource.DataSource
 import kotlinx.coroutines.launch
 
-class AppDataViewModel(private val dataSource: DataSource<ConfigModel>) : BaseViewModel() {
+class ConfigsViewModel(private val dataSource: DataSource<ConfigModel>) : BaseViewModel() {
 
-    val appDataLoaderLiveData = MutableLiveData<Boolean>()
     val configLiveData = MutableLiveData<ConfigModel>()
-
-    fun loadAppData() {
-        foregroundScope.launch {
-            dataSource.get(
-                errorFunc = { error -> Log.d("XXX", error.statusMessage) })
-            appDataLoaderLiveData.postValue(true)
-        }
-    }
 
     fun getConfigs() {
         foregroundScope.launch {
