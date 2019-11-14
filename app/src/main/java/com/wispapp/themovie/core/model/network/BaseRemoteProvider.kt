@@ -12,8 +12,8 @@ import retrofit2.Response
 interface NetworkProvider<T> {
 
     suspend fun get(
-        errorFunc: (exception: NetworkException) -> Unit,
-        args: RequestWrapper
+        args: RequestWrapper? = null,
+        errorFunc: (exception: NetworkException) -> Unit
     ): List<T>
 }
 
@@ -53,28 +53,6 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL> :
     }
 }
 
-class PopularMoviesRemoteProvider(
-    private val mapper: Mapper<MovieOverviewResponse, MovieOverviewModel>,
-    private val api: ApiInterface
-) : BaseRemoteProvider<MoviesResultResponse, MovieOverviewModel>(),
-    NetworkProvider<MovieOverviewModel> {
-
-    override suspend fun get(
-        errorFunc: (exception: NetworkException) -> Unit,
-        args: RequestWrapper
-    ): List<MovieOverviewModel> {
-        val response = parseResponse(
-            response = api.getPopularMoviesAsync().await(),
-            errorFunc = { errorException -> errorFunc(errorException) })
-
-        return mapData(response)
-    }
-
-    override fun mapData(source: MoviesResultResponse): List<MovieOverviewModel> =
-        source.results.map { mapper.mapFrom(it) }
-
-}
-
 class ConfigsRemoteProvider(
     private val mapper: Mapper<ConfigResponse, ConfigModel>,
     private val api: ApiInterface
@@ -82,8 +60,8 @@ class ConfigsRemoteProvider(
     NetworkProvider<ConfigModel> {
 
     override suspend fun get(
-        errorFunc: (exception: NetworkException) -> Unit,
-        args: RequestWrapper
+        args: RequestWrapper?,
+        errorFunc: (exception: NetworkException) -> Unit
     ): List<ConfigModel> {
         val response = parseResponse(
             response = api.getConfigsAsync().await(),
@@ -97,6 +75,28 @@ class ConfigsRemoteProvider(
         listOf(mapper.mapFrom(source))
 }
 
+class PopularMoviesRemoteProvider(
+    private val mapper: Mapper<MovieOverviewResponse, MovieOverviewModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<MoviesResultResponse, MovieOverviewModel>(),
+    NetworkProvider<MovieOverviewModel> {
+
+    override suspend fun get(
+        args: RequestWrapper?,
+        errorFunc: (exception: NetworkException) -> Unit
+    ): List<MovieOverviewModel> {
+        val response = parseResponse(
+            response = api.getPopularMoviesAsync().await(),
+            errorFunc = { errorException -> errorFunc(errorException) })
+
+        return mapData(response)
+    }
+
+    override fun mapData(source: MoviesResultResponse): List<MovieOverviewModel> =
+        source.results.map { mapper.mapFrom(it) }
+
+}
+
 class MoviesDetailsProvider(
     private val mapper: Mapper<MovieDetailsResponse, MovieDetailsModel>,
     private val api: ApiInterface
@@ -104,10 +104,13 @@ class MoviesDetailsProvider(
     NetworkProvider<MovieDetailsModel> {
 
     override suspend fun get(
-        errorFunc: (exception: NetworkException) -> Unit,
-        args: RequestWrapper
+        args: RequestWrapper?,
+        errorFunc: (exception: NetworkException) -> Unit
     ): List<MovieDetailsModel> {
-        val movieId = (args as MovieId).movieId
+
+        val movieId = if (args is MovieId) args.movieId
+        else throw IllegalArgumentException("Invalid object type received")
+
         val response = parseResponse(
             response = api.searchByIdAsync(movieId).await(),
             errorFunc = { errorException -> errorFunc(errorException) }

@@ -4,45 +4,70 @@ import com.wispapp.themovie.core.common.Mapper
 import com.wispapp.themovie.core.model.database.models.*
 import com.wispapp.themovie.core.model.network.models.*
 
-class MoviesDetailsMapper : Mapper<MovieDetailsResponse, MovieDetailsModel> {
+class MoviesDetailsMapper(
+    private val genresMapper: Mapper<GenresItemResponse, GenresItemModel>,
+    private val companiesMapper: Mapper<ProductionCompaniesItemResponse, ProductionCompaniesItemModel>,
+    private val countriesMapper: Mapper<ProductionCountriesItemResponse, ProductionCountriesItemModel>,
+    private val languagesMapper: Mapper<SpokenLanguagesItemResponse, SpokenLanguagesItemModel>
+) : Mapper<MovieDetailsResponse, MovieDetailsModel> {
 
     override fun mapFrom(source: MovieDetailsResponse): MovieDetailsModel =
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        MovieDetailsModel(
-//            adult = source.adult,
-//            backdropPath = source.backdropPath,
-//            belongsToCollection = source.belongsToCollection,
-//            budget = source.budget,
-//            genres = source.genres
-//        )
+        MovieDetailsModel(
+            id = source.id,
+            adult = source.adult,
+            backdropPath = source.backdropPath,
+            belongsToCollection = source.belongsToCollection,
+            budget = source.budget,
+            genres = source.genres.map { genresMapper.mapFrom(it) },
+            homepage = source.homepage,
+            imdbId = source.imdbId,
+            originalLanguage = source.originalLanguage,
+            originalTitle = source.originalTitle,
+            overview = source.overview,
+            popularity = source.popularity,
+            posterPath = source.posterPath,
+            productionCompanies = source.productionCompanies.map { companiesMapper.mapFrom(it) },
+            productionCountries = source.productionCountries.map { countriesMapper.mapFrom(it) },
+            releaseDate = source.releaseDate,
+            revenue = source.revenue,
+            runtime = source.runtime,
+            spokenLanguages = source.spokenLanguages.map { languagesMapper.mapFrom(it) },
+            status = source.status,
+            tagLine = source.tagLine,
+            title = source.title,
+            video = source.video,
+            voteAverage = source.voteAverage,
+            voteCount = source.voteCount
+        )
 }
 
-class GenresItemMapper : Mapper<GenresItemResponse, GenresItemModel> {
+class GenresMapper : Mapper<GenresItemResponse, GenresItemModel> {
 
-    override fun mapFrom(source: GenresItemResponse): GenresItemModel {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun mapFrom(source: GenresItemResponse): GenresItemModel =
+        GenresItemModel(id = source.id, name = source.name)
 }
 
-class ProductionCompaniesItemMapper :
+class ProductionCompaniesMapper :
     Mapper<ProductionCompaniesItemResponse, ProductionCompaniesItemModel> {
 
-    override fun mapFrom(source: ProductionCompaniesItemResponse): ProductionCompaniesItemModel {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun mapFrom(source: ProductionCompaniesItemResponse): ProductionCompaniesItemModel =
+        ProductionCompaniesItemModel(
+            id = source.id,
+            logoPath = source.logoPath,
+            name = source.name,
+            originCountry = source.originCountry
+        )
 }
 
-class ProductionCountriesItemMapper :
+class ProductionCountriesMapper :
     Mapper<ProductionCountriesItemResponse, ProductionCountriesItemModel> {
 
-    override fun mapFrom(source: ProductionCountriesItemResponse): ProductionCountriesItemModel {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun mapFrom(source: ProductionCountriesItemResponse): ProductionCountriesItemModel =
+        ProductionCountriesItemModel(isoCode = source.isoCode, name = source.name)
 }
 
-class SpokenLanguagesItemMapper : Mapper<SpokenLanguagesItemResponse, SpokenLanguagesItemModel> {
+class SpokenLanguagesMapper : Mapper<SpokenLanguagesItemResponse, SpokenLanguagesItemModel> {
 
-    override fun mapFrom(source: SpokenLanguagesItemResponse): SpokenLanguagesItemModel {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun mapFrom(source: SpokenLanguagesItemResponse): SpokenLanguagesItemModel =
+        SpokenLanguagesItemModel(isoCode = source.isoCode, name = source.name)
 }

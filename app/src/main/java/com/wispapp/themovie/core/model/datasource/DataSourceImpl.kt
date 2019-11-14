@@ -6,16 +6,14 @@ import com.wispapp.themovie.core.model.network.NetworkProvider
 import com.wispapp.themovie.core.model.network.RequestWrapper
 import com.wispapp.themovie.core.model.network.models.NetworkException
 
-class RemoteDataSourceImpl<DATA>(
-    private val networkProvider: NetworkProvider<DATA>
-) :
+class RemoteDataSourceImpl<DATA>(private val networkProvider: NetworkProvider<DATA>) :
     DataSource<DATA> {
 
     override suspend fun get(
-        errorFunc: (exception: NetworkException) -> Unit,
-        args: RequestWrapper
+        args: RequestWrapper?,
+        errorFunc: (exception: NetworkException) -> Unit
     ): List<DATA> {
-        return networkProvider.get(errorFunc, args)
+        return networkProvider.get(args, errorFunc)
     }
 }
 
@@ -25,13 +23,13 @@ class CachedDataSourceImpl<DATA>(
 ) : DataSource<DATA> {
 
     override suspend fun get(
-        errorFunc: (exception: NetworkException) -> Unit,
-        args: RequestWrapper
+        args: RequestWrapper?,
+        errorFunc: (exception: NetworkException) -> Unit
     ): List<DATA> {
 
         return when (val cacheState = cacheProvider.get()) {
             is CacheState.Actual -> getCachedData(cacheState)
-            is CacheState.Empty -> getFromRemote(errorFunc, args)
+            is CacheState.Empty -> getFromRemote(args, errorFunc)
         }
     }
 
@@ -39,7 +37,7 @@ class CachedDataSourceImpl<DATA>(
         cacheState.data
 
     private suspend fun getFromRemote(
-        errorFunc: (exception: NetworkException) -> Unit,
-        args: RequestWrapper
-    ) = networkProvider.get(errorFunc, args)
+        args: RequestWrapper?,
+        errorFunc: (exception: NetworkException) -> Unit
+    ) = networkProvider.get(args, errorFunc)
 }

@@ -6,7 +6,7 @@ import com.wispapp.themovie.core.model.network.models.NetworkException
 interface DataSource<T> {
 
     suspend fun get(
-        errorFunc: (exception: NetworkException) -> Unit,
-        args: RequestWrapper
+        args: RequestWrapper? = null,
+        errorFunc: (exception: NetworkException) -> Unit
     ): List<T>
 }

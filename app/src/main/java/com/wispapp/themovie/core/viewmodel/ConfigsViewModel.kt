@@ -11,7 +11,7 @@ class ConfigsViewModel(private val dataSource: DataSource<ConfigModel>) : BaseVi
     val configLiveData = MutableLiveData<ConfigModel>()
 
     fun getConfigs() {
-        foregroundScope.launch {
+        backgroundScope.launch {
             val configs = dataSource.get(
                 errorFunc = { error -> Log.d("XXX", error.statusMessage) })
 
