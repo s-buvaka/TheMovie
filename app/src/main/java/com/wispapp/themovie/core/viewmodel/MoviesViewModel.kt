@@ -8,7 +8,9 @@ import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
 import com.wispapp.themovie.core.model.datasource.DataSource
 import com.wispapp.themovie.core.model.network.MovieId
 import com.wispapp.themovie.core.model.network.models.NetworkException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG = "MoviesViewModel"
 
@@ -23,10 +25,9 @@ class MoviesViewModel(
 
     fun getPopularMovie() {
         backgroundScope.launch {
-            val popularMovies =
-                popularMovieDataSource.get(
-                    errorFunc = { error -> handleError(error) }
-                ).toMutableList()
+            val popularMovies = withContext(Dispatchers.IO) { getPopularMovies() }
+            val configs = withContext(Dispatchers.IO) { getConfigs() }
+
             popularMovieLiveData.postValue(popularMovies)
         }
     }
@@ -42,13 +43,15 @@ class MoviesViewModel(
         }
     }
 
-    private fun getConfigs() {
-        backgroundScope.launch {
-            val configs = dataSource.get(
-                errorFunc = { error -> Log.d(TAG, error.statusMessage) })
-
-        }
+    private suspend fun getPopularMovies(): MutableList<MovieOverviewModel> {
+        return popularMovieDataSource.get(
+            errorFunc = { error -> handleError(error) }
+        ).toMutableList()
     }
+
+    private suspend fun getConfigs() =
+        dataSource.get(
+            errorFunc = { error -> Log.d(TAG, error.statusMessage) })
 
     private fun handleError(error: NetworkException) {
         Log.d(TAG, error.statusMessage)

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:elevation="4dp"
-    app:cardCornerRadius="8dp"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/item_movie_card_elevation"
+    app:cardCornerRadius="@dimen/item_movie_card_corner_radius"
     app:cardUseCompatPadding="true"
     tools:ignore="ContentDescription">
 
@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/poster_image"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/item_movie_width_poster"
+            android:layout_height="@dimen/item_movie_poster_height"
             android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/vertical_guideline"
@@ -85,15 +85,15 @@
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/vertical_guideline"/>
+            app:layout_constraintStart_toEndOf="@id/vertical_guideline" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="@dimen/item_movie_overview_icon_layout_height"
+            android:layout_height="@dimen/item_movie_overview_height_icon_layout"
             android:alpha="0.7"
             android:background="@android:color/white"
             android:gravity="center"
-            android:padding="@dimen/item_movie_overview_icon_layout_padding"
+            android:padding="@dimen/item_movie_padding_overview_icon_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/vertical_guideline"
             app:layout_constraintStart_toStartOf="parent">
@@ -114,7 +114,7 @@
                 android:id="@+id/favorite_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/item_movie_overview_icon_layout_margin"
+                android:layout_marginEnd="@dimen/item_movie_overview_margin_icon_layout"
                 app:srcCompat="@drawable/ic_favorite_border" />
 
             <ImageView

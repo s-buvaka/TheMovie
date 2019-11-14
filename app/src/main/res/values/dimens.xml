@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--App common sizes-->
+
     <!--Main screen-->
 
     <dimen name="item_movie_overview_margin">16dp</dimen>
-    <dimen name="item_movie_overview_icon_layout_height">40dp</dimen>
-    <dimen name="item_movie_overview_icon_layout_padding">8dp</dimen>
-    <dimen name="item_movie_overview_icon_layout_margin">8dp</dimen>
+    <dimen name="item_movie_overview_margin_icon_layout">8dp</dimen>
+
+    <dimen name="item_movie_overview_height_icon_layout">40dp</dimen>
+    <dimen name="item_movie_poster_height">250dp</dimen>
+
+    <dimen name="item_movie_width_poster">160dp</dimen>
+
+    <dimen name="item_movie_padding_overview_icon_layout">8dp</dimen>
+
+    <dimen name="item_movie_card_elevation">4dp</dimen>
+    <dimen name="item_movie_card_corner_radius">8dp</dimen>
+
+    <!--Movies details screen-->
+
+    <dimen name="movie_details_height_poster">200dp</dimen>
+    <dimen name="movie_details_width_poster">132dp</dimen>
+
+    <dimen name="movie_details_margin_poster">32dp</dimen>
+    <dimen name="movie_details_margin_title">16dp</dimen>
+    <dimen name="movie_details_margin_start_year">16dp</dimen>
+    <dimen name="movie_details_margin_top_year">8dp</dimen>
+
+    <dimen name="movie_details_corners_view_poster">8dp</dimen>
+
+    <dimen name="movie_details_text_size_title">20sp</dimen>
+    <dimen name="movie_details_text_size_year">16sp</dimen>
+
 </resources>
