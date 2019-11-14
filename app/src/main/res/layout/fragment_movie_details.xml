@@ -54,6 +54,7 @@
         android:layout_height="@dimen/movie_details_height_poster"
         android:layout_marginStart="@dimen/movie_details_margin_poster"
         android:layout_marginTop="@dimen/movie_details_margin_poster"
+        android:elevation="16dp"
         app:cardCornerRadius="@dimen/movie_details_corners_view_poster"
         app:cardUseCompatPadding="true"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,5 +67,25 @@
             android:scaleType="centerCrop"
             tools:src="@tools:sample/backgrounds/scenic" />
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/play_trailer_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/button_rounded_corner"
+        app:layout_constraintEnd_toStartOf="@id/watched_list_button"
+        app:layout_constraintStart_toStartOf="@id/info_card"
+        app:layout_constraintTop_toBottomOf="@id/poster_card" />
+
+    <Button
+        android:id="@+id/watched_list_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/button_rounded_corner"
+        app:layout_constraintEnd_toEndOf="@id/info_card"
+        app:layout_constraintStart_toEndOf="@id/play_trailer_button"
+        app:layout_constraintTop_toBottomOf="@id/poster_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
