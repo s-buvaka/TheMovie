@@ -3,6 +3,8 @@ package com.wispapp.themovie.core.model.cache
 import com.wispapp.themovie.core.model.database.SourceDatabase
 import com.wispapp.themovie.core.model.database.models.SourceType
 import com.wispapp.themovie.core.model.database.models.SourcesTimeStamp
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class DataBaseSourceCacheProvider<T>(
     private val timeoutPolicy: TimeoutCachePolicy,
@@ -23,8 +25,10 @@ class DataBaseSourceCacheProvider<T>(
     }
 
     private fun checkTimeStamp() {
-        database.getTimestamp(type.name)?.let {
+        GlobalScope.launch {
+            database.getTimestamp(type.name)?.let {
             timeoutPolicy.setTimeStamp(it)
+            }
         }
     }
 

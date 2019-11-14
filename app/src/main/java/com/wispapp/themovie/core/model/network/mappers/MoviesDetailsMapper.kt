@@ -16,7 +16,7 @@ class MoviesDetailsMapper(
             id = source.id,
             adult = source.adult,
             backdropPath = source.backdropPath,
-            belongsToCollection = source.belongsToCollection,
+            //belongsToCollection = source.belongsToCollection,
             budget = source.budget,
             genres = source.genres.map { genresMapper.mapFrom(it) },
             homepage = source.homepage,

@@ -11,5 +11,5 @@ data class SourcesTimeStamp(
 )
 
 enum class SourceType {
-    CONFIG
+    CONFIG, MOVIES_OVERVIEW, MOVIES_DETAILS
 }

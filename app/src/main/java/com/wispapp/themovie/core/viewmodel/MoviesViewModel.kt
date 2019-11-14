@@ -2,6 +2,7 @@ package com.wispapp.themovie.core.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
 import com.wispapp.themovie.core.model.datasource.DataSource
@@ -13,7 +14,8 @@ private const val TAG = "MoviesViewModel"
 
 class MoviesViewModel(
     private val popularMovieDataSource: DataSource<MovieOverviewModel>,
-    private val movieDetailsDataSource: DataSource<MovieDetailsModel>
+    private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
+    private val dataSource: DataSource<ConfigModel>
 ) : BaseViewModel() {
 
     val popularMovieLiveData = MutableLiveData<MutableList<MovieOverviewModel>>()
@@ -37,6 +39,14 @@ class MoviesViewModel(
                     errorFunc = { error -> handleError(error) }
                 ).toMutableList()
             movieDetailsLiveData.postValue(movieDetails)
+        }
+    }
+
+    private fun getConfigs() {
+        backgroundScope.launch {
+            val configs = dataSource.get(
+                errorFunc = { error -> Log.d(TAG, error.statusMessage) })
+
         }
     }
 

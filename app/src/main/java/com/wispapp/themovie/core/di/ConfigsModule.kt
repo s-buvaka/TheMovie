@@ -11,7 +11,6 @@ import com.wispapp.themovie.core.model.database.models.SourceType
 import com.wispapp.themovie.core.model.datasource.CachedDataSourceImpl
 import com.wispapp.themovie.core.model.network.ApiInterface
 import com.wispapp.themovie.core.model.network.ConfigsRemoteProvider
-import com.wispapp.themovie.core.model.network.NetworkProvider
 import com.wispapp.themovie.core.model.network.mappers.ConfigsMapper
 import com.wispapp.themovie.core.model.network.mappers.ImageConfigMapper
 import com.wispapp.themovie.core.viewmodel.ConfigsViewModel
@@ -19,19 +18,28 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-private const val DATA_SOURCE_CONFIGS = "data_source_configs"
+const val DATA_SOURCE_CONFIGS = "data_source_configs"
 
 private const val MAPPER_IMAGE_CONFIGS = "mapper_image_configs"
 private const val MAPPER_CONFIGS = "mapper_configs"
 
-private const val CACHE_POLICY_CONFIGS = "default_cash_policy"
+private const val NETWORK_PROVIDER_CONFIGS = "network_provider_configs"
+
+private const val CACHE_POLICY_CONFIGS = "cash_policy_default"
 
 val configsModule = module {
 
-    factory(named(MAPPER_IMAGE_CONFIGS)) { ImageConfigMapper() }
-    factory(named(MAPPER_CONFIGS)) { ConfigsMapper(get(named(MAPPER_IMAGE_CONFIGS))) }
+    single(named(MAPPER_IMAGE_CONFIGS)) { ImageConfigMapper() }
+    single(named(MAPPER_CONFIGS)) { ConfigsMapper(get(named(MAPPER_IMAGE_CONFIGS))) }
 
     factory(named(CACHE_POLICY_CONFIGS)) { TimeoutCachePolicyImpl(CACHE_TIMEOUT_CONFIGS) }
+
+    factory(named(NETWORK_PROVIDER_CONFIGS)) {
+        ConfigsRemoteProvider(
+            get(named(MAPPER_CONFIGS)),
+            get<ApiInterface>()
+        )
+    }
 
     factory {
         DataBaseSourceCacheProvider<ConfigModel>(
@@ -43,10 +51,11 @@ val configsModule = module {
 
     factory(named(DATA_SOURCE_CONFIGS)) {
         CachedDataSourceImpl<ConfigModel>(
-            get<NetworkProvider<ConfigModel>>(),
+            get(named(NETWORK_PROVIDER_CONFIGS)),
             get<DataBaseSourceCacheProvider<ConfigModel>>()
         )
     }
+
     factory {
         ConfigsRemoteProvider(
             get(named(MAPPER_CONFIGS)),

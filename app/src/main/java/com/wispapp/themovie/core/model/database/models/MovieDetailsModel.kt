@@ -1,13 +1,26 @@
 package com.wispapp.themovie.core.model.database.models
 
+import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
+import com.wispapp.themovie.core.model.database.converters.CompaniesConverter
+import com.wispapp.themovie.core.model.database.converters.CountriesConverter
+import com.wispapp.themovie.core.model.database.converters.GenresConverter
+import com.wispapp.themovie.core.model.database.converters.LanguagesConverter
 
+@Entity(tableName = "movie_details")
+@TypeConverters(
+    GenresConverter::class,
+    CompaniesConverter::class,
+    CountriesConverter::class,
+    LanguagesConverter::class
+)
 data class MovieDetailsModel(
-    @SerializedName("id") val id: Int,
+    @PrimaryKey(autoGenerate = false) val id: Int,
     @SerializedName("adult") val adult: Boolean,
     @SerializedName("backdrop_path") val backdropPath: String,
-    @SerializedName("belongs_to_collection") val belongsToCollection: Any,//TODO Понять какой тут объект приходит
+    //@SerializedName("belongs_to_collection") val belongsToCollection: Any,//TODO Понять какой тут объект приходит
     @SerializedName("budget") val budget: Int,
     @SerializedName("genres") val genres: List<GenresItemModel>,
     @SerializedName("homepage") val homepage: String,
@@ -32,12 +45,12 @@ data class MovieDetailsModel(
 )
 
 data class GenresItemModel(
-    @SerializedName("id") val id: Int,
+    @PrimaryKey(autoGenerate = false) val id: Int,
     @SerializedName("name") val name: String
 )
 
 data class ProductionCompaniesItemModel(
-    @SerializedName("id") val id: Int,
+    @PrimaryKey(autoGenerate = false) val id: Int,
     @SerializedName("logo_path") val logoPath: String,
     @SerializedName("name") val name: String,
     @SerializedName("origin_country") val originCountry: String
