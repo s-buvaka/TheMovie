@@ -1,14 +1,16 @@
 package com.wispapp.themovie.ui.base
 
-import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.annotation.LayoutRes
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
-abstract class BaseActivity(@LayoutRes private val contentLayoutId: Int = 0) : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), BaseView {
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-      //  if (contentLayoutId != 0) setContentView(contentLayoutId)
+    override fun showLoading() {
+        loading_view?.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        loading_view?.visibility = View.GONE
     }
 }

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 
-abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : Fragment() {
+abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : Fragment(), BaseView {
 
     protected abstract fun initView()
 
@@ -23,4 +23,13 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
         super.onViewCreated(view, savedInstanceState)
         initView()
     }
+
+    override fun showLoading() {
+        (activity as BaseActivity).showLoading()
+    }
+
+    override fun hideLoading() {
+        (activity as BaseActivity).hideLoading()
+    }
+
 }

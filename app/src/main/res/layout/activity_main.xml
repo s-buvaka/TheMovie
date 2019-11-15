@@ -12,5 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/main_graph" />
+        app:navGraph="@navigation/main_graph"
+        tools:ignore="FragmentTagUsage" />
+
+    <FrameLayout
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7fffffff"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/view_progress_bar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

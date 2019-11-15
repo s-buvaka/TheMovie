@@ -6,7 +6,7 @@ import com.jaeger.library.StatusBarUtil
 import com.wispapp.themovie.R
 import com.wispapp.themovie.ui.base.BaseActivity
 
-class MainActivity : BaseActivity(R.layout.activity_main) {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

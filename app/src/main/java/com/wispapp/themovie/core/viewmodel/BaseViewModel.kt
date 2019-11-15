@@ -3,10 +3,7 @@ package com.wispapp.themovie.core.viewmodel
 import androidx.annotation.CallSuper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 
 abstract class BaseViewModel : ViewModel() {
 
@@ -25,6 +22,14 @@ abstract class BaseViewModel : ViewModel() {
      */
     val exception = MutableLiveData<Throwable>()
 
+    protected fun showLoader(){
+        setLoading(true)
+    }
+
+    protected fun hideLoader(){
+        uiScope.launch{ setLoading(false) }
+    }
+
     @CallSuper
     override fun onCleared() {
         super.onCleared()
@@ -32,7 +37,7 @@ abstract class BaseViewModel : ViewModel() {
         uiScope.cancel()
     }
 
-    open fun setLoading(isLoading: Boolean? = true) {
+    private fun setLoading(isLoading: Boolean? = true) {
         isDataLoading.value = isLoading
 
         if (isLoading == true) {

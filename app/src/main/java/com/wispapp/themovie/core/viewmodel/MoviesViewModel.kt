@@ -25,12 +25,14 @@ class MoviesViewModel(
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
 
     fun getPopularMovie() {
+        showLoader()
         backgroundScope.launch {
-            val configs = withContext(Dispatchers.IO) { getConfigs() }//Todo Задавать конфиги при старте приложение, может быть splash
-            ImageLoader.setConfigs(configs[0].imagesConfig)
+            setImageConfigs()
 
             val popularMovies = withContext(Dispatchers.IO) { getPopularMovies() }
             popularMovieLiveData.postValue(popularMovies)
+
+           hideLoader()
         }
     }
 
@@ -43,6 +45,12 @@ class MoviesViewModel(
                 ).toMutableList()
             movieDetailsLiveData.postValue(movieDetails)
         }
+    }
+
+    private suspend fun setImageConfigs() {
+        //Todo Задавать конфиги при старте приложение, может быть splash
+        val configs = withContext(Dispatchers.IO) { getConfigs() }
+        ImageLoader.setConfigs(configs[0].imagesConfig)
     }
 
     private suspend fun getPopularMovies(): MutableList<MovieOverviewModel> {
