@@ -2,6 +2,7 @@ package com.wispapp.themovie.core.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
@@ -25,9 +26,10 @@ class MoviesViewModel(
 
     fun getPopularMovie() {
         backgroundScope.launch {
-            val popularMovies = withContext(Dispatchers.IO) { getPopularMovies() }
-            val configs = withContext(Dispatchers.IO) { getConfigs() }
+            val configs = withContext(Dispatchers.IO) { getConfigs() }//Todo Задавать конфиги при старте приложение, может быть splash
+            ImageLoader.setConfigs(configs[0].imagesConfig)
 
+            val popularMovies = withContext(Dispatchers.IO) { getPopularMovies() }
             popularMovieLiveData.postValue(popularMovies)
         }
     }

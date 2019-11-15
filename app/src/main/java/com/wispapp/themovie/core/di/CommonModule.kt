@@ -2,12 +2,15 @@
 
 package com.wispapp.themovie.core.di
 
+import android.util.DisplayMetrics
 import com.squareup.picasso.Picasso
-import com.wispapp.themovie.core.common.ImageLoader
-import com.wispapp.themovie.core.common.impl.ImageLoaderImpl
+import com.wispapp.themovie.core.application.App
 import org.koin.dsl.module
 
 val commonModule = module {
 
-    single<ImageLoader> { ImageLoaderImpl(Picasso.get()) }
+    factory<Picasso> { Picasso.get() }
+    factory<DisplayMetrics> { getDisplayDensity() }
 }
+
+private fun getDisplayDensity() = App.applicationContext().resources.displayMetrics

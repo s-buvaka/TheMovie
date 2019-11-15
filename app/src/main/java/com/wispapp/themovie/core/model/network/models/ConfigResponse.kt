@@ -3,7 +3,7 @@ package com.wispapp.themovie.core.model.network.models
 import com.google.gson.annotations.SerializedName
 
 data class ConfigResponse(
-    @SerializedName("imagesConfig") val images: ImagesConfigResponse,
+    @SerializedName("images") val images: ImagesConfigResponse,
     @SerializedName("change_keys") val changeKeys: List<String>
 )
 

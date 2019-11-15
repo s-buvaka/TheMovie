@@ -39,5 +39,13 @@ class CachedDataSourceImpl<DATA>(
     private suspend fun getFromRemote(
         args: RequestWrapper?,
         errorFunc: (exception: NetworkException) -> Unit
-    ) = networkProvider.get(args, errorFunc)
+    ): List<DATA> {
+        val response = networkProvider.get(args, errorFunc)
+        putToCache(response)
+        return response
+    }
+
+    private suspend fun putToCache(response: List<DATA>) {
+        cacheProvider.put(response)
+    }
 }

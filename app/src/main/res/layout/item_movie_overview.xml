@@ -17,19 +17,11 @@
             android:id="@+id/poster_image"
             android:layout_width="@dimen/item_movie_width_poster"
             android:layout_height="@dimen/item_movie_poster_height"
-            android:scaleType="center"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/vertical_guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/backgrounds/scenic" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/vertical_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.4" />
 
         <TextView
             android:id="@+id/title_text"
@@ -39,7 +31,7 @@
             android:layout_marginTop="@dimen/item_movie_overview_margin"
             android:fontFamily="sans-serif-medium"
             android:textColor="@android:color/black"
-            app:layout_constraintStart_toEndOf="@id/vertical_guideline"
+            app:layout_constraintStart_toEndOf="@id/poster_image"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Джокер" />
 
@@ -48,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_movie_overview_margin"
-            app:layout_constraintStart_toEndOf="@id/vertical_guideline"
+            app:layout_constraintStart_toEndOf="@id/poster_image"
             app:layout_constraintTop_toBottomOf="@id/title_text"
             tools:text="3 октября 2019" />
 
@@ -61,7 +53,7 @@
             android:maxLines="5"
             app:layout_constraintBottom_toTopOf="@+id/more_text_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/vertical_guideline"
+            app:layout_constraintStart_toEndOf="@id/poster_image"
             app:layout_constraintTop_toBottomOf="@id/date_text"
             tools:text="Готэм, начало 1980-х годов. Комик Артур Флек живет с больной матерью, которая с детства учит его «ходить с улыбкой». Пытаясь нести в мир хорошее и дарить людям …" />
 
@@ -73,7 +65,7 @@
             android:background="@android:color/darker_gray"
             app:layout_constraintBottom_toTopOf="@id/more_text_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/vertical_guideline" />
+            app:layout_constraintStart_toEndOf="@id/poster_image" />
 
         <TextView
             android:id="@+id/more_text_view"
@@ -85,7 +77,7 @@
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/vertical_guideline" />
+            app:layout_constraintStart_toEndOf="@id/poster_image" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -95,7 +87,7 @@
             android:gravity="center"
             android:padding="@dimen/item_movie_padding_overview_icon_layout"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/vertical_guideline"
+            app:layout_constraintEnd_toEndOf="@id/poster_image"
             app:layout_constraintStart_toStartOf="parent">
 
 
