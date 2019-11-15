@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">TheMovie</string>
 
-    <!--Main screen-->
+    <!--Popular movies screen-->
 
-    <string name="label_more">Подробнее</string>
+    <string name="populars_movies_label_more">Подробнее</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Movies details screen-->
+
+    <string name="movie_details_label_watched_list">Watched list</string>
+    <string name="movie_details_label_play_trailer">Play Trailer</string>
+    <string name="movie_details_label_overview">Overview</string>
+    <string name="movie_details_label_photos">Photos</string>
+    <string name="movie_details_score_text">score</string>
 </resources>

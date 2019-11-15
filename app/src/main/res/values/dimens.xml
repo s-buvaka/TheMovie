@@ -20,17 +20,40 @@
 
     <!--Movies details screen-->
 
+    <dimen name="movie_details_size_score_layout">48dp</dimen>
+
     <dimen name="movie_details_height_poster">200dp</dimen>
+    <dimen name="movie_details_height_info_card">280dp</dimen>
+
     <dimen name="movie_details_width_poster">132dp</dimen>
 
     <dimen name="movie_details_margin_poster">32dp</dimen>
     <dimen name="movie_details_margin_title">16dp</dimen>
     <dimen name="movie_details_margin_start_year">16dp</dimen>
+    <dimen name="movie_details_margin_info_button">16dp</dimen>
+    <dimen name="movie_details_margin_horizontal">16dp</dimen>
     <dimen name="movie_details_margin_top_year">8dp</dimen>
+    <dimen name="movie_details_margin_top_poster_card">20dp</dimen>
+    <dimen name="movie_details_margin_top_genres">32dp</dimen>
+    <dimen name="movie_details_margin_top_overview_title">16dp</dimen>
+    <dimen name="movie_details_margin_top_overview">8dp</dimen>
+    <dimen name="movie_details_margin_end_score">40dp</dimen>
+
+    <dimen name="movie_details_padding_info_button">16dp</dimen>
+    <dimen name="movie_details_padding_score">4dp</dimen>
 
     <dimen name="movie_details_corners_view_poster">8dp</dimen>
+    <dimen name="movie_details_corner_poster_card">16dp</dimen>
+
+    <dimen name="movie_details_elevation_poster_card">16dp</dimen>
 
     <dimen name="movie_details_text_size_title">20sp</dimen>
     <dimen name="movie_details_text_size_year">16sp</dimen>
+    <dimen name="movie_details_text_size_info_button">14sp</dimen>
+    <dimen name="movie_details_text_size_score_label">12sp</dimen>
+    <dimen name="movie_details_text_size_score">22sp</dimen>
+
+    <dimen name="movie_details_z_poster_card">-4dp</dimen>
+
 
 </resources>

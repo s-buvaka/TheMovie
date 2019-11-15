@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/item_movie_overview_margin"
             android:fontFamily="sans-serif-medium"
-            android:text="@string/label_more"
+            android:text="@string/populars_movies_label_more"
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
