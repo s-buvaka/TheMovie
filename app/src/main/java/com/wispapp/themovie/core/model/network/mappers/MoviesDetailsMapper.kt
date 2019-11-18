@@ -19,7 +19,7 @@ class MoviesDetailsMapper(
             //belongsToCollection = source.belongsToCollection,
             budget = source.budget,
             genres = source.genres.map { genresMapper.mapFrom(it) },
-            homepage = source.homepage,
+            homepage = source.homepage ?: "",
             imdbId = source.imdbId,
             originalLanguage = source.originalLanguage,
             originalTitle = source.originalTitle,

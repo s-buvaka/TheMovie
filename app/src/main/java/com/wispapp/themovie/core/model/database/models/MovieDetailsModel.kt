@@ -51,7 +51,7 @@ data class GenresItemModel(
 
 data class ProductionCompaniesItemModel(
     @PrimaryKey(autoGenerate = false) val id: Int,
-    @SerializedName("logo_path") val logoPath: String,
+    @SerializedName("logo_path") val logoPath: String?,
     @SerializedName("name") val name: String,
     @SerializedName("origin_country") val originCountry: String
 )

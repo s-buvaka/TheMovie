@@ -2,12 +2,13 @@ package com.wispapp.themovie.ui.main
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
+import androidx.navigation.fragment.findNavController
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import com.wispapp.themovie.ui.base.BaseFragment
 import com.wispapp.themovie.ui.base.recycler.GenericAdapter
+import com.wispapp.themovie.ui.moviedetails.MOVIE_ID
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,7 +28,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     }
 
     override fun onClickItem(data: MovieOverviewModel) {
-        Snackbar.make(popular_movie_recycler, "More", Snackbar.LENGTH_SHORT).show()
+        val bundle = Bundle()
+        bundle.putInt(MOVIE_ID, data.id)
+        findNavController().navigate(R.id.movieDetailsFragment, bundle)
     }
 
     private fun initViewModel() {

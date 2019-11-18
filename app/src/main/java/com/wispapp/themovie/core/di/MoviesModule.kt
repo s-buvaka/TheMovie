@@ -3,6 +3,7 @@
 package com.wispapp.themovie.core.di
 
 import com.wispapp.themovie.core.application.Constants
+import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.cache.DataBaseSourceCacheProvider
 import com.wispapp.themovie.core.model.cache.TimeoutCachePolicyImpl
 import com.wispapp.themovie.core.model.database.MovieDetailsDao
@@ -104,7 +105,8 @@ val moviesModule = module {
         MoviesViewModel(
             get(named(DATA_SOURCE_MOVIES_OVERVIEW)),
             get(named(DATA_SOURCE_MOVIE_DETAILS)),
-            get(named(DATA_SOURCE_CONFIGS))
+            get(named(DATA_SOURCE_CONFIGS)),
+            get<ImageLoader>()
         )
     }
 }

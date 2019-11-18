@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 
-abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : Fragment(), BaseView {
+abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : Fragment(),
+    BaseView {
 
     protected abstract fun initView()
 
@@ -32,4 +33,7 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
         (activity as BaseActivity).hideLoading()
     }
 
+    override fun showError() {
+        (activity as BaseActivity).showError()
+    }
 }

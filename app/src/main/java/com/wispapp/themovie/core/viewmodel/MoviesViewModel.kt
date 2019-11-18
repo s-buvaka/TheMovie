@@ -18,7 +18,8 @@ private const val TAG = "MoviesViewModel"
 class MoviesViewModel(
     private val popularMovieDataSource: DataSource<MovieOverviewModel>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
-    private val dataSource: DataSource<ConfigModel>
+    private val dataSource: DataSource<ConfigModel>,
+    private val imageLoader: ImageLoader
 ) : BaseViewModel() {
 
     val popularMovieLiveData = MutableLiveData<MutableList<MovieOverviewModel>>()
@@ -37,6 +38,7 @@ class MoviesViewModel(
     }
 
     fun getMovieDetails(id: Int) {
+        showLoader()
         backgroundScope.launch {
             val movieDetails =
                 movieDetailsDataSource.get(
@@ -44,13 +46,15 @@ class MoviesViewModel(
                     errorFunc = { error -> handleError(error) }
                 ).toMutableList()
             movieDetailsLiveData.postValue(movieDetails)
+
+            hideLoader()
         }
     }
 
     private suspend fun setImageConfigs() {
         //Todo Задавать конфиги при старте приложение, может быть splash
         val configs = withContext(Dispatchers.IO) { getConfigs() }
-        ImageLoader.setConfigs(configs[0].imagesConfig)
+        imageLoader.setConfigs(configs[0].imagesConfig)
     }
 
     private suspend fun getPopularMovies(): MutableList<MovieOverviewModel> {

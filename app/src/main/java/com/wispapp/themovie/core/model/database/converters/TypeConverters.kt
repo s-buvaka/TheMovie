@@ -25,24 +25,24 @@ class ImagesConfigConverter : TypeConverter<ImagesConfigModel> {
 class GenresConverter : TypeConverter<List<GenresItemModel>> {
 
     override val clazz: Type
-        get() = object : TypeToken<GenresItemModel>() {}.type
+        get() = object : TypeToken<List<GenresItemModel>>() {}.type
 }
 
 class CompaniesConverter : TypeConverter<List<ProductionCompaniesItemModel>> {
 
     override val clazz: Type
-        get() = object : TypeToken<ProductionCompaniesItemModel>() {}.type
+        get() = object : TypeToken<List<ProductionCompaniesItemModel>>() {}.type
 }
 
 class CountriesConverter : TypeConverter<List<ProductionCountriesItemModel>> {
 
     override val clazz: Type
-        get() = object : TypeToken<ProductionCountriesItemModel>() {}.type
+        get() = object : TypeToken<List<ProductionCountriesItemModel>>() {}.type
 }
 
 class LanguagesConverter : TypeConverter<List<SpokenLanguagesItemModel>> {
 
     override val clazz: Type
-        get() = object : TypeToken<SpokenLanguagesItemModel>() {}.type
+        get() = object : TypeToken<List<SpokenLanguagesItemModel>>() {}.type
 }
 

@@ -23,17 +23,17 @@
             app:cardCornerRadius="@dimen/movie_details_corner_poster_card"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/poster_card" />
+            app:layout_constraintTop_toTopOf="@id/poster_image_card" />
 
         <RelativeLayout
             android:layout_width="@dimen/movie_details_size_score_layout"
             android:layout_height="@dimen/movie_details_size_score_layout"
             android:layout_marginEnd="@dimen/movie_details_margin_end_score"
-            android:background="@drawable/text_score_background"
+            android:background="@drawable/background_text_score"
             android:orientation="vertical"
             android:padding="@dimen/movie_details_padding_score"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/poster_card">
+            app:layout_constraintTop_toTopOf="@id/poster_image_card">
 
             <TextView
                 android:layout_width="match_parent"
@@ -58,7 +58,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/title_text_view"
+            android:id="@+id/title_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/movie_details_margin_title"
@@ -66,11 +66,12 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/movie_details_text_size_title"
             app:layout_constraintEnd_toEndOf="@id/info_card"
-            app:layout_constraintStart_toEndOf="@id/poster_card"
+            app:layout_constraintStart_toEndOf="@id/poster_image_card"
             app:layout_constraintTop_toTopOf="@id/info_card"
             tools:text="Pirates of the Caribbean: Dead Men Tell No Tales" />
 
         <TextView
+            android:id="@+id/year_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/movie_details_margin_start_year"
@@ -79,19 +80,17 @@
             android:textSize="@dimen/movie_details_text_size_year"
             android:translationZ="0dp"
             app:layout_constraintEnd_toEndOf="@id/info_card"
-            app:layout_constraintStart_toEndOf="@id/poster_card"
-            app:layout_constraintTop_toBottomOf="@id/title_text_view"
+            app:layout_constraintStart_toEndOf="@id/poster_image_card"
+            app:layout_constraintTop_toBottomOf="@id/title_text"
             tools:text="2017" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/poster_card"
+            android:id="@+id/poster_image_card"
             android:layout_width="@dimen/movie_details_width_poster"
             android:layout_height="@dimen/movie_details_height_poster"
             android:layout_marginStart="@dimen/movie_details_margin_poster"
             android:layout_marginTop="@dimen/movie_details_margin_poster"
-            android:elevation="@dimen/movie_details_elevation_poster_card"
-            app:cardCornerRadius="@dimen/movie_details_corners_view_poster"
-            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="@dimen/movie_details_corner_poster_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -99,8 +98,10 @@
                 android:id="@+id/poster_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/background_movie_details_poster"
                 android:scaleType="centerCrop"
                 tools:src="@tools:sample/backgrounds/scenic" />
+
         </androidx.cardview.widget.CardView>
 
         <Button
@@ -108,26 +109,26 @@
             style="@style/MovieDetailsInfoButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_play_trailer_background"
+            android:background="@drawable/background_button_play_trailer"
             android:drawableStart="@drawable/ic_play_arrow_white"
             android:text="@string/movie_details_label_play_trailer"
             android:textColor="@color/movie_details_white"
             app:layout_constraintEnd_toStartOf="@id/watched_list_button"
             app:layout_constraintStart_toStartOf="@id/info_card"
-            app:layout_constraintTop_toBottomOf="@id/poster_card" />
+            app:layout_constraintTop_toBottomOf="@id/poster_image_card" />
 
         <Button
             android:id="@+id/watched_list_button"
             style="@style/MovieDetailsInfoButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_watched_list_background"
+            android:background="@drawable/background_button_watched_list"
             android:drawableStart="@drawable/ic_add_black"
             android:text="@string/movie_details_label_watched_list"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="@id/info_card"
             app:layout_constraintStart_toEndOf="@id/play_trailer_button"
-            app:layout_constraintTop_toBottomOf="@id/poster_card" />
+            app:layout_constraintTop_toBottomOf="@id/poster_image_card" />
 
         <LinearLayout
             android:id="@+id/overview_buttons_layout"
@@ -145,11 +146,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/button_overview_background"
+                android:background="@drawable/background_button_overview"
                 android:text="@string/movie_details_label_overview"
                 android:textColor="@color/movie_details_white" />
 
             <Button
+                android:id="@+id/photos_button"
                 style="@style/MovieDetailOverviewButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

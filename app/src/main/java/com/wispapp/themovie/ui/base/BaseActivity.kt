@@ -13,4 +13,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun hideLoading() {
         loading_view?.visibility = View.GONE
     }
+
+    override fun showError() {
+        //TODO Not implemented
+    }
 }

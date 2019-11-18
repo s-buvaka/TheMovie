@@ -9,7 +9,7 @@ data class MovieDetailsResponse(
     @SerializedName("belongs_to_collection") val belongsToCollection: Any,//TODO Понять какой тут объект приходит
     @SerializedName("budget") val budget: Int,
     @SerializedName("genres") val genres: List<GenresItemResponse>,
-    @SerializedName("homepage") val homepage: String,
+    @SerializedName("homepage") val homepage: String?,
     @SerializedName("imdb_id") val imdbId: String,
     @SerializedName("original_language") val originalLanguage: String,
     @SerializedName("original_title") val originalTitle: String,
@@ -37,7 +37,7 @@ data class GenresItemResponse(
 
 data class ProductionCompaniesItemResponse(
     @SerializedName("id") val id: Int,
-    @SerializedName("logo_path") val logoPath: String,
+    @SerializedName("logo_path") val logoPath: String?,
     @SerializedName("name") val name: String,
     @SerializedName("origin_country") val originCountry: String
 )

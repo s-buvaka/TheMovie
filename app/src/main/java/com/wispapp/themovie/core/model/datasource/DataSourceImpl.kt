@@ -27,13 +27,17 @@ class CachedDataSourceImpl<DATA>(
         errorFunc: (exception: NetworkException) -> Unit
     ): List<DATA> {
 
-        return when (val cacheState = cacheProvider.get()) {
-            is CacheState.Actual -> getCachedData(cacheState)
+        return when (val cacheState = cacheProvider.getAll()) {
+            is CacheState.AllObjects -> getCachedData(cacheState)
+            is CacheState.Object -> getCachedData(cacheState)
             is CacheState.Empty -> getFromRemote(args, errorFunc)
         }
     }
 
-    private fun getCachedData(cacheState: CacheState.Actual<DATA>) =
+    private fun getCachedData(cacheState: CacheState.AllObjects<DATA>) =
+        cacheState.data
+
+    private fun getCachedData(cacheState: CacheState.Object<DATA>) =
         cacheState.data
 
     private suspend fun getFromRemote(

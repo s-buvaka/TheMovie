@@ -6,24 +6,31 @@ import com.squareup.picasso.Picasso
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.model.database.models.ImagesConfigModel
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-object ImageLoader : KoinComponent {
+interface ImageLoader {
 
-    private const val BASE_IMAGE_URL = "http://image.tmdb.org/t/p/"
-    private const val BASE_SECURE_IMAGE_URL = "https://image.tmdb.org/t/p/"
-    private const val ORIGINAL_SIZE = "original"
+    fun setConfigs(_configs: ImagesConfigModel)
 
-    private val picasso: Picasso by inject()
-    private val displayMetrics: DisplayMetrics by inject()
+    fun loadPoster(url: String, targetView: ImageView)
+}
+
+private const val BASE_IMAGE_URL = "http://image.tmdb.org/t/p/"
+private const val BASE_SECURE_IMAGE_URL = "https://image.tmdb.org/t/p/"
+private const val ORIGINAL_SIZE = "original"
+
+class ImageLoaderImpl(
+    private val picasso: Picasso,
+    private val displayMetrics: DisplayMetrics
+) : ImageLoader, KoinComponent {
+
 
     private var configs: ImagesConfigModel? = null
 
-    fun setConfigs(_configs: ImagesConfigModel) {
+    override fun setConfigs(_configs: ImagesConfigModel) {
         configs = _configs
     }
 
-    fun loadPoster(url: String, targetView: ImageView) {
+    override fun loadPoster(url: String, targetView: ImageView) {
         picasso
             .load(createPosterUrl(url))
             .placeholder(R.drawable.poster_paceholder)

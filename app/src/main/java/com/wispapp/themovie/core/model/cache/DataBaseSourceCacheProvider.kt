@@ -16,7 +16,9 @@ class DataBaseSourceCacheProvider<T>(
         checkTimeStamp()
     }
 
-    override suspend fun get(): CacheState<T> = getCachedData()
+    override suspend fun getAll(): CacheState<T> = getCachedData()
+
+    override suspend fun getById(id: Int): CacheState<T> = getCachedDataById(id)
 
     override suspend fun put(data: List<T>) {
         clearData()
@@ -27,7 +29,7 @@ class DataBaseSourceCacheProvider<T>(
     private fun checkTimeStamp() {
         GlobalScope.launch {
             database.getTimestamp(type.name)?.let {
-            timeoutPolicy.setTimeStamp(it)
+                timeoutPolicy.setTimeStamp(it)
             }
         }
     }
@@ -41,7 +43,7 @@ class DataBaseSourceCacheProvider<T>(
 
     private fun getFromDb(): CacheState<T> {
         val cacheData = database.getAll()
-        return CacheState.Actual(cacheData)
+        return CacheState.AllObjects(cacheData)
     }
 
     private fun returnEmptyState(): CacheState<T> {
@@ -52,6 +54,18 @@ class DataBaseSourceCacheProvider<T>(
     private fun clearData() {
         database.delTimestamp(type.name)
         database.deleteAll()
+    }
+
+    private fun getCachedDataById(id: Int): CacheState<T> {
+        return when {
+            timeoutPolicy.isValid() -> getFromDbById(id)
+            else -> returnEmptyState()
+        }
+    }
+
+    private fun getFromDbById(id: Int): CacheState<T> {
+        val cacheData = database.getById(id)
+        return CacheState.Object(cacheData)
     }
 
     private fun saveData(data: List<T>) {
