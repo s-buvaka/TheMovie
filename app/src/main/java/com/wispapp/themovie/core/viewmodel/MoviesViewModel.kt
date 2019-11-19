@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
+import com.wispapp.themovie.core.model.database.models.PopularsMovieModel
 import com.wispapp.themovie.core.model.datasource.DataSource
 import com.wispapp.themovie.core.model.network.MovieId
 import com.wispapp.themovie.core.model.network.models.NetworkException
@@ -16,13 +16,13 @@ import kotlinx.coroutines.withContext
 private const val TAG = "MoviesViewModel"
 
 class MoviesViewModel(
-    private val popularMovieDataSource: DataSource<MovieOverviewModel>,
+    private val popularMovieDataSource: DataSource<PopularsMovieModel>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
     private val dataSource: DataSource<ConfigModel>,
     private val imageLoader: ImageLoader
 ) : BaseViewModel() {
 
-    val popularMovieLiveData = MutableLiveData<MutableList<MovieOverviewModel>>()
+    val popularMovieLiveData = MutableLiveData<MutableList<PopularsMovieModel>>()
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
 
     fun getPopularMovie() {
@@ -57,7 +57,7 @@ class MoviesViewModel(
         imageLoader.setConfigs(configs[0].imagesConfig)
     }
 
-    private suspend fun getPopularMovies(): MutableList<MovieOverviewModel> {
+    private suspend fun getPopularMovies(): MutableList<PopularsMovieModel> {
         return popularMovieDataSource.get(
             errorFunc = { error -> handleError(error) }
         ).toMutableList()

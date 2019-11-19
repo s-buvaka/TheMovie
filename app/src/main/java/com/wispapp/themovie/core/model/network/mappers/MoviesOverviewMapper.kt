@@ -1,13 +1,13 @@
 package com.wispapp.themovie.core.model.network.mappers
 
 import com.wispapp.themovie.core.common.Mapper
-import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
+import com.wispapp.themovie.core.model.database.models.PopularsMovieModel
 import com.wispapp.themovie.core.model.network.models.MovieOverviewResponse
 
-class MoviesOverviewMapper : Mapper<MovieOverviewResponse, MovieOverviewModel> {
+class MoviesOverviewMapper : Mapper<MovieOverviewResponse, PopularsMovieModel> {
 
-    override fun mapFrom(source: MovieOverviewResponse): MovieOverviewModel =
-            MovieOverviewModel(
+    override fun mapFrom(source: MovieOverviewResponse): PopularsMovieModel =
+            PopularsMovieModel(
                 id = source.id,
                 title = source.title,
                 originalTitle = source.originalTitle,

@@ -9,7 +9,7 @@ import com.wispapp.themovie.core.model.cache.TimeoutCachePolicyImpl
 import com.wispapp.themovie.core.model.database.MovieDetailsDao
 import com.wispapp.themovie.core.model.database.MoviesOverviewDao
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.MovieOverviewModel
+import com.wispapp.themovie.core.model.database.models.PopularsMovieModel
 import com.wispapp.themovie.core.model.database.models.SourceType
 import com.wispapp.themovie.core.model.datasource.CachedDataSourceImpl
 import com.wispapp.themovie.core.model.network.ApiInterface
@@ -72,7 +72,7 @@ val moviesModule = module {
     }
 
     factory(named(DATABASE_SOURCE_POPULAR_MOVIES)) {
-        DataBaseSourceCacheProvider<MovieOverviewModel>(
+        DataBaseSourceCacheProvider<PopularsMovieModel>(
             get(named(CACHE_POLICY_MOVIES)),
             SourceType.MOVIES_OVERVIEW,
             get<MoviesOverviewDao>()
@@ -88,7 +88,7 @@ val moviesModule = module {
     }
 
     factory(named(DATA_SOURCE_MOVIES_OVERVIEW)) {
-        CachedDataSourceImpl<MovieOverviewModel>(
+        CachedDataSourceImpl<PopularsMovieModel>(
             get(named(NETWORK_PROVIDER_POPULAR_MOVIES)),
             get(named(DATABASE_SOURCE_POPULAR_MOVIES))
         )

@@ -29,7 +29,7 @@ class CachedDataSourceImpl<DATA>(
 
         return when (val cacheState = cacheProvider.getAll()) {
             is CacheState.AllObjects -> getCachedData(cacheState)
-            is CacheState.Object -> getCachedData(cacheState)
+            //is CacheState.Object -> getCachedData(cacheState)
             is CacheState.Empty -> getFromRemote(args, errorFunc)
         }
     }

@@ -5,10 +5,18 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.wispapp.themovie.core.model.database.converters.IntListConverter
+import com.wispapp.themovie.core.model.network.models.MovieOverviewResponse
+
+data class MoviesResultModel(
+    val page: Int,
+    val totalResults: Int,
+    val totalPages: Int,
+    val results: List<MovieOverviewResponse>
+)
 
 @Entity(tableName = "movies_overview")
 @TypeConverters(IntListConverter::class)
-data class MovieOverviewModel(
+data class PopularsMovieModel(
     @PrimaryKey(autoGenerate = false) val id: Int,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "original_title") val originalTitle: String,
