@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.PopularsMovieModel
+import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
 import com.wispapp.themovie.core.model.database.models.SourcesTimeStamp
 
 interface SourceDatabase<SOURCE> {
@@ -52,16 +52,16 @@ interface ConfigDao : SourceDatabase<ConfigModel> {
 }
 
 @Dao
-interface MoviesOverviewDao : SourceDatabase<PopularsMovieModel> {
+interface MoviesOverviewDao : SourceDatabase<PopularMoviesModel> {
 
     @Query("SELECT * FROM movies_overview")
-    override fun getAll(): List<PopularsMovieModel>
+    override fun getAll(): List<PopularMoviesModel>
 
     @Query("DELETE FROM movies_overview")
     override fun deleteAll()
 
     @Query("SELECT * FROM movies_overview WHERE id=:id")
-    override fun getById(id: Int): PopularsMovieModel
+    override fun getById(id: Int): PopularMoviesModel
 
     @Query("DELETE FROM movies_overview WHERE id=:id")
     override fun deleteById(id: Int)

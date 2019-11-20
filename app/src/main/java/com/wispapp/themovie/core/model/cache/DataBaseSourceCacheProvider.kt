@@ -16,12 +16,17 @@ class DataBaseSourceCacheProvider<T>(
         checkTimeStamp()
     }
 
-    override suspend fun getAll(): CacheState<T> = getCachedData()
+    override suspend fun getAll(): CacheState<List<T>> = getCachedData()
 
-    override suspend fun getById(id: Int): CacheState<T> = getCachedDataById(id)
+    override suspend fun getById(id: Int): CacheState<T> = getCachedData(id)
 
-    override suspend fun put(data: List<T>) {
+    override suspend fun putAll(data: List<T>) {
         clearData()
+        saveData(data)
+        innerSaveTimeStamp()
+    }
+
+    override suspend fun put(data: T) {
         saveData(data)
         innerSaveTimeStamp()
     }
@@ -34,16 +39,36 @@ class DataBaseSourceCacheProvider<T>(
         }
     }
 
-    private fun getCachedData(): CacheState<T> {
+    private fun getCachedData(): CacheState<List<T>> {
         return when {
             timeoutPolicy.isValid() -> getFromDb()
+            else -> emptyState()
+        }
+    }
+
+    private fun getFromDb(): CacheState<List<T>> {
+        val cachedData = database.getAll()
+        return CacheState.Actual(cachedData)
+    }
+
+    private fun emptyState(): CacheState<List<T>> {
+        clearData()
+        return CacheState.Empty()
+    }
+
+    private fun getCachedData(id: Int): CacheState<T> {
+        return when {
+            timeoutPolicy.isValid() -> getFromDb(id)
             else -> returnEmptyState()
         }
     }
 
-    private fun getFromDb(): CacheState<T> {
-        val cacheData = database.getAll()
-        return CacheState.AllObjects(cacheData)
+    private fun getFromDb(id: Int): CacheState<T> {
+        val cachedData = database.getById(id)
+        return when{
+            cachedData != null->CacheState.Actual(cachedData)
+            else -> returnEmptyState()
+        }
     }
 
     private fun returnEmptyState(): CacheState<T> {
@@ -56,20 +81,12 @@ class DataBaseSourceCacheProvider<T>(
         database.deleteAll()
     }
 
-    private fun getCachedDataById(id: Int): CacheState<T> {
-        return when {
-            timeoutPolicy.isValid() -> getFromDbById(id)
-            else -> returnEmptyState()
-        }
-    }
-
-    private fun getFromDbById(id: Int): CacheState<T> {
-        val cacheData = database.getById(id)
-        return CacheState.Object(cacheData)
-    }
-
     private fun saveData(data: List<T>) {
         database.insertAll(data)
+    }
+
+    private fun saveData(data: T) {
+        database.insert(data)
     }
 
     private fun innerSaveTimeStamp() {

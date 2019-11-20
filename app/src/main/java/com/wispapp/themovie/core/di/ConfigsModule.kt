@@ -8,7 +8,7 @@ import com.wispapp.themovie.core.model.cache.TimeoutCachePolicyImpl
 import com.wispapp.themovie.core.model.database.ConfigDao
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.SourceType
-import com.wispapp.themovie.core.model.datasource.CachedDataSourceImpl
+import com.wispapp.themovie.core.model.datasource.ConfigsDataSource
 import com.wispapp.themovie.core.model.network.ApiInterface
 import com.wispapp.themovie.core.model.network.ConfigsRemoteProvider
 import com.wispapp.themovie.core.model.network.mappers.ConfigsMapper
@@ -18,14 +18,14 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-const val DATA_SOURCE_CONFIGS = "data_source_configs"
-
 private const val MAPPER_IMAGE_CONFIGS = "mapper_image_configs"
 private const val MAPPER_CONFIGS = "mapper_configs"
 
 private const val NETWORK_PROVIDER_CONFIGS = "network_provider_configs"
 
 private const val CACHE_POLICY_CONFIGS = "cash_policy_default"
+
+const val DATA_SOURCE_CONFIGS = "data_source_configs"
 
 val configsModule = module {
 
@@ -50,7 +50,7 @@ val configsModule = module {
     }
 
     factory(named(DATA_SOURCE_CONFIGS)) {
-        CachedDataSourceImpl<ConfigModel>(
+        ConfigsDataSource(
             get(named(NETWORK_PROVIDER_CONFIGS)),
             get<DataBaseSourceCacheProvider<ConfigModel>>()
         )

@@ -6,10 +6,10 @@ data class MoviesResultResponse(
     @SerializedName("page") val page: Int,
     @SerializedName("total_results") val totalResults: Int,
     @SerializedName("total_pages") val totalPages: Int,
-    @SerializedName("results") val results: List<MovieOverviewResponse>
+    @SerializedName("results") val results: List<PopularMoviesResponse>
 )
 
-data class MovieOverviewResponse(
+data class PopularMoviesResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("title") val title: String,
     @SerializedName("original_title") val originalTitle: String,

@@ -9,9 +9,10 @@ import com.wispapp.themovie.core.model.cache.TimeoutCachePolicyImpl
 import com.wispapp.themovie.core.model.database.MovieDetailsDao
 import com.wispapp.themovie.core.model.database.MoviesOverviewDao
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.PopularsMovieModel
+import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
 import com.wispapp.themovie.core.model.database.models.SourceType
-import com.wispapp.themovie.core.model.datasource.CachedDataSourceImpl
+import com.wispapp.themovie.core.model.datasource.MovieDetailsDataSource
+import com.wispapp.themovie.core.model.datasource.PopularMoviesDataSource
 import com.wispapp.themovie.core.model.network.ApiInterface
 import com.wispapp.themovie.core.model.network.MoviesDetailsProvider
 import com.wispapp.themovie.core.model.network.PopularMoviesRemoteProvider
@@ -21,7 +22,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-private const val MAPPER_MOVIES_OVERVIEW = "mapper_movies_overview"
+private const val MAPPER_MOVIES_RESULT = "mapper_movies_result"
+private const val MAPPER_POPULAR_MOVIES = "mapper_movies_overview"
 private const val MAPPER_MOVIES_DETAILS = "mapper_movies_details"
 private const val MAPPER_MOVIES_GENRES = "mapper_movies_genres"
 private const val MAPPER_MOVIES_COMPANIES = "mapper_movies_companies"
@@ -34,14 +36,15 @@ private const val NETWORK_PROVIDER_MOVIE_DETAILS = "network_provider_movie_detai
 private const val DATABASE_SOURCE_POPULAR_MOVIES = "database_source_popular_movies"
 private const val DATABASE_SOURCE_MOVIE_DETAILS = "database_source_movie_details"
 
-private const val DATA_SOURCE_MOVIES_OVERVIEW = "data_source_movies_overview"
+private const val DATA_SOURCE_POPULAR_MOVIES = "data_source_popular_movies"
 private const val DATA_SOURCE_MOVIE_DETAILS = "data_source_movie_details"
 
 private const val CACHE_POLICY_MOVIES = "cash_policy_movies"
 
 val moviesModule = module {
 
-    single(named(MAPPER_MOVIES_OVERVIEW)) { MoviesOverviewMapper() }
+    single(named(MAPPER_POPULAR_MOVIES)) { PopularMoviesMapper() }
+    single(named(MAPPER_MOVIES_RESULT)) { MovieResultMapper(get(named(MAPPER_POPULAR_MOVIES))) }
     single(named(MAPPER_MOVIES_LANGUAGE)) { SpokenLanguagesMapper() }
     single(named(MAPPER_MOVIES_COUNTRIES)) { ProductionCountriesMapper() }
     single(named(MAPPER_MOVIES_COMPANIES)) { ProductionCompaniesMapper() }
@@ -59,7 +62,7 @@ val moviesModule = module {
 
     factory(named(NETWORK_PROVIDER_POPULAR_MOVIES)) {
         PopularMoviesRemoteProvider(
-            get(named(MAPPER_MOVIES_OVERVIEW)),
+            get(named(MAPPER_MOVIES_RESULT)),
             get<ApiInterface>()
         )
     }
@@ -72,7 +75,7 @@ val moviesModule = module {
     }
 
     factory(named(DATABASE_SOURCE_POPULAR_MOVIES)) {
-        DataBaseSourceCacheProvider<PopularsMovieModel>(
+        DataBaseSourceCacheProvider<PopularMoviesModel>(
             get(named(CACHE_POLICY_MOVIES)),
             SourceType.MOVIES_OVERVIEW,
             get<MoviesOverviewDao>()
@@ -87,15 +90,15 @@ val moviesModule = module {
         )
     }
 
-    factory(named(DATA_SOURCE_MOVIES_OVERVIEW)) {
-        CachedDataSourceImpl<PopularsMovieModel>(
+    factory(named(DATA_SOURCE_POPULAR_MOVIES)) {
+        PopularMoviesDataSource(
             get(named(NETWORK_PROVIDER_POPULAR_MOVIES)),
             get(named(DATABASE_SOURCE_POPULAR_MOVIES))
         )
     }
 
     factory(named(DATA_SOURCE_MOVIE_DETAILS)) {
-        CachedDataSourceImpl<MovieDetailsModel>(
+        MovieDetailsDataSource(
             get(named(NETWORK_PROVIDER_MOVIE_DETAILS)),
             get(named(DATABASE_SOURCE_MOVIE_DETAILS))
         )
@@ -103,7 +106,7 @@ val moviesModule = module {
 
     viewModel {
         MoviesViewModel(
-            get(named(DATA_SOURCE_MOVIES_OVERVIEW)),
+            get(named(DATA_SOURCE_POPULAR_MOVIES)),
             get(named(DATA_SOURCE_MOVIE_DETAILS)),
             get(named(DATA_SOURCE_CONFIGS)),
             get<ImageLoader>()

@@ -13,7 +13,7 @@ import com.wispapp.themovie.core.model.database.converters.StringListConverter
     StringListConverter::class
 )
 data class ConfigModel(
-    @PrimaryKey(autoGenerate = true) var id: Int = 0,
+    @PrimaryKey(autoGenerate = false) var id: Int = 0,
     @ColumnInfo(name = "config_image") val imagesConfig: ImagesConfigModel,
     @ColumnInfo(name = "config_change_keys") val changeKeys: List<String>
 )

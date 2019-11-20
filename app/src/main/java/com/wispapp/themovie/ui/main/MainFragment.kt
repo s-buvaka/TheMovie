@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.wispapp.themovie.R
-import com.wispapp.themovie.core.model.database.models.PopularsMovieModel
+import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import com.wispapp.themovie.ui.base.BaseFragment
 import com.wispapp.themovie.ui.base.recycler.GenericAdapter
@@ -13,10 +13,10 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment : BaseFragment(R.layout.fragment_main),
-    GenericAdapter.OnItemClickListener<PopularsMovieModel> {
+    GenericAdapter.OnItemClickListener<PopularMoviesModel> {
 
     private val moviesViewModel: MoviesViewModel by viewModel()
-    private val adapter: GenericAdapter<PopularsMovieModel> by lazy { popularsMovieAdapter }
+    private val adapter: GenericAdapter<PopularMoviesModel> by lazy { popularsMovieAdapter }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -27,7 +27,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         initRecycler()
     }
 
-    override fun onClickItem(data: PopularsMovieModel) {
+    override fun onClickItem(data: PopularMoviesModel) {
         val bundle = Bundle()
         bundle.putInt(MOVIE_ID, data.id)
         findNavController().navigate(R.id.movieDetailsFragment, bundle)
@@ -51,10 +51,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         popular_movie_recycler.adapter = adapter
     }
 
-    private val popularsMovieAdapter = object : GenericAdapter<PopularsMovieModel>(this) {
+    private val popularsMovieAdapter = object : GenericAdapter<PopularMoviesModel>(this) {
         override fun getItemId(position: Int): Long = getItem(position).item.id.toLong()
 
-        override fun getLayoutId(position: Int, obj: PopularsMovieModel): Int =
+        override fun getLayoutId(position: Int, obj: PopularMoviesModel): Int =
             R.layout.item_movie_overview
     }
 }
