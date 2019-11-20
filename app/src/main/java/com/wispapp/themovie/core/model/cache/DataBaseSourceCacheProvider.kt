@@ -59,21 +59,16 @@ class DataBaseSourceCacheProvider<T>(
     private fun getCachedData(id: Int): CacheState<T> {
         return when {
             timeoutPolicy.isValid() -> getFromDb(id)
-            else -> returnEmptyState()
+            else -> CacheState.Empty()
         }
     }
 
     private fun getFromDb(id: Int): CacheState<T> {
         val cachedData = database.getById(id)
-        return when{
-            cachedData != null->CacheState.Actual(cachedData)
-            else -> returnEmptyState()
+        return when {
+            cachedData != null -> CacheState.Actual(cachedData)
+            else -> CacheState.Empty()
         }
-    }
-
-    private fun returnEmptyState(): CacheState<T> {
-        clearData()
-        return CacheState.Empty()
     }
 
     private fun clearData() {

@@ -1,5 +1,6 @@
 package com.wispapp.themovie.core.model.network
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wispapp.themovie.core.common.Mapper
@@ -11,11 +12,14 @@ import com.wispapp.themovie.core.model.network.models.MovieDetailsResponse
 import com.wispapp.themovie.core.model.network.models.MoviesResultResponse
 import com.wispapp.themovie.core.model.network.models.NetworkException
 import retrofit2.Response
+import java.lang.Exception
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 interface NetworkProvider<T> {
 
     suspend fun get(
-        args: RequestWrapper? = null,
+        args: ArgumentsWrapper? = null,
         errorFunc: (exception: NetworkException) -> Unit
     ): T
 }
@@ -25,7 +29,29 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
 ) :
     NetworkProvider<MODEL> {
 
-    protected fun parseResponse(
+    abstract suspend fun getResponse(args: ArgumentsWrapper?): Response<RESPONSE>
+
+    override suspend fun get(
+        args: ArgumentsWrapper?,
+        errorFunc: (exception: NetworkException) -> Unit
+    ): MODEL {
+        try {
+            return parseResponse(
+                response = getResponse(args),
+                errorFunc = { errorException -> errorFunc(errorException) }
+            )
+        } catch (e: UnknownHostException) {
+            //TODO ПРодумать как обработать ошибки сети
+            e.printStackTrace()
+            Log.d("XXX", "NOT INTERNET")
+        } catch (e: ConnectException){
+            e.printStackTrace()
+            Log.d("XXX", "NOT INTERNET")
+        }
+        throw Exception("LALAL")
+    }
+
+    private fun parseResponse(
         response: Response<RESPONSE>,
         errorFunc: (exception: NetworkException) -> Unit
     ): MODEL {
@@ -61,34 +87,19 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
 class ConfigsRemoteProvider(
     mapper: Mapper<ConfigResponse, ConfigModel>,
     private val api: ApiInterface
-) : BaseRemoteProvider<ConfigResponse, ConfigModel>(mapper),
-    NetworkProvider<ConfigModel> {
+) : BaseRemoteProvider<ConfigResponse, ConfigModel>(mapper) {
 
-    override suspend fun get(
-        args: RequestWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
-    ): ConfigModel {
-        return parseResponse(
-            response = api.getConfigsAsync().await(),
-            errorFunc = { errorException -> errorFunc(errorException) }
-        )
-    }
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<ConfigResponse> =
+        api.getConfigsAsync().await()
 }
 
 class PopularMoviesRemoteProvider(
     mapper: Mapper<MoviesResultResponse, MoviesResultModel>,
     private val api: ApiInterface
-) : BaseRemoteProvider<MoviesResultResponse, MoviesResultModel>(mapper),
-    NetworkProvider<MoviesResultModel> {
+) : BaseRemoteProvider<MoviesResultResponse, MoviesResultModel>(mapper) {
 
-    override suspend fun get(
-        args: RequestWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
-    ): MoviesResultModel {
-        return parseResponse(
-            response = api.getPopularMoviesAsync().await(),
-            errorFunc = { errorException -> errorFunc(errorException) })
-    }
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MoviesResultResponse> =
+        api.getPopularMoviesAsync().await()
 }
 
 class MoviesDetailsProvider(
@@ -97,17 +108,10 @@ class MoviesDetailsProvider(
 ) : BaseRemoteProvider<MovieDetailsResponse, MovieDetailsModel>(mapper),
     NetworkProvider<MovieDetailsModel> {
 
-    override suspend fun get(
-        args: RequestWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
-    ): MovieDetailsModel {
-
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MovieDetailsResponse> {
         val movieId = if (args is MovieId) args.movieId
         else throw IllegalArgumentException("Invalid object type received")
 
-        return parseResponse(
-            response = api.searchByIdAsync(movieId).await(),
-            errorFunc = { errorException -> errorFunc(errorException) }
-        )
+        return api.searchByIdAsync(movieId).await()
     }
 }

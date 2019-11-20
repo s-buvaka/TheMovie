@@ -8,13 +8,13 @@ import com.wispapp.themovie.core.model.database.models.MoviesResultModel
 import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
 import com.wispapp.themovie.core.model.network.MovieId
 import com.wispapp.themovie.core.model.network.NetworkProvider
-import com.wispapp.themovie.core.model.network.RequestWrapper
+import com.wispapp.themovie.core.model.network.ArgumentsWrapper
 import com.wispapp.themovie.core.model.network.models.NetworkException
 
 interface DataSource<T> {
 
     suspend fun get(
-        args: RequestWrapper? = null,
+        args: ArgumentsWrapper? = null,
         errorFunc: (exception: NetworkException) -> Unit
     ): T
 }
@@ -22,7 +22,7 @@ interface DataSource<T> {
 abstract class BaseDataSource<T> : DataSource<T> {
 
     override suspend fun get(
-        args: RequestWrapper?,
+        args: ArgumentsWrapper?,
         errorFunc: (exception: NetworkException) -> Unit
     ): T {
         val id = getId(args)
@@ -37,13 +37,13 @@ abstract class BaseDataSource<T> : DataSource<T> {
     abstract fun getCachedData(cacheState: CacheState.Actual<T>): T
 
     abstract suspend fun getFromRemote(
-        args: RequestWrapper?,
+        args: ArgumentsWrapper?,
         errorFunc: (exception: NetworkException) -> Unit
     ): T
 
     abstract suspend fun putToCache(model: T)
 
-    protected open fun getId(args: RequestWrapper?): Int {
+    protected open fun getId(args: ArgumentsWrapper?): Int {
         return 0
     }
 }
@@ -59,7 +59,7 @@ class ConfigsDataSource(
         cacheState.data
 
     override suspend fun getFromRemote(
-        args: RequestWrapper?,
+        args: ArgumentsWrapper?,
         errorFunc: (exception: NetworkException) -> Unit
     ): ConfigModel {
         val response = networkProvider.get(args, errorFunc)
@@ -84,7 +84,7 @@ class PopularMoviesDataSource(
         cacheState.data
 
     override suspend fun getFromRemote(
-        args: RequestWrapper?,
+        args: ArgumentsWrapper?,
         errorFunc: (exception: NetworkException) -> Unit
     ): List<PopularMoviesModel> {
         val response = networkProvider.get(args, errorFunc).results
@@ -109,7 +109,7 @@ class MovieDetailsDataSource(
         cacheState.data
 
     override suspend fun getFromRemote(
-        args: RequestWrapper?,
+        args: ArgumentsWrapper?,
         errorFunc: (exception: NetworkException) -> Unit
     ): MovieDetailsModel {
         val response = networkProvider.get(args, errorFunc)
@@ -121,7 +121,7 @@ class MovieDetailsDataSource(
         cacheProvider.put(model)
     }
 
-    override fun getId(args: RequestWrapper?): Int {
+    override fun getId(args: ArgumentsWrapper?): Int {
         return if (args is MovieId)
             args.movieId
         else
