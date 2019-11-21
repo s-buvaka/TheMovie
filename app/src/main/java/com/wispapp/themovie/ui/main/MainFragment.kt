@@ -39,12 +39,14 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
             adapter.update(it)
         })
 
-        moviesViewModel.isDataLoading.observe(
-            this,
-            Observer { isDataLoaded ->
+        moviesViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
                 if (isDataLoaded) showLoading()
                 else hideLoading()
             })
+
+        moviesViewModel.exception.observe(this, Observer { errorMessage ->
+            showError(errorMessage?:"")
+        })
     }
 
     private fun initRecycler() {

@@ -68,6 +68,10 @@ class MoviesViewModel(
             errorFunc = { error -> handleError(error) })
 
     private fun handleError(error: Exception) {
-        if (error is NetworkException) Log.d(TAG, error.statusMessage)
+        if (error is NetworkException) {
+            showError(error.statusMessage)
+            Log.d(TAG, error.statusMessage)
+        }
+        showError(error.message ?: "")
     }
 }

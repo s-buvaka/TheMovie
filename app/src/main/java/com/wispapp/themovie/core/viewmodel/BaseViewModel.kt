@@ -20,14 +20,18 @@ abstract class BaseViewModel : ViewModel() {
     /**
      * Handle errors
      */
-    val exception = MutableLiveData<Throwable>()
+    val exception = MutableLiveData<String>()
 
     protected fun showLoader(){
-        setLoading(true)
+        uiScope.launch { setLoading(true) }
     }
 
     protected fun hideLoader(){
         uiScope.launch{ setLoading(false) }
+    }
+
+    protected fun showError(errorMessage: String) {
+        uiScope.launch { setError(errorMessage) }
     }
 
     @CallSuper
@@ -45,8 +49,8 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    open fun setError(t: Throwable) {
-        exception.value = t
+    private fun setError(errorMessage: String) {
+        exception.value = errorMessage
     }
 
     fun cancelAllRequest() = parentJob.cancel()

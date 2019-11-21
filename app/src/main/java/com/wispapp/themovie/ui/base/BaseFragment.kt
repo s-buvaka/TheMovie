@@ -25,15 +25,15 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
         initView()
     }
 
-    override fun showLoading() {
+    override fun showLoading() =
         (activity as BaseActivity).showLoading()
-    }
 
-    override fun hideLoading() {
+    override fun hideLoading() =
         (activity as BaseActivity).hideLoading()
-    }
 
-    override fun showError() {
-        (activity as BaseActivity).showError()
-    }
+    override fun showError(errorMessage: String) =
+        (activity as BaseActivity).showError(errorMessage)
+
+    override fun hideError() =
+        (activity as BaseActivity).hideError()
 }

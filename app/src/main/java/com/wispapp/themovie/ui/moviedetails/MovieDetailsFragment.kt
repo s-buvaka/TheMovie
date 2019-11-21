@@ -29,18 +29,16 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
     private fun initViewModel() {
         var movieId = 0
         arguments?.let { movieId = it.getInt(MOVIE_ID) }
-            .run { showError() }
+            .run { showError("Error movie loading") }
 
         moviesViewModel.getMovieDetails(movieId)
         moviesViewModel.movieDetailsLiveData.observe(this, Observer {
             updateUi(it[0])
         })
 
-        moviesViewModel.isDataLoading.observe(
-            this,
-            Observer { isDataLoaded ->
-                if (isDataLoaded) showLoading()
-                else hideLoading()
+        moviesViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
+            if (isDataLoaded) showLoading()
+            else hideLoading()
             })
     }
 

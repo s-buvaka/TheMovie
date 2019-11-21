@@ -12,4 +12,10 @@
     <string name="movie_details_label_overview">Overview</string>
     <string name="movie_details_label_photos">Photos</string>
     <string name="movie_details_score_text">score</string>
+    <string name="error_screen_button_repeat">Repeat</string>
+
+    <!--Error screen-->
+
+
+
 </resources>
