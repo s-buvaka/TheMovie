@@ -22,7 +22,7 @@ class ConfigsViewModel(private val dataSource: DataSource<ConfigModel>) : BaseVi
         }
     }
 
-    private fun handleError(error: NetworkException) {
-        Log.d(TAG, error.statusMessage)
+    private fun handleError(error: Exception) {
+       if (error is NetworkException) Log.d(TAG, error.statusMessage)
     }
 }

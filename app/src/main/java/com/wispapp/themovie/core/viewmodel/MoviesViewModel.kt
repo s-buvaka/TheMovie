@@ -33,7 +33,7 @@ class MoviesViewModel(
             val popularMovies = withContext(Dispatchers.IO) { getPopularMovies() }
             popularMovieLiveData.postValue(popularMovies)
 
-           hideLoader()
+            hideLoader()
         }
     }
 
@@ -65,9 +65,9 @@ class MoviesViewModel(
 
     private suspend fun getConfigs() =
         dataSource.get(
-            errorFunc = { error -> Log.d(TAG, error.statusMessage) })
+            errorFunc = { error -> handleError(error) })
 
-    private fun handleError(error: NetworkException) {
-        Log.d(TAG, error.statusMessage)
+    private fun handleError(error: Exception) {
+        if (error is NetworkException) Log.d(TAG, error.statusMessage)
     }
 }

@@ -12,7 +12,6 @@ import com.wispapp.themovie.core.model.network.models.MovieDetailsResponse
 import com.wispapp.themovie.core.model.network.models.MoviesResultResponse
 import com.wispapp.themovie.core.model.network.models.NetworkException
 import retrofit2.Response
-import java.lang.Exception
 import java.net.ConnectException
 import java.net.UnknownHostException
 
@@ -20,7 +19,7 @@ interface NetworkProvider<T> {
 
     suspend fun get(
         args: ArgumentsWrapper? = null,
-        errorFunc: (exception: NetworkException) -> Unit
+        errorFunc: (exception: Exception) -> Unit
     ): T
 }
 
@@ -33,7 +32,7 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
 
     override suspend fun get(
         args: ArgumentsWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
+        errorFunc: (exception: Exception) -> Unit
     ): MODEL {
         try {
             return parseResponse(
@@ -41,10 +40,8 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
                 errorFunc = { errorException -> errorFunc(errorException) }
             )
         } catch (e: UnknownHostException) {
-            //TODO ПРодумать как обработать ошибки сети
-            e.printStackTrace()
-            Log.d("XXX", "NOT INTERNET")
-        } catch (e: ConnectException){
+            errorFunc.invoke(e)
+        } catch (e: ConnectException) {
             e.printStackTrace()
             Log.d("XXX", "NOT INTERNET")
         }

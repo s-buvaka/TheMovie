@@ -9,13 +9,12 @@ import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
 import com.wispapp.themovie.core.model.network.MovieId
 import com.wispapp.themovie.core.model.network.NetworkProvider
 import com.wispapp.themovie.core.model.network.ArgumentsWrapper
-import com.wispapp.themovie.core.model.network.models.NetworkException
 
 interface DataSource<T> {
 
     suspend fun get(
         args: ArgumentsWrapper? = null,
-        errorFunc: (exception: NetworkException) -> Unit
+        errorFunc: (exception: Exception) -> Unit
     ): T
 }
 
@@ -23,7 +22,7 @@ abstract class BaseDataSource<T> : DataSource<T> {
 
     override suspend fun get(
         args: ArgumentsWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
+        errorFunc: (exception: Exception) -> Unit
     ): T {
         val id = getId(args)
         return when (val cacheState = getCachedState(id)) {
@@ -38,7 +37,7 @@ abstract class BaseDataSource<T> : DataSource<T> {
 
     abstract suspend fun getFromRemote(
         args: ArgumentsWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
+        errorFunc: (exception: Exception) -> Unit
     ): T
 
     abstract suspend fun putToCache(model: T)
@@ -60,7 +59,7 @@ class ConfigsDataSource(
 
     override suspend fun getFromRemote(
         args: ArgumentsWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
+        errorFunc: (exception: Exception) -> Unit
     ): ConfigModel {
         val response = networkProvider.get(args, errorFunc)
         putToCache(response)
@@ -85,7 +84,7 @@ class PopularMoviesDataSource(
 
     override suspend fun getFromRemote(
         args: ArgumentsWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
+        errorFunc: (exception: Exception) -> Unit
     ): List<PopularMoviesModel> {
         val response = networkProvider.get(args, errorFunc).results
         putToCache(response)
@@ -110,7 +109,7 @@ class MovieDetailsDataSource(
 
     override suspend fun getFromRemote(
         args: ArgumentsWrapper?,
-        errorFunc: (exception: NetworkException) -> Unit
+        errorFunc: (exception: Exception) -> Unit
     ): MovieDetailsModel {
         val response = networkProvider.get(args, errorFunc)
         putToCache(response)
