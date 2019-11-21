@@ -45,7 +45,7 @@ class MoviesViewModel(
                     args = MovieId(id),
                     errorFunc = { error -> handleError(error) }
                 )
-            movieDetailsLiveData.postValue(mutableListOf(movieDetails))
+            movieDetails?.let { movieDetailsLiveData.postValue(mutableListOf(it)) }
 
             hideLoader()
         }
@@ -54,13 +54,13 @@ class MoviesViewModel(
     private suspend fun setImageConfigs() {
         //Todo Задавать конфиги при старте приложение, может быть splash
         val configs = withContext(Dispatchers.IO) { getConfigs() }
-        imageLoader.setConfigs(configs.imagesConfig)
+        configs?.let { imageLoader.setConfigs(configs.imagesConfig) }
     }
 
     private suspend fun getPopularMovies(): MutableList<PopularMoviesModel> {
         return popularMovieDataSource.get(
             errorFunc = { error -> handleError(error) }
-        ).toMutableList()
+        )?.toMutableList() ?: mutableListOf()
     }
 
     private suspend fun getConfigs() =
@@ -71,7 +71,7 @@ class MoviesViewModel(
         if (error is NetworkException) {
             showError(error.statusMessage)
             Log.d(TAG, error.statusMessage)
-        }
-        showError(error.message ?: "")
+        } else
+            showError(error.message ?: "Something was wrong")
     }
 }

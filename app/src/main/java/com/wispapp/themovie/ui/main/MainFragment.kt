@@ -18,13 +18,28 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     private val moviesViewModel: MoviesViewModel by viewModel()
     private val adapter: GenericAdapter<PopularMoviesModel> by lazy { popularsMovieAdapter }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initViewModel()
+    override fun initViewModel() {
+        popularMoviesObserve()
     }
 
     override fun initView() {
         initRecycler()
+    }
+
+    override fun dataLoadingObserve() {
+        moviesViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
+            if (isDataLoaded)
+                showLoading()
+            else
+                hideLoading()
+        })
+    }
+
+    override fun exceptionObserve() {
+        moviesViewModel.exception.observe(this, Observer { errorMessage ->
+            if (errorMessage != null && errorMessage.isNotEmpty())
+                showError(errorMessage)
+        })
     }
 
     override fun onClickItem(data: PopularMoviesModel) {
@@ -33,19 +48,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         findNavController().navigate(R.id.movieDetailsFragment, bundle)
     }
 
-    private fun initViewModel() {
+    private fun popularMoviesObserve() {
         moviesViewModel.getPopularMovie()
         moviesViewModel.popularMovieLiveData.observe(this, Observer {
             adapter.update(it)
-        })
-
-        moviesViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
-                if (isDataLoaded) showLoading()
-                else hideLoading()
-            })
-
-        moviesViewModel.exception.observe(this, Observer { errorMessage ->
-            showError(errorMessage?:"")
         })
     }
 

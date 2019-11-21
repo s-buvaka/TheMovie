@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.jaeger.library.StatusBarUtil
 import com.wispapp.themovie.R
 import com.wispapp.themovie.ui.base.BaseActivity
+import kotlinx.android.synthetic.main.view_error_layout.*
 
 class MainActivity : BaseActivity() {
 
@@ -12,5 +13,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         StatusBarUtil.setColor(this, Color.TRANSPARENT)
+
+        repeat_button.setOnClickListener { hideError() }
     }
 }

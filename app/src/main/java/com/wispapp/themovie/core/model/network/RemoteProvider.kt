@@ -1,6 +1,5 @@
 package com.wispapp.themovie.core.model.network
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wispapp.themovie.core.common.Mapper
@@ -20,7 +19,7 @@ interface NetworkProvider<T> {
     suspend fun get(
         args: ArgumentsWrapper? = null,
         errorFunc: (exception: Exception) -> Unit
-    ): T
+    ): T?
 }
 
 abstract class BaseRemoteProvider<RESPONSE, MODEL>(
@@ -33,7 +32,7 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
     override suspend fun get(
         args: ArgumentsWrapper?,
         errorFunc: (exception: Exception) -> Unit
-    ): MODEL {
+    ): MODEL? {
         try {
             return parseResponse(
                 response = getResponse(args),
@@ -42,10 +41,11 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
         } catch (e: UnknownHostException) {
             errorFunc.invoke(e)
         } catch (e: ConnectException) {
-            e.printStackTrace()
-            Log.d("XXX", "NOT INTERNET")
+            errorFunc.invoke(e)
+        } catch (e: Exception) {
+            errorFunc.invoke(e)
         }
-        throw Exception("LALAL")
+        return null
     }
 
     private fun parseResponse(

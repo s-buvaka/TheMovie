@@ -23,4 +23,9 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun hideError() {
         error_screen.visibility = View.GONE
     }
+
+    override fun onBackPressed() {
+        hideError()
+        super.onBackPressed()
+    }
 }

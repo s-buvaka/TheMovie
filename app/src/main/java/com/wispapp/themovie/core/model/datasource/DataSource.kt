@@ -6,16 +6,16 @@ import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.database.models.MoviesResultModel
 import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
+import com.wispapp.themovie.core.model.network.ArgumentsWrapper
 import com.wispapp.themovie.core.model.network.MovieId
 import com.wispapp.themovie.core.model.network.NetworkProvider
-import com.wispapp.themovie.core.model.network.ArgumentsWrapper
 
 interface DataSource<T> {
 
     suspend fun get(
         args: ArgumentsWrapper? = null,
         errorFunc: (exception: Exception) -> Unit
-    ): T
+    ): T?
 }
 
 abstract class BaseDataSource<T> : DataSource<T> {
@@ -23,7 +23,7 @@ abstract class BaseDataSource<T> : DataSource<T> {
     override suspend fun get(
         args: ArgumentsWrapper?,
         errorFunc: (exception: Exception) -> Unit
-    ): T {
+    ): T? {
         val id = getId(args)
         return when (val cacheState = getCachedState(id)) {
             is CacheState.Actual -> getCachedData(cacheState)
@@ -38,7 +38,7 @@ abstract class BaseDataSource<T> : DataSource<T> {
     abstract suspend fun getFromRemote(
         args: ArgumentsWrapper?,
         errorFunc: (exception: Exception) -> Unit
-    ): T
+    ): T?
 
     abstract suspend fun putToCache(model: T)
 
@@ -60,9 +60,9 @@ class ConfigsDataSource(
     override suspend fun getFromRemote(
         args: ArgumentsWrapper?,
         errorFunc: (exception: Exception) -> Unit
-    ): ConfigModel {
+    ): ConfigModel? {
         val response = networkProvider.get(args, errorFunc)
-        putToCache(response)
+        response?.let { putToCache(it) }
         return response
     }
 
@@ -86,9 +86,9 @@ class PopularMoviesDataSource(
         args: ArgumentsWrapper?,
         errorFunc: (exception: Exception) -> Unit
     ): List<PopularMoviesModel> {
-        val response = networkProvider.get(args, errorFunc).results
-        putToCache(response)
-        return response
+        val response = networkProvider.get(args, errorFunc)?.results
+        response?.let { putToCache(it) }
+        return response ?: emptyList()
     }
 
     override suspend fun putToCache(model: List<PopularMoviesModel>) {
@@ -110,9 +110,9 @@ class MovieDetailsDataSource(
     override suspend fun getFromRemote(
         args: ArgumentsWrapper?,
         errorFunc: (exception: Exception) -> Unit
-    ): MovieDetailsModel {
+    ): MovieDetailsModel? {
         val response = networkProvider.get(args, errorFunc)
-        putToCache(response)
+        response?.let { putToCache(it) }
         return response
     }
 

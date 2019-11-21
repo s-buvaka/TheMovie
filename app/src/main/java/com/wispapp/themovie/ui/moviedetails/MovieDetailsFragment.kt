@@ -1,6 +1,5 @@
 package com.wispapp.themovie.ui.moviedetails
 
-import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.wispapp.themovie.R
@@ -19,27 +18,39 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
     private val moviesViewModel: MoviesViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initViewModel()
+    override fun initViewModel() {
+        var movieId = 0
+
+        if (arguments == null) showError("Error movie loading")
+        arguments?.let { movieId = it.getInt(MOVIE_ID) }
+
+        dataLoadingObserve()
+        movieDetailsObserve(movieId)
     }
 
     override fun initView() {}
 
-    private fun initViewModel() {
-        var movieId = 0
-        arguments?.let { movieId = it.getInt(MOVIE_ID) }
-            .run { showError("Error movie loading") }
+    override fun dataLoadingObserve() {
+        moviesViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
+            if (isDataLoaded)
+                showLoading()
+            else
+                hideLoading()
+        })
+    }
 
+    override fun exceptionObserve() {
+        moviesViewModel.exception.observe(this, Observer { errorMessage ->
+            if (errorMessage != null && errorMessage.isNotEmpty())
+                showError(errorMessage)
+        })
+    }
+
+    private fun movieDetailsObserve(movieId: Int) {
         moviesViewModel.getMovieDetails(movieId)
         moviesViewModel.movieDetailsLiveData.observe(this, Observer {
             updateUi(it[0])
         })
-
-        moviesViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
-            if (isDataLoaded) showLoading()
-            else hideLoading()
-            })
     }
 
     private fun updateUi(detailsModel: MovieDetailsModel) {

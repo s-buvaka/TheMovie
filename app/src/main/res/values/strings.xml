@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">TheMovie</string>
 
+    <!--Main screen-->
+
+    <string name="view_error_button_repeat">Repeat</string>
+
     <!--Popular movies screen-->
 
     <string name="populars_movies_label_more">Подробнее</string>
@@ -12,10 +16,6 @@
     <string name="movie_details_label_overview">Overview</string>
     <string name="movie_details_label_photos">Photos</string>
     <string name="movie_details_score_text">score</string>
-    <string name="error_screen_button_repeat">Repeat</string>
-
-    <!--Error screen-->
-
 
 
 </resources>

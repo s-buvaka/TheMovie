@@ -10,7 +10,20 @@ import androidx.fragment.app.Fragment
 abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : Fragment(),
     BaseView {
 
+    protected abstract fun initViewModel()
+
     protected abstract fun initView()
+
+    protected abstract fun dataLoadingObserve()
+
+    protected abstract fun exceptionObserve()
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initViewModel()
+        dataLoadingObserve()
+        exceptionObserve()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -18,11 +18,11 @@ class ConfigsViewModel(private val dataSource: DataSource<ConfigModel>) : BaseVi
             val configs = dataSource.get(
                 errorFunc = { error -> handleError(error) })
 
-            configLiveData.postValue(configs)
+            configs?.let { configLiveData.postValue(it) }
         }
     }
 
     private fun handleError(error: Exception) {
-       if (error is NetworkException) Log.d(TAG, error.statusMessage)
+        if (error is NetworkException) Log.d(TAG, error.statusMessage)
     }
 }

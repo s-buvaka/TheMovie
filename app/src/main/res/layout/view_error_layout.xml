@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/error_screen"
-    android:clickable="true"
-    android:focusable="true"
-    android:padding="16dp"
-    android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="@dimen/view_error_padding"
+    android:visibility="gone"
     tools:visibility="visible">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.95"
+        android:alpha="0.98"
         android:background="@drawable/background_error_screen"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="@dimen/view_error_padding_inner">
 
         <ImageView
             android:layout_width="0dp"
@@ -26,7 +26,8 @@
             app:layout_constraintBottom_toBottomOf="@id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -39,21 +40,23 @@
             android:id="@+id/error_message_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/view_error_margin_message_text"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:textColor="#063146"
-            android:textSize="20sp"
+            android:textColor="@color/view_error_margin_message_text_color"
+            android:textSize="@dimen/view_error_margin_message_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline"
             tools:text="No internet connection" />
 
         <Button
+            android:id="@+id/repeat_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/background_button_error_repeat"
-            android:text="@string/error_screen_button_repeat"
-            android:textColor="@android:color/white"
+            android:text="@string/view_error_button_repeat"
+            android:textColor="@color/view_error_color_button_repeat_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

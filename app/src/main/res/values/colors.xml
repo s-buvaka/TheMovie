@@ -7,4 +7,6 @@
     <color name="movie_details_background">#063146</color>
     <color name="movie_details_green">#76CA79</color>
     <color name="movie_details_white">#FFFFFF</color>
+    <color name="view_error_margin_message_text_color">#063146</color>
+    <color name="view_error_color_button_repeat_text">#FFFFFF</color>
 </resources>
