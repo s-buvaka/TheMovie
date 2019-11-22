@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
+import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.datasource.DataSource
+import com.wispapp.themovie.core.model.datasource.Result
 import com.wispapp.themovie.core.model.network.MovieId
-import com.wispapp.themovie.core.model.network.Result
 import com.wispapp.themovie.core.model.network.models.NetworkException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,21 +17,21 @@ import kotlinx.coroutines.withContext
 private const val TAG = "MoviesViewModel"
 
 class MoviesViewModel(
-    private val popularMovieDataSource: DataSource<List<PopularMoviesModel>>,
+    private val movieDataSource: DataSource<List<MovieModel>>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
     private val configDataSource: DataSource<ConfigModel>,
     private val imageLoader: ImageLoader
 ) : BaseViewModel() {
 
-    val popularMovieLiveData = MutableLiveData<MutableList<PopularMoviesModel>>()
+    val popularMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
 
-    fun getPopularMovie() {
+    fun getMovies() {
         showLoader()
         backgroundScope.launch {
 
             withContext(Dispatchers.IO) { getConfigs() }
-            withContext(Dispatchers.IO) { getPopularMovies() }
+            withContext(Dispatchers.IO) { getAllMovies() }
 
             hideLoader()
         }
@@ -56,8 +56,8 @@ class MoviesViewModel(
         }
     }
 
-    private suspend fun getPopularMovies() {
-        when (val result = popularMovieDataSource.get()) {
+    private suspend fun getAllMovies() {
+        when (val result = movieDataSource.get()) {
             is Result.Success -> popularMovieLiveData.postValue(result.data.toMutableList())
             is Result.Error -> handleError(result.exception)
         }

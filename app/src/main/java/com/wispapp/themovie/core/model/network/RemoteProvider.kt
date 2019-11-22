@@ -6,6 +6,7 @@ import com.wispapp.themovie.core.common.Mapper
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.database.models.MoviesResultModel
+import com.wispapp.themovie.core.model.datasource.Result
 import com.wispapp.themovie.core.model.network.models.ConfigResponse
 import com.wispapp.themovie.core.model.network.models.MovieDetailsResponse
 import com.wispapp.themovie.core.model.network.models.MoviesResultResponse
@@ -26,9 +27,7 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
 
     abstract suspend fun getResponse(args: ArgumentsWrapper?): Response<RESPONSE>
 
-    override suspend fun get(
-        args: ArgumentsWrapper?
-    ): Result<MODEL> {
+    override suspend fun get(args: ArgumentsWrapper?): Result<MODEL> {
         return try {
             val result = parseResponse(getResponse(args))
             Result.Success(result)
@@ -72,6 +71,15 @@ class ConfigsRemoteProvider(
         api.getConfigsAsync().await()
 }
 
+class NowPlayingMoviesRemoteProvider(
+    mapper: Mapper<MoviesResultResponse, MoviesResultModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<MoviesResultResponse, MoviesResultModel>(mapper) {
+
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MoviesResultResponse> =
+        api.getNowPlayingMoviesAsync().await()
+}
+
 class PopularMoviesRemoteProvider(
     mapper: Mapper<MoviesResultResponse, MoviesResultModel>,
     private val api: ApiInterface
@@ -79,6 +87,24 @@ class PopularMoviesRemoteProvider(
 
     override suspend fun getResponse(args: ArgumentsWrapper?): Response<MoviesResultResponse> =
         api.getPopularMoviesAsync().await()
+}
+
+class TopRatedMoviesRemoteProvider(
+    mapper: Mapper<MoviesResultResponse, MoviesResultModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<MoviesResultResponse, MoviesResultModel>(mapper) {
+
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MoviesResultResponse> =
+        api.getTopRatedMoviesAsync().await()
+}
+
+class UpcomingMoviesRemoteProvider(
+    mapper: Mapper<MoviesResultResponse, MoviesResultModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<MoviesResultResponse, MoviesResultModel>(mapper) {
+
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MoviesResultResponse> =
+        api.getUpcomingMoviesAsync().await()
 }
 
 class MoviesDetailsProvider(

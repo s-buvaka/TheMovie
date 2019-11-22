@@ -46,3 +46,9 @@ class LanguagesConverter : TypeConverter<List<SpokenLanguagesItemModel>> {
         get() = object : TypeToken<List<SpokenLanguagesItemModel>>() {}.type
 }
 
+class CategoryConverter : TypeConverter<MutableSet<CATEGORY>> {
+
+    override val clazz: Type
+        get() = object : TypeToken<MutableSet<CATEGORY>>() {}.type
+}
+

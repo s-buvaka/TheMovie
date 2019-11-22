@@ -6,7 +6,7 @@ import androidx.room.Room
 import com.wispapp.themovie.core.model.database.AppDataBase
 import com.wispapp.themovie.core.model.database.ConfigDao
 import com.wispapp.themovie.core.model.database.MovieDetailsDao
-import com.wispapp.themovie.core.model.database.MoviesOverviewDao
+import com.wispapp.themovie.core.model.database.MoviesDao
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
@@ -15,7 +15,7 @@ val dataModule = module {
 
     single<AppDataBase> { createDBInstance() }
     single<ConfigDao> { get<AppDataBase>().getConfigDao() }
-    single<MoviesOverviewDao> { get<AppDataBase>().getMoviesOverviewDao() }
+    single<MoviesDao> { get<AppDataBase>().getMoviesOverviewDao() }
     single<MovieDetailsDao> { get<AppDataBase>().getMovieDetailsDao() }
 }
 

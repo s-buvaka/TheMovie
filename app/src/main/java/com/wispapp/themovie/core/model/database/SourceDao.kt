@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
+import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.database.models.SourcesTimeStamp
 
 interface SourceDatabase<SOURCE> {
@@ -14,14 +14,14 @@ interface SourceDatabase<SOURCE> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(source: List<SOURCE>)
 
-    fun getAll(): List<SOURCE>
-
-    fun deleteAll()
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(source: SOURCE)
 
+    fun getAll(): List<SOURCE>
+
     fun getById(id: Int): SOURCE
+
+    fun deleteAll()
 
     fun deleteById(id: Int)
 
@@ -52,16 +52,16 @@ interface ConfigDao : SourceDatabase<ConfigModel> {
 }
 
 @Dao
-interface MoviesOverviewDao : SourceDatabase<PopularMoviesModel> {
+interface MoviesDao : SourceDatabase<MovieModel> {
 
     @Query("SELECT * FROM movies_overview")
-    override fun getAll(): List<PopularMoviesModel>
+    override fun getAll(): List<MovieModel>
+
+    @Query("SELECT * FROM movies_overview WHERE id=:id")
+    override fun getById(id: Int): MovieModel
 
     @Query("DELETE FROM movies_overview")
     override fun deleteAll()
-
-    @Query("SELECT * FROM movies_overview WHERE id=:id")
-    override fun getById(id: Int): PopularMoviesModel
 
     @Query("DELETE FROM movies_overview WHERE id=:id")
     override fun deleteById(id: Int)

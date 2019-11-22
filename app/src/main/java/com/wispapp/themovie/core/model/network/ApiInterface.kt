@@ -13,8 +13,17 @@ interface ApiInterface {
     @GET("configuration")
     fun getConfigsAsync(): Deferred<Response<ConfigResponse>>
 
+    @GET("movie/now_playing/")
+    fun getNowPlayingMoviesAsync(): Deferred<Response<MoviesResultResponse>>
+
     @GET("movie/popular/")
     fun getPopularMoviesAsync(): Deferred<Response<MoviesResultResponse>>
+
+    @GET("movie/top_rated/")
+    fun getTopRatedMoviesAsync(): Deferred<Response<MoviesResultResponse>>
+
+    @GET("movie/upcoming/")
+    fun getUpcomingMoviesAsync(): Deferred<Response<MoviesResultResponse>>
 
     @GET("movie/{id}?")
     fun searchByIdAsync(@Path("id") movieId: Int): Deferred<Response<MovieDetailsResponse>>

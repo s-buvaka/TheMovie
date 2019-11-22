@@ -1,119 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
+    android:background="@color/app_theme_background"
+    android:orientation="vertical"
+    android:padding="8dp"
     android:layout_height="wrap_content"
-    android:elevation="@dimen/item_movie_card_elevation"
-    app:cardCornerRadius="@dimen/item_movie_card_corner_radius"
     app:cardUseCompatPadding="true"
     tools:ignore="ContentDescription">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/app_theme_background"
+        android:elevation="@dimen/item_movie_card_elevation"
+        app:cardCornerRadius="@dimen/item_movie_card_corner_radius"
+        app:cardUseCompatPadding="true"
+        tools:ignore="ContentDescription">
 
         <ImageView
             android:id="@+id/poster_image"
             android:layout_width="@dimen/item_movie_width_poster"
             android:layout_height="@dimen/item_movie_poster_height"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/backgrounds/scenic" />
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_movie_overview_margin"
-            android:layout_marginTop="@dimen/item_movie_overview_margin"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toEndOf="@id/poster_image"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Джокер" />
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_movie_overview_margin"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:minLines="2"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toEndOf="@id/poster_image"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Джокер" />
 
-        <TextView
-            android:id="@+id/date_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_movie_overview_margin"
-            app:layout_constraintStart_toEndOf="@id/poster_image"
-            app:layout_constraintTop_toBottomOf="@id/title_text"
-            tools:text="3 октября 2019" />
-
-        <TextView
-            android:id="@+id/overview_text"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="@dimen/item_movie_overview_margin"
-            android:ellipsize="end"
-            android:maxLines="5"
-            app:layout_constraintBottom_toTopOf="@+id/more_text_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/poster_image"
-            app:layout_constraintTop_toBottomOf="@id/date_text"
-            tools:text="Готэм, начало 1980-х годов. Комик Артур Флек живет с больной матерью, которая с детства учит его «ходить с улыбкой». Пытаясь нести в мир хорошее и дарить людям …" />
-
-        <View
-            android:id="@+id/separator"
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:layout_marginBottom="@dimen/item_movie_overview_margin"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@id/more_text_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/poster_image" />
-
-        <TextView
-            android:id="@+id/more_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/item_movie_overview_margin"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/populars_movies_label_more"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/poster_image" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="@dimen/item_movie_overview_height_icon_layout"
-            android:alpha="0.7"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:padding="@dimen/item_movie_padding_overview_icon_layout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/poster_image"
-            app:layout_constraintStart_toStartOf="parent">
-
-
-            <ImageView
-                android:id="@+id/ranking_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_ranking" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/favorite_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/item_movie_overview_margin_icon_layout"
-                app:srcCompat="@drawable/ic_favorite_border" />
-
-            <ImageView
-                android:id="@+id/bookmarks_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_bookmark" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</LinearLayout>

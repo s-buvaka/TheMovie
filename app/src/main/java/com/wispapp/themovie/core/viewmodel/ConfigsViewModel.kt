@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.datasource.DataSource
-import com.wispapp.themovie.core.model.network.Result
+import com.wispapp.themovie.core.model.datasource.Result
 import com.wispapp.themovie.core.model.network.models.NetworkException
 import kotlinx.coroutines.launch
 

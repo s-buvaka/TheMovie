@@ -4,15 +4,16 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.wispapp.themovie.core.model.database.converters.CategoryConverter
 import com.wispapp.themovie.core.model.database.converters.IntListConverter
 
 data class MoviesResultModel(
-    val results: List<PopularMoviesModel>
+    val results: List<MovieModel>
 )
 
 @Entity(tableName = "movies_overview")
-@TypeConverters(IntListConverter::class)
-data class PopularMoviesModel(
+@TypeConverters(IntListConverter::class, CategoryConverter::class)
+data class MovieModel(
     @PrimaryKey(autoGenerate = false) val id: Int,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "original_title") val originalTitle: String,
@@ -26,5 +27,8 @@ data class PopularMoviesModel(
     @ColumnInfo(name = "release_date") val releaseDate: String,
     @ColumnInfo(name = "adult") val isAdult: Boolean = false,
     @ColumnInfo(name = "vote_average") val voteAverage: Double,
-    @ColumnInfo(name = "vote_count") val voteCount: Int
+    @ColumnInfo(name = "vote_count") val voteCount: Int,
+    @ColumnInfo(name = "category") val category: MutableSet<CATEGORY>
 )
+
+enum class CATEGORY { NOW_PLAYING, POPULAR, TOP_RATED, UPCOMING }

@@ -4,13 +4,13 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
+import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.database.models.SourcesTimeStamp
 
 @Database(
     entities = [
         ConfigModel::class,
-        PopularMoviesModel::class,
+        MovieModel::class,
         MovieDetailsModel::class,
         SourcesTimeStamp::class],
     version = 1
@@ -18,6 +18,6 @@ import com.wispapp.themovie.core.model.database.models.SourcesTimeStamp
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun getConfigDao(): ConfigDao
-    abstract fun getMoviesOverviewDao(): MoviesOverviewDao
+    abstract fun getMoviesOverviewDao(): MoviesDao
     abstract fun getMovieDetailsDao(): MovieDetailsDao
 }

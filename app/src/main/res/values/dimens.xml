@@ -5,10 +5,8 @@
 
     <!--Main screen-->
 
-    <dimen name="item_movie_overview_margin">16dp</dimen>
-    <dimen name="item_movie_overview_margin_icon_layout">8dp</dimen>
+    <dimen name="item_movie_overview_margin">8dp</dimen>
 
-    <dimen name="item_movie_overview_height_icon_layout">40dp</dimen>
     <dimen name="item_movie_poster_height">250dp</dimen>
 
     <dimen name="item_movie_width_poster">160dp</dimen>
@@ -16,11 +14,10 @@
     <dimen name="view_error_margin_message_text">16dp</dimen>
     <dimen name="view_error_margin_message_text_size">20sp</dimen>
 
-    <dimen name="item_movie_padding_overview_icon_layout">8dp</dimen>
     <dimen name="view_error_padding_inner">8dp</dimen>
 
     <dimen name="item_movie_card_elevation">4dp</dimen>
-    <dimen name="item_movie_card_corner_radius">8dp</dimen>
+    <dimen name="item_movie_card_corner_radius">16dp</dimen>
 
     <dimen name="view_error_padding">16dp</dimen>
 
