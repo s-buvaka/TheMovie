@@ -9,36 +9,30 @@ import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
 import com.wispapp.themovie.core.model.network.ArgumentsWrapper
 import com.wispapp.themovie.core.model.network.MovieId
 import com.wispapp.themovie.core.model.network.NetworkProvider
+import com.wispapp.themovie.core.model.network.Result
 
 interface DataSource<T> {
 
-    suspend fun get(
-        args: ArgumentsWrapper? = null,
-        errorFunc: (exception: Exception) -> Unit
-    ): T?
+    suspend fun get(args: ArgumentsWrapper? = null): Result<T>
 }
 
 abstract class BaseDataSource<T> : DataSource<T> {
 
     override suspend fun get(
-        args: ArgumentsWrapper?,
-        errorFunc: (exception: Exception) -> Unit
-    ): T? {
+        args: ArgumentsWrapper?
+    ): Result<T> {
         val id = getId(args)
         return when (val cacheState = getCachedState(id)) {
             is CacheState.Actual -> getCachedData(cacheState)
-            is CacheState.Empty -> getFromRemote(args, errorFunc)
+            is CacheState.Empty -> getFromRemote(args)
         }
     }
 
     abstract suspend fun getCachedState(id: Int = 0): CacheState<T>
 
-    abstract fun getCachedData(cacheState: CacheState.Actual<T>): T
+    abstract fun getCachedData(cacheState: CacheState.Actual<T>): Result<T>
 
-    abstract suspend fun getFromRemote(
-        args: ArgumentsWrapper?,
-        errorFunc: (exception: Exception) -> Unit
-    ): T?
+    abstract suspend fun getFromRemote(args: ArgumentsWrapper?): Result<T>
 
     abstract suspend fun putToCache(model: T)
 
@@ -54,16 +48,19 @@ class ConfigsDataSource(
 
     override suspend fun getCachedState(id: Int): CacheState<ConfigModel> = cacheProvider.getById(0)
 
-    override fun getCachedData(cacheState: CacheState.Actual<ConfigModel>): ConfigModel =
-        cacheState.data
+    override fun getCachedData(cacheState: CacheState.Actual<ConfigModel>): Result<ConfigModel> =
+        Result.Success(cacheState.data)
 
-    override suspend fun getFromRemote(
-        args: ArgumentsWrapper?,
-        errorFunc: (exception: Exception) -> Unit
-    ): ConfigModel? {
-        val response = networkProvider.get(args, errorFunc)
-        response?.let { putToCache(it) }
-        return response
+    override suspend fun getFromRemote(args: ArgumentsWrapper?): Result<ConfigModel> {
+
+        return when (val response = networkProvider.get(args)) {
+            is Result.Success -> {
+                putToCache(response.data)
+                return response
+            }
+            is Result.Error -> return response
+            else -> Result.Error(Exception("Something was wrong"))
+        }
     }
 
     override suspend fun putToCache(model: ConfigModel) {
@@ -79,16 +76,20 @@ class PopularMoviesDataSource(
     override suspend fun getCachedState(id: Int): CacheState<List<PopularMoviesModel>> =
         cacheProvider.getAll()
 
-    override fun getCachedData(cacheState: CacheState.Actual<List<PopularMoviesModel>>): List<PopularMoviesModel> =
-        cacheState.data
+    override fun getCachedData(cacheState: CacheState.Actual<List<PopularMoviesModel>>): Result<List<PopularMoviesModel>> =
+        Result.Success(cacheState.data)
 
-    override suspend fun getFromRemote(
-        args: ArgumentsWrapper?,
-        errorFunc: (exception: Exception) -> Unit
-    ): List<PopularMoviesModel> {
-        val response = networkProvider.get(args, errorFunc)?.results
-        response?.let { putToCache(it) }
-        return response ?: emptyList()
+    override suspend fun getFromRemote(args: ArgumentsWrapper?): Result<List<PopularMoviesModel>> {
+
+        return when (val response = networkProvider.get(args)) {
+            is Result.Success -> {
+                val result = response.data.results
+                putToCache(result)
+                return Result.Success(result)
+            }
+            is Result.Error -> return response
+            else -> Result.Error(Exception("Something was wrong"))
+        }
     }
 
     override suspend fun putToCache(model: List<PopularMoviesModel>) {
@@ -104,16 +105,18 @@ class MovieDetailsDataSource(
     override suspend fun getCachedState(id: Int): CacheState<MovieDetailsModel> =
         cacheProvider.getById(id)
 
-    override fun getCachedData(cacheState: CacheState.Actual<MovieDetailsModel>): MovieDetailsModel =
-        cacheState.data
+    override fun getCachedData(cacheState: CacheState.Actual<MovieDetailsModel>): Result<MovieDetailsModel> =
+        Result.Success(cacheState.data)
 
-    override suspend fun getFromRemote(
-        args: ArgumentsWrapper?,
-        errorFunc: (exception: Exception) -> Unit
-    ): MovieDetailsModel? {
-        val response = networkProvider.get(args, errorFunc)
-        response?.let { putToCache(it) }
-        return response
+    override suspend fun getFromRemote(args: ArgumentsWrapper?): Result<MovieDetailsModel> {
+        return when (val response = networkProvider.get(args)) {
+            is Result.Success -> {
+                putToCache(response.data)
+                return response
+            }
+            is Result.Error -> return response
+            else -> Result.Error(Exception("Something was wrong"))
+        }
     }
 
     override suspend fun putToCache(model: MovieDetailsModel) {

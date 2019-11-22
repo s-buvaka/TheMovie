@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.datasource.DataSource
+import com.wispapp.themovie.core.model.network.Result
 import com.wispapp.themovie.core.model.network.models.NetworkException
 import kotlinx.coroutines.launch
 
@@ -15,10 +16,10 @@ class ConfigsViewModel(private val dataSource: DataSource<ConfigModel>) : BaseVi
 
     fun getConfigs() {
         backgroundScope.launch {
-            val configs = dataSource.get(
-                errorFunc = { error -> handleError(error) })
-
-            configs?.let { configLiveData.postValue(it) }
+            when (val result = dataSource.get()) {
+                is Result.Success -> configLiveData.postValue(result.data)
+                is Result.Error -> handleError(result.exception)
+            }
         }
     }
 

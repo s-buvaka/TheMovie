@@ -8,6 +8,7 @@ import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.database.models.PopularMoviesModel
 import com.wispapp.themovie.core.model.datasource.DataSource
 import com.wispapp.themovie.core.model.network.MovieId
+import com.wispapp.themovie.core.model.network.Result
 import com.wispapp.themovie.core.model.network.models.NetworkException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ private const val TAG = "MoviesViewModel"
 class MoviesViewModel(
     private val popularMovieDataSource: DataSource<List<PopularMoviesModel>>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
-    private val dataSource: DataSource<ConfigModel>,
+    private val configDataSource: DataSource<ConfigModel>,
     private val imageLoader: ImageLoader
 ) : BaseViewModel() {
 
@@ -28,10 +29,9 @@ class MoviesViewModel(
     fun getPopularMovie() {
         showLoader()
         backgroundScope.launch {
-            setImageConfigs()
 
-            val popularMovies = withContext(Dispatchers.IO) { getPopularMovies() }
-            popularMovieLiveData.postValue(popularMovies)
+            withContext(Dispatchers.IO) { getConfigs() }
+            withContext(Dispatchers.IO) { getPopularMovies() }
 
             hideLoader()
         }
@@ -40,32 +40,28 @@ class MoviesViewModel(
     fun getMovieDetails(id: Int) {
         showLoader()
         backgroundScope.launch {
-            val movieDetails =
-                movieDetailsDataSource.get(
-                    args = MovieId(id),
-                    errorFunc = { error -> handleError(error) }
-                )
-            movieDetails?.let { movieDetailsLiveData.postValue(mutableListOf(it)) }
+            when (val result = movieDetailsDataSource.get(MovieId(id))) {
+                is Result.Success -> movieDetailsLiveData.postValue(mutableListOf(result.data))
+                is Result.Error -> handleError(result.exception)
+            }
 
             hideLoader()
         }
     }
 
-    private suspend fun setImageConfigs() {
-        //Todo Задавать конфиги при старте приложение, может быть splash
-        val configs = withContext(Dispatchers.IO) { getConfigs() }
-        configs?.let { imageLoader.setConfigs(configs.imagesConfig) }
+    private suspend fun getConfigs() {
+        when (val result = configDataSource.get()) {
+            is Result.Success -> imageLoader.setConfigs(result.data.imagesConfig)
+            is Result.Error -> handleError(result.exception)
+        }
     }
 
-    private suspend fun getPopularMovies(): MutableList<PopularMoviesModel> {
-        return popularMovieDataSource.get(
-            errorFunc = { error -> handleError(error) }
-        )?.toMutableList() ?: mutableListOf()
+    private suspend fun getPopularMovies() {
+        when (val result = popularMovieDataSource.get()) {
+            is Result.Success -> popularMovieLiveData.postValue(result.data.toMutableList())
+            is Result.Error -> handleError(result.exception)
+        }
     }
-
-    private suspend fun getConfigs() =
-        dataSource.get(
-            errorFunc = { error -> handleError(error) })
 
     private fun handleError(error: Exception) {
         if (error is NetworkException) {

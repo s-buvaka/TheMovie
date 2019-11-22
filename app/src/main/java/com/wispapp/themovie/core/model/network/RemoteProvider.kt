@@ -16,10 +16,7 @@ import java.net.UnknownHostException
 
 interface NetworkProvider<T> {
 
-    suspend fun get(
-        args: ArgumentsWrapper? = null,
-        errorFunc: (exception: Exception) -> Unit
-    ): T?
+    suspend fun get(args: ArgumentsWrapper? = null): Result<T>?
 }
 
 abstract class BaseRemoteProvider<RESPONSE, MODEL>(
@@ -30,34 +27,27 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
     abstract suspend fun getResponse(args: ArgumentsWrapper?): Response<RESPONSE>
 
     override suspend fun get(
-        args: ArgumentsWrapper?,
-        errorFunc: (exception: Exception) -> Unit
-    ): MODEL? {
-        try {
-            return parseResponse(
-                response = getResponse(args),
-                errorFunc = { errorException -> errorFunc(errorException) }
-            )
+        args: ArgumentsWrapper?
+    ): Result<MODEL> {
+        return try {
+            val result = parseResponse(getResponse(args))
+            Result.Success(result)
         } catch (e: UnknownHostException) {
-            errorFunc.invoke(e)
+            Result.Error(e)
         } catch (e: ConnectException) {
-            errorFunc.invoke(e)
+            Result.Error(e)
         } catch (e: Exception) {
-            errorFunc.invoke(e)
+            Result.Error(e)
         }
-        return null
     }
 
-    private fun parseResponse(
-        response: Response<RESPONSE>,
-        errorFunc: (exception: NetworkException) -> Unit
-    ): MODEL {
-        var data: RESPONSE? = null
+    private fun parseResponse(response: Response<RESPONSE>): MODEL {
+        val data: RESPONSE?
 
         if (response.isSuccessful)
             data = response.body()
         else
-            handleError(response, errorFunc)
+            throw getNetworkException(response)
 
         if (data != null)
             return mapData(data)
@@ -65,15 +55,7 @@ abstract class BaseRemoteProvider<RESPONSE, MODEL>(
             throw NetworkException(statusMessage = "Generated Network Error Something went wrong")
     }
 
-    private fun handleError(
-        response: Response<RESPONSE>,
-        errorFunc: (exception: NetworkException) -> Unit
-    ) {
-        val networkException = mapToNetworkException(response)
-        errorFunc.invoke(networkException)
-    }
-
-    private fun mapToNetworkException(response: Response<RESPONSE>): NetworkException {
+    private fun getNetworkException(response: Response<RESPONSE>): NetworkException {
         val type = object : TypeToken<NetworkException>() {}.type
         return Gson().fromJson(response.errorBody()!!.charStream(), type)
     }
