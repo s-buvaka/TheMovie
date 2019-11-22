@@ -8,7 +8,7 @@
     tools:context=".ui.main.MainFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popular_movie_recycler"
+        android:id="@+id/category_movie_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"

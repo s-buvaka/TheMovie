@@ -5,9 +5,12 @@
 
     <string name="view_error_button_repeat">Repeat</string>
 
-    <!--Popular movies screen-->
+    <!--Main screen-->
 
-    <string name="populars_movies_label_more">Подробнее</string>
+    <string name="main_category_now_playing">In Theaters</string>
+    <string name="main_category_popular">Popular Movies</string>
+    <string name="main_category_top_rated">Top Rated</string>
+    <string name="main_category_upcoming">Upcoming</string>
 
     <!--Movies details screen-->
 

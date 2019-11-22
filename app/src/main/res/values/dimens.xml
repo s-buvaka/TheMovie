@@ -7,6 +7,7 @@
 
     <dimen name="item_movie_overview_margin">8dp</dimen>
 
+    <dimen name="item_category_height">70dp</dimen>
     <dimen name="item_movie_poster_height">250dp</dimen>
 
     <dimen name="item_movie_width_poster">160dp</dimen>
@@ -19,6 +20,7 @@
     <dimen name="item_movie_card_elevation">4dp</dimen>
     <dimen name="item_movie_card_corner_radius">16dp</dimen>
 
+    <dimen name="main_padding">8dp</dimen>
     <dimen name="view_error_padding">16dp</dimen>
 
     <!--Movies details screen-->

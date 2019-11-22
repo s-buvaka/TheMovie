@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:padding="@dimen/main_padding"
     android:background="@color/app_theme_background"
     android:layout_height="match_parent"
     tools:context=".ui.main.MainFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popular_movie_recycler"
+        android:id="@+id/movie_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -16,5 +17,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_category" />
+        tools:listitem="@layout/item_category_movies" />
 </FrameLayout>
