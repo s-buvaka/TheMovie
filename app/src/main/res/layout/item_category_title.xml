@@ -11,19 +11,10 @@
         android:id="@+id/category_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/item_category_text_margin"
         android:fontFamily="sans-serif-black"
         android:gravity="center_vertical"
-        android:layout_margin="8dp"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
+        android:textColor="@color/main_screen_text_color"
+        android:textSize="@dimen/item_category_text_size"
         tools:text="In Theaters" />
-
-    <TextView
-        android:id="@+id/label_text"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginStart="8dp"
-        tools:text="TOP 50" />
 </LinearLayout>

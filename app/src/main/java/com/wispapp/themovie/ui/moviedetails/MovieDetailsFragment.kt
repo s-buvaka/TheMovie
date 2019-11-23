@@ -4,6 +4,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.common.ImageLoader
+import com.wispapp.themovie.core.model.database.models.GenresItemModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import com.wispapp.themovie.ui.base.BaseFragment
@@ -60,7 +61,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
             score_text.text = voteAverage.toString()
             title_text.text = title
             year_text.text = releaseDate
-            genres_text.text = genres.toString()
+            genres_text.text = getGenresText(genres)
             overview_title_text.text
             overview_text.text = overview
         }
@@ -69,6 +70,16 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
         watched_list_button.setOnClickListener { showMessage("Watched button Clicked") }
         overview_button.setOnClickListener { showMessage("Overview button Clicked") }
         photos_button.setOnClickListener { showMessage("Photos button Clicked") }
+    }
+
+    private fun getGenresText(genres: List<GenresItemModel>): String {
+        var genresText = ""
+        for (i in genres.indices) {
+            genresText += genres[i].name
+            if (i != genres.size - 1) genresText += (", ")
+
+        }
+        return genresText
     }
 
     private fun showMessage(message: String) {

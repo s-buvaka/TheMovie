@@ -6,6 +6,9 @@
 
     <color name="app_theme_background">#012C42</color>
 
+    <!--Main Screen-->
+    <color name="main_screen_text_color">#FFFFFF</color>
+
     <color name="movie_details_green">#76CA79</color>
     <color name="movie_details_white">#FFFFFF</color>
     <color name="view_error_margin_message_text_color">#063146</color>
