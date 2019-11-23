@@ -6,8 +6,6 @@ import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.database.models.MoviesResultModel
 import com.wispapp.themovie.core.model.network.ArgumentsWrapper
 import com.wispapp.themovie.core.model.network.NetworkProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class MoviesDataSource(
     private val nowPlayingNetworkProvider: NetworkProvider<MoviesResultModel>,
@@ -23,13 +21,14 @@ class MoviesDataSource(
     override fun getCachedData(cacheState: CacheState.Actual<List<MovieModel>>): Result<List<MovieModel>> =
         Result.Success(cacheState.data)
 
+    //TODO Продумать параллельную загрузку
     override suspend fun getFromRemote(args: ArgumentsWrapper?): Result<List<MovieModel>> {
-        var allMovies = emptyList<MovieModel>()
+        var allMovies = mutableSetOf<MovieModel>()
 
-        val nowPlayingMovies = withContext(Dispatchers.IO) { getData(args, nowPlayingNetworkProvider) }
-        val popularMovies = withContext(Dispatchers.IO) { getData(args, popularsNetworkProvider) }
-        val topRatedMovies = withContext(Dispatchers.IO) { getData(args, topRatedNetworkProvider) }
-        val upcomingMovies = withContext(Dispatchers.IO) { getData(args, upcomingProvider) }
+        val nowPlayingMovies = getData(args, nowPlayingNetworkProvider)
+        val popularMovies = getData(args, popularsNetworkProvider)
+        val topRatedMovies = getData(args, topRatedNetworkProvider)
+        val upcomingMovies = getData(args, upcomingProvider)
 
         if (nowPlayingMovies is Result.Success)
             allMovies = mergeMovies(allMovies, nowPlayingMovies.data.toMutableList())
@@ -51,8 +50,8 @@ class MoviesDataSource(
         return if (isAllDataEmpty)
             Result.Error(Exception("Remote data is empty"))
         else {
-            putToCache(allMovies)
-            Result.Success(allMovies)
+            putToCache(allMovies.toList())
+            Result.Success(allMovies.toList())
         }
     }
 
@@ -73,20 +72,28 @@ class MoviesDataSource(
         }
     }
 
-    private fun mergeMovies(oldData: List<MovieModel>, newData: MutableList<MovieModel>): List<MovieModel> {
-        val updatedData = oldData.toMutableList()
-
-        oldData.forEach { oldMovie ->
-            newData.find { newMovie -> newMovie.id == oldMovie.id }?.let {
-                it.category.addAll(oldMovie.category)
-                updatedData.remove(it)
-                updatedData.add(it)
-                newData.remove(it)
-            }
+    private fun mergeMovies(
+        oldMovies: MutableSet<MovieModel>,
+        newMovies: MutableList<MovieModel>
+    ): MutableSet<MovieModel> {
+        newMovies.forEach { newMovie ->
+            val isAllMoviesHasNewMovie = oldMovies.map { it.id }.contains(newMovie.id)
+            if (isAllMoviesHasNewMovie)
+                addCategoryToCurrentMovie(oldMovies, newMovie)
+            else
+                oldMovies.add(newMovie)
         }
-
-        updatedData.addAll(newData)
-        return updatedData
+        return oldMovies
     }
 
+    private fun addCategoryToCurrentMovie(
+        oldMovies: MutableSet<MovieModel>,
+        newMovie: MovieModel
+    ) {
+        oldMovies.find { it.id == newMovie.id }?.let {
+            newMovie.category.addAll(it.category)
+            oldMovies.remove(it)
+            oldMovies.add(newMovie)
+        }
+    }
 }
