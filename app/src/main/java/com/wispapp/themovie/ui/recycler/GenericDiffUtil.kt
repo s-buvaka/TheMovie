@@ -1,4 +1,4 @@
-package com.wispapp.themovie.ui.base.recycler
+package com.wispapp.themovie.ui.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 
