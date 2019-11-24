@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/main_padding"
     android:background="@color/app_theme_background"
     android:orientation="vertical">
 
@@ -12,15 +11,22 @@
         android:id="@+id/current_date_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAllCaps="true"
-        android:layout_margin="8dp"
-        android:textColor="@color/main_screen_secondary_text_color"
+        android:padding="@dimen/main_current_date_padding"
         android:fontFamily="sans-serif-medium"
+        android:textAllCaps="true"
+        android:textColor="@color/main_screen_secondary_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Tuesday, June 1" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/main_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/current_date_text">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,7 +42,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/main_category_now_playing"
                 android:textColor="@color/main_screen_text_color"
-                android:textSize="@dimen/item_category_text_size" />
+                android:textSize="@dimen/category_text_size" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/now_playing_recycler"
@@ -58,7 +64,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/main_category_popular"
                 android:textColor="@color/main_screen_text_color"
-                android:textSize="@dimen/item_category_text_size" />
+                android:textSize="@dimen/category_text_size" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/popular_recycler"
@@ -80,7 +86,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/main_category_top_rated"
                 android:textColor="@color/main_screen_text_color"
-                android:textSize="@dimen/item_category_text_size" />
+                android:textSize="@dimen/category_text_size" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/top_rated_recycler"
@@ -102,7 +108,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/main_category_upcoming"
                 android:textColor="@color/main_screen_text_color"
-                android:textSize="@dimen/item_category_text_size" />
+                android:textSize="@dimen/category_text_size" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/upcoming_recycler"
@@ -118,4 +124,13 @@
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/shadow_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/current_date_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
