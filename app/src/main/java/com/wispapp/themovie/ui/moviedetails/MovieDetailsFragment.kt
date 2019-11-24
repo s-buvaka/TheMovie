@@ -22,7 +22,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
     override fun initViewModel() {
         var movieId = 0
 
-        if (arguments == null) showError("Error movie loading")
+        if (arguments == null) showError("Error movie loading", null)
         arguments?.let { movieId = it.getInt(MOVIE_ID) }
 
         dataLoadingObserve()
@@ -41,9 +41,9 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
     }
 
     override fun exceptionObserve() {
-        moviesViewModel.exception.observe(this, Observer { errorMessage ->
-            if (errorMessage != null && errorMessage.isNotEmpty())
-                showError(errorMessage)
+        moviesViewModel.exception.observe(this, Observer { error ->
+            if (error != null &&error.errorMessage.isNotEmpty())
+                showError(error.errorMessage, error.func)
         })
     }
 

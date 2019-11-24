@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.view_progress_bar.*
 abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     override fun showLoading() {
+        hideError()
         loading_view?.visibility = View.VISIBLE
     }
 
@@ -15,7 +16,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         loading_view?.visibility = View.GONE
     }
 
-    override fun showError(errorMessage: String) {
+    override fun showError(errorMessage: String, func: (() -> Unit)?) {
+        setRepeatButton(func)
         error_screen.visibility = View.VISIBLE
         error_message_text.text = errorMessage
     }
@@ -27,5 +29,13 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun onBackPressed() {
         hideError()
         super.onBackPressed()
+    }
+
+    private fun setRepeatButton(func: (() -> Unit)?) {
+        if (func != null) {
+            repeat_button.visibility = View.VISIBLE
+            repeat_button.setOnClickListener { func.invoke() }
+        } else
+            repeat_button.visibility = View.GONE
     }
 }

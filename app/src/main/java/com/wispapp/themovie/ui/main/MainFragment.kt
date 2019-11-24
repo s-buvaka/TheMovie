@@ -11,6 +11,10 @@ import com.wispapp.themovie.ui.moviedetails.MOVIE_ID
 import com.wispapp.themovie.ui.recycler.GenericAdapter
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
+
+private const val DATE_FORMAT = "EEEE, MMMM d"
 
 class MainFragment : BaseFragment(R.layout.fragment_main),
     GenericAdapter.OnItemClickListener<MovieModel> {
@@ -27,6 +31,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     }
 
     override fun initView() {
+        current_date_text.text = getCurrentDate()
         initRecycler()
     }
 
@@ -40,9 +45,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     }
 
     override fun exceptionObserve() {
-        moviesViewModel.exception.observe(this, Observer { errorMessage ->
-            if (errorMessage != null && errorMessage.isNotEmpty())
-                showError(errorMessage)
+        moviesViewModel.exception.observe(this, Observer { error ->
+            if (error != null && error.errorMessage.isNotEmpty())
+                showError(error.errorMessage, error.func)
         })
     }
 
@@ -74,6 +79,11 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         popular_recycler.adapter = popularMoviesAdapter
         top_rated_recycler.adapter = topRatedMoviesAdapter
         upcoming_recycler.adapter = upcomingMoviesAdapter
+    }
+
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH)
+        return dateFormat.format(Date())
     }
 
     private fun getMovieAdapter() = object : GenericAdapter<MovieModel>(this) {

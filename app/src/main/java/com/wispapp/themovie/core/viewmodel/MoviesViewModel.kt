@@ -46,7 +46,7 @@ class MoviesViewModel(
         backgroundScope.launch {
             when (val result = movieDetailsDataSource.get(MovieId(id))) {
                 is Result.Success -> movieDetailsLiveData.postValue(mutableListOf(result.data))
-                is Result.Error -> handleError(result.exception)
+                is Result.Error -> handleError(result.exception) { getMovieDetails(id) }
             }
             hideLoader()
         }
@@ -55,14 +55,14 @@ class MoviesViewModel(
     private suspend fun getConfigs() {
         when (val result = configDataSource.get()) {
             is Result.Success -> imageLoader.setConfigs(result.data.imagesConfig)
-            is Result.Error -> handleError(result.exception)
+            is Result.Error -> handleError(result.exception) { getMovies() }
         }
     }
 
     private suspend fun getAllMovies() {
         when (val result = movieDataSource.get()) {
             is Result.Success -> updateUi(result)
-            is Result.Error -> handleError(result.exception)
+            is Result.Error -> handleError(result.exception) { getMovies() }
         }
     }
 
@@ -81,11 +81,11 @@ class MoviesViewModel(
     private fun filterByCategory(result: Result.Success<List<MovieModel>>, category: CATEGORY) =
         result.data.filter { it.category.contains(category) }.toMutableList()
 
-    private fun handleError(error: Exception) {
+    private fun handleError(error: Exception, func: () -> Unit) {
         if (error is NetworkException) {
-            showError(error.statusMessage)
+            showError(error.statusMessage, func)
             Log.d(TAG, error.statusMessage)
         } else
-            showError(error.message ?: "Something was wrong")
+            showError(error.message ?: "Something was wrong", func)
     }
 }
