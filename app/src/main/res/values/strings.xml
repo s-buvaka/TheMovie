@@ -20,6 +20,7 @@
     <string name="movie_details_label_overview">Overview</string>
     <string name="movie_details_label_photos">Photos</string>
     <string name="movie_details_score_text">score</string>
+    <string name="toolbar_search_movie_field_hint">Search movie</string>
 
 
 </resources>

@@ -12,7 +12,7 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
 
     protected abstract fun initViewModel()
 
-    protected abstract fun initView()
+    protected abstract fun initView(view: View)
 
     protected abstract fun dataLoadingObserve()
 
@@ -35,7 +35,7 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        initView(view)
     }
 
     override fun showLoading() =

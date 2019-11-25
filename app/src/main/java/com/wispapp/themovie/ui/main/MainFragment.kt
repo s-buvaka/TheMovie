@@ -1,18 +1,30 @@
 package com.wispapp.themovie.ui.main
 
+import android.content.Context
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import com.wispapp.themovie.ui.base.BaseFragment
 import com.wispapp.themovie.ui.moviedetails.MOVIE_ID
 import com.wispapp.themovie.ui.recycler.GenericAdapter
-import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.bottom_sheet_main_fragment.*
+import kotlinx.android.synthetic.main.content_main_fragment.*
+import kotlinx.android.synthetic.main.toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 private const val DATE_FORMAT = "EEEE, MMMM d"
 
@@ -26,13 +38,29 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     private val topRatedMoviesAdapter by lazy { getMovieAdapter() }
     private val upcomingMoviesAdapter by lazy { getMovieAdapter() }
 
+    private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(bottom_sheet) }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_activity_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_search -> showSearch()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun initViewModel() {
         popularMoviesObserve()
     }
 
-    override fun initView() {
+    override fun initView(view: View) {
         current_date_text.text = getCurrentDate()
         initRecycler()
+        initToolbar(view)
+        initBottomSheet()
     }
 
     override fun dataLoadingObserve() {
@@ -81,6 +109,16 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         upcoming_recycler.adapter = upcomingMoviesAdapter
     }
 
+    private fun initToolbar(view: View) {
+        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+        setHasOptionsMenu(true)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+    }
+
+    private fun initBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
     private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH)
         return dateFormat.format(Date())
@@ -88,5 +126,19 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
 
     private fun getMovieAdapter() = object : GenericAdapter<MovieModel>(this) {
         override fun getLayoutId(position: Int, obj: MovieModel): Int = R.layout.item_movie
+    }
+
+    private fun showSearch() {
+        search_field.visibility = View.VISIBLE
+        search_field.requestFocus()
+        search_field.showKeyboard(true)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+    }
+
+    fun View.showKeyboard(isShow: Boolean) {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (isShow) imm.showSoftInput(this, 0)
+        else imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?android:actionBarSize"
-    android:background="@color/app_theme_background">
+    android:background="@color/app_theme_background"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <EditText
+        android:id="@+id/search_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search movie" />
+        android:background="@android:color/transparent"
+        android:hint="@string/toolbar_search_movie_field_hint"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:visibility="gone" />
 
 </androidx.appcompat.widget.Toolbar>

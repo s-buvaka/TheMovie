@@ -1,5 +1,6 @@
 package com.wispapp.themovie.ui.moviedetails
 
+import android.view.View
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.wispapp.themovie.R
@@ -29,7 +30,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
         movieDetailsObserve(movieId)
     }
 
-    override fun initView() {}
+    override fun initView(view: View) {}
 
     override fun dataLoadingObserve() {
         moviesViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
