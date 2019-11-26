@@ -20,11 +20,12 @@ abstract class BaseDataSource<T> : DataSource<T> {
 
     abstract suspend fun getCachedState(id: Int = 0): CacheState<T>
 
-    abstract fun getCachedData(cacheState: CacheState.Actual<T>): Result<T>
-
     abstract suspend fun getFromRemote(args: ArgumentsWrapper?): Result<T>
 
-    abstract suspend fun putToCache(model: T)
+    protected open fun getCachedData(cacheState: CacheState.Actual<T>): Result<T> =
+        Result.Error(Exception("Not implemented method [getCachedData]"))
+
+    protected open suspend fun putToCache(model: T) {}
 
     protected open fun getId(args: ArgumentsWrapper?): Int = 0
 }

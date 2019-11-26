@@ -4,7 +4,7 @@ import com.wispapp.themovie.core.model.cache.CacheState
 import com.wispapp.themovie.core.model.cache.DataBaseSourceCacheProvider
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.network.ArgumentsWrapper
-import com.wispapp.themovie.core.model.network.MovieId
+import com.wispapp.themovie.core.model.network.MovieIdArgs
 import com.wispapp.themovie.core.model.network.NetworkProvider
 
 class MovieDetailsDataSource(
@@ -34,7 +34,7 @@ class MovieDetailsDataSource(
     }
 
     override fun getId(args: ArgumentsWrapper?): Int {
-        return if (args is MovieId)
+        return if (args is MovieIdArgs)
             args.movieId
         else
             throw IllegalArgumentException("Invalid object type received")

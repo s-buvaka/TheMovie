@@ -10,7 +10,8 @@ import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.datasource.DataSource
 import com.wispapp.themovie.core.model.datasource.Result
-import com.wispapp.themovie.core.model.network.MovieId
+import com.wispapp.themovie.core.model.network.MovieIdArgs
+import com.wispapp.themovie.core.model.network.SearchQueryArgs
 import com.wispapp.themovie.core.model.network.models.NetworkException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ class MoviesViewModel(
     private val movieDataSource: DataSource<List<MovieModel>>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
     private val configDataSource: DataSource<ConfigModel>,
+    private val searchMovieDataSource: DataSource<List<MovieModel>>,
     private val imageLoader: ImageLoader
 ) : BaseViewModel() {
 
@@ -30,6 +32,7 @@ class MoviesViewModel(
     val topRatedMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
     val upcomingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
+    val searchMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
 
     fun getMovies() {
         showLoader()
@@ -44,11 +47,20 @@ class MoviesViewModel(
     fun getMovieDetails(id: Int) {
         showLoader()
         backgroundScope.launch {
-            when (val result = movieDetailsDataSource.get(MovieId(id))) {
+            when (val result = movieDetailsDataSource.get(MovieIdArgs(id))) {
                 is Result.Success -> movieDetailsLiveData.postValue(mutableListOf(result.data))
                 is Result.Error -> handleError(result.exception) { getMovieDetails(id) }
             }
             hideLoader()
+        }
+    }
+
+    fun searchMovie(query: String) {
+        backgroundScope.launch {
+            when (val result = searchMovieDataSource.get((SearchQueryArgs(query)))) {
+                is Result.Success -> searchMovieLiveData.postValue(result.data.toMutableList())
+                is Result.Error -> handleError(result.exception) { searchMovie(query) }
+            }
         }
     }
 

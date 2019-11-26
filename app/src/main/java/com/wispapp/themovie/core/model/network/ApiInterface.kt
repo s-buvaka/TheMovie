@@ -7,6 +7,7 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiInterface {
 
@@ -26,5 +27,8 @@ interface ApiInterface {
     fun getUpcomingMoviesAsync(): Deferred<Response<MoviesResultResponse>>
 
     @GET("movie/{id}?")
-    fun searchByIdAsync(@Path("id") movieId: Int): Deferred<Response<MovieDetailsResponse>>
+    fun getMovieByIdAsync(@Path("id") movieId: Int): Deferred<Response<MovieDetailsResponse>>
+
+    @GET("search/movie")
+    fun searchMovieAsync(@Query("query") query: String): Deferred<Response<MoviesResultResponse>>
 }

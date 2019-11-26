@@ -1,18 +1,19 @@
 package com.wispapp.themovie.ui.main
 
-import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wispapp.themovie.R
+import com.wispapp.themovie.core.application.showKeyboard
 import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import com.wispapp.themovie.ui.base.BaseFragment
@@ -37,6 +38,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     private val popularMoviesAdapter by lazy { getMovieAdapter() }
     private val topRatedMoviesAdapter by lazy { getMovieAdapter() }
     private val upcomingMoviesAdapter by lazy { getMovieAdapter() }
+    private val searchMovieAdapter by lazy { getSearchAdapter() }
 
     private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(bottom_sheet) }
 
@@ -53,7 +55,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     }
 
     override fun initViewModel() {
-        popularMoviesObserve()
+        moviesObserveLiveData()
     }
 
     override fun initView(view: View) {
@@ -85,7 +87,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         findNavController().navigate(R.id.movieDetailsFragment, bundle)
     }
 
-    private fun popularMoviesObserve() {
+    private fun moviesObserveLiveData() {
         moviesViewModel.getMovies()
 
         moviesViewModel.nowPlayingMoviesLiveData.observe(this, Observer {
@@ -100,6 +102,11 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         moviesViewModel.upcomingMoviesLiveData.observe(this, Observer {
             upcomingMoviesAdapter.update(it)
         })
+        moviesViewModel.searchMovieLiveData.observe(this, Observer {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            searchMovieAdapter.update(it)
+        })
     }
 
     private fun initRecycler() {
@@ -107,6 +114,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         popular_recycler.adapter = popularMoviesAdapter
         top_rated_recycler.adapter = topRatedMoviesAdapter
         upcoming_recycler.adapter = upcomingMoviesAdapter
+
+        searchMovieAdapter.setDiffUtil(getMovieDiffUtilCallback())
+        search_movie_recycler.adapter = searchMovieAdapter
     }
 
     private fun initToolbar(view: View) {
@@ -128,17 +138,63 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         override fun getLayoutId(position: Int, obj: MovieModel): Int = R.layout.item_movie
     }
 
+    private fun getSearchAdapter() = object : GenericAdapter<MovieModel>(this) {
+        override fun getLayoutId(position: Int, obj: MovieModel): Int = R.layout.item_search_movie
+    }
+
     private fun showSearch() {
         search_field.visibility = View.VISIBLE
         search_field.requestFocus()
         search_field.showKeyboard(true)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
+        search_field.addTextChangedListener(movieSearchTextWatcher)
     }
 
-    fun View.showKeyboard(isShow: Boolean) {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (isShow) imm.showSoftInput(this, 0)
-        else imm.hideSoftInputFromWindow(windowToken, 0)
+    private val movieSearchTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable) {
+            if (s.length >= 4 && s.length % 2 == 0)
+                moviesViewModel.searchMovie(s.toString())
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    }
+
+    private fun getMovieDiffUtilCallback() = object : GenericAdapter.GenericItemDiff<MovieModel> {
+        override fun isSame(
+            oldItems: List<MovieModel>,
+            newItems: List<MovieModel>,
+            oldItemPosition: Int,
+            newItemPosition: Int
+        ): Boolean {
+            val old = oldItems[oldItemPosition]
+            val new = newItems[newItemPosition]
+            return old.id == new.id
+        }
+
+        override fun isSameContent(
+            oldItems: List<MovieModel>,
+            newItems: List<MovieModel>,
+            oldItemPosition: Int,
+            newItemPosition: Int
+        ): Boolean {
+            val old = oldItems[oldItemPosition]
+            val new = newItems[newItemPosition]
+            return old.id == new.id &&
+                    old.title == new.title &&
+                    old.originalTitle == new.originalTitle &&
+                    old.overview == new.overview &&
+                    old.popularity == new.popularity &&
+                    old.originalLanguage == new.originalLanguage &&
+                    old.hasVideo == new.hasVideo &&
+                    old.genreIds == new.genreIds &&
+                    old.posterPath == new.posterPath &&
+                    old.backdropPath == new.backdropPath &&
+                    old.releaseDate == new.releaseDate &&
+                    old.isAdult == new.isAdult &&
+                    old.voteAverage == new.voteAverage &&
+                    old.voteCount == new.voteCount &&
+                    old.category == new.category
+        }
     }
 }

@@ -15,9 +15,11 @@
     tools:ignore="ContentDescription">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_movie_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_search_movie" />
 
     <View

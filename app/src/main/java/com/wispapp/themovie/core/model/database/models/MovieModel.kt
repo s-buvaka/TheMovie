@@ -31,4 +31,4 @@ data class MovieModel(
     @ColumnInfo(name = "category") val category: MutableSet<CATEGORY>
 )
 
-enum class CATEGORY { NOW_PLAYING, POPULAR, TOP_RATED, UPCOMING }
+enum class CATEGORY { NON_CATEGORY, NOW_PLAYING, POPULAR, TOP_RATED, UPCOMING }

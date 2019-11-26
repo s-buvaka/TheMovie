@@ -110,13 +110,25 @@ class UpcomingMoviesRemoteProvider(
 class MoviesDetailsProvider(
     mapper: Mapper<MovieDetailsResponse, MovieDetailsModel>,
     private val api: ApiInterface
-) : BaseRemoteProvider<MovieDetailsResponse, MovieDetailsModel>(mapper),
-    NetworkProvider<MovieDetailsModel> {
+) : BaseRemoteProvider<MovieDetailsResponse, MovieDetailsModel>(mapper){
 
     override suspend fun getResponse(args: ArgumentsWrapper?): Response<MovieDetailsResponse> {
-        val movieId = if (args is MovieId) args.movieId
+        val movieId = if (args is MovieIdArgs) args.movieId
         else throw IllegalArgumentException("Invalid object type received")
 
-        return api.searchByIdAsync(movieId).await()
+        return api.getMovieByIdAsync(movieId).await()
+    }
+}
+
+class SearchMovieProvider(
+    mapper: Mapper<MoviesResultResponse, MoviesResultModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<MoviesResultResponse, MoviesResultModel>(mapper) {
+
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MoviesResultResponse> {
+        val query = if (args is SearchQueryArgs) args.query
+        else throw IllegalArgumentException("Invalid object type received")
+
+        return api.searchMovieAsync(query).await()
     }
 }

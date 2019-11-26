@@ -14,6 +14,7 @@ import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.database.models.SourceType
 import com.wispapp.themovie.core.model.datasource.MovieDetailsDataSource
 import com.wispapp.themovie.core.model.datasource.MoviesDataSource
+import com.wispapp.themovie.core.model.datasource.SearchMovieDataSource
 import com.wispapp.themovie.core.model.network.*
 import com.wispapp.themovie.core.model.network.mappers.*
 import com.wispapp.themovie.core.viewmodel.MoviesViewModel
@@ -21,11 +22,13 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+private const val MAPPER_MOVIES_RESULT_NON_CATEGORY = "mapper_movies_result_non_category"
 private const val MAPPER_MOVIES_RESULT_NOW_PLAYING = "mapper_movies_result_now_playing"
 private const val MAPPER_MOVIES_RESULT_POPULAR = "mapper_movies_result_popular"
 private const val MAPPER_MOVIES_RESULT_TOP_RATED = "mapper_movies_result_top_rated"
 private const val MAPPER_MOVIES_RESULT_UPCOMING = "mapper_movies_result_upcoming"
 
+private const val MAPPER_MOVIES_NON_CATEGORY = "mapper_movies_non_category"
 private const val MAPPER_MOVIES_NOW_PLAYING = "mapper_movies_now_playing"
 private const val MAPPER_MOVIES_POPULAR = "mapper_movies_popular"
 private const val MAPPER_MOVIES_TOP_RATED = "mapper_movies_top_rated"
@@ -41,6 +44,7 @@ private const val NETWORK_PROVIDER_NOW_PLAYING_MOVIES = "network_provider_now_pl
 private const val NETWORK_PROVIDER_POPULAR_MOVIES = "network_provider_popular_movies"
 private const val NETWORK_PROVIDER_TOP_RATED_MOVIES = "network_provider_top_rated_movies"
 private const val NETWORK_PROVIDER_UPCOMING_MOVIES = "network_provider_upcoming_movies"
+private const val NETWORK_PROVIDER_SEARCH_MOVIE = "network_provider_search_movie"
 
 private const val NETWORK_PROVIDER_MOVIE_DETAILS = "network_provider_movie_details"
 
@@ -48,22 +52,34 @@ private const val DATABASE_SOURCE_MOVIES = "database_source_movies"
 private const val DATABASE_SOURCE_MOVIE_DETAILS = "database_source_movie_details"
 
 private const val DATA_SOURCE_MOVIES = "data_source_movies"
-
+private const val DATA_SOURCE_SEARCH_MOVIE = "data_source_search_movie"
 private const val DATA_SOURCE_MOVIE_DETAILS = "data_source_movie_details"
 
 private const val CACHE_POLICY_MOVIES = "cash_policy_movies"
 
 val moviesModule = module {
 
+    single(named(MAPPER_MOVIES_NON_CATEGORY)) { MoviesMapper(CATEGORY.NON_CATEGORY) }
     single(named(MAPPER_MOVIES_NOW_PLAYING)) { MoviesMapper(CATEGORY.NOW_PLAYING) }
     single(named(MAPPER_MOVIES_POPULAR)) { MoviesMapper(CATEGORY.POPULAR) }
     single(named(MAPPER_MOVIES_TOP_RATED)) { MoviesMapper(CATEGORY.TOP_RATED) }
     single(named(MAPPER_MOVIES_UPCOMING)) { MoviesMapper(CATEGORY.UPCOMING) }
 
-    single(named(MAPPER_MOVIES_RESULT_NOW_PLAYING)) { MovieResultMapper(get(named(MAPPER_MOVIES_NOW_PLAYING))) }
-    single(named(MAPPER_MOVIES_RESULT_POPULAR)) { MovieResultMapper(get(named(MAPPER_MOVIES_POPULAR))) }
-    single(named(MAPPER_MOVIES_RESULT_TOP_RATED)) { MovieResultMapper(get(named(MAPPER_MOVIES_TOP_RATED))) }
-    single(named(MAPPER_MOVIES_RESULT_UPCOMING)) { MovieResultMapper(get(named(MAPPER_MOVIES_UPCOMING))) }
+    single(named(MAPPER_MOVIES_RESULT_NON_CATEGORY)) {
+        MovieResultMapper(get(named(MAPPER_MOVIES_NON_CATEGORY)))
+    }
+    single(named(MAPPER_MOVIES_RESULT_NOW_PLAYING)) {
+        MovieResultMapper(get(named(MAPPER_MOVIES_NOW_PLAYING)))
+    }
+    single(named(MAPPER_MOVIES_RESULT_POPULAR)) {
+        MovieResultMapper(get(named(MAPPER_MOVIES_POPULAR)))
+    }
+    single(named(MAPPER_MOVIES_RESULT_TOP_RATED)) {
+        MovieResultMapper(get(named(MAPPER_MOVIES_TOP_RATED)))
+    }
+    single(named(MAPPER_MOVIES_RESULT_UPCOMING)) {
+        MovieResultMapper(get(named(MAPPER_MOVIES_UPCOMING)))
+    }
 
     single(named(MAPPER_MOVIES_LANGUAGE)) { SpokenLanguagesMapper() }
     single(named(MAPPER_MOVIES_COUNTRIES)) { ProductionCountriesMapper() }
@@ -116,6 +132,13 @@ val moviesModule = module {
         )
     }
 
+    factory(named(NETWORK_PROVIDER_SEARCH_MOVIE)) {
+        SearchMovieProvider(
+            get(named(MAPPER_MOVIES_RESULT_NON_CATEGORY)),
+            get<ApiInterface>()
+        )
+    }
+
     factory(named(DATABASE_SOURCE_MOVIES)) {
         DataBaseSourceCacheProvider<MovieModel>(
             get(named(CACHE_POLICY_MOVIES)),
@@ -149,11 +172,16 @@ val moviesModule = module {
         )
     }
 
+    factory(named(DATA_SOURCE_SEARCH_MOVIE)) {
+        SearchMovieDataSource(get(named(NETWORK_PROVIDER_SEARCH_MOVIE)))
+    }
+
     viewModel {
         MoviesViewModel(
             get(named(DATA_SOURCE_MOVIES)),
             get(named(DATA_SOURCE_MOVIE_DETAILS)),
             get(named(DATA_SOURCE_CONFIGS)),
+            get(named(DATA_SOURCE_SEARCH_MOVIE)),
             get<ImageLoader>()
         )
     }
