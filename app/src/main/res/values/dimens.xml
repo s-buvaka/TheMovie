@@ -22,6 +22,16 @@
     <dimen name="main_padding">4dp</dimen>
     <dimen name="view_error_padding">16dp</dimen>
 
+    <dimen name="bottom_sheet_main_horizontal_margin">16dp</dimen>
+    <dimen name="bottom_sheet_main_vertical_margin">32dp</dimen>
+    <dimen name="bottom_sheet_indicator_width">32dp</dimen>
+    <dimen name="bottom_sheet_indicator_height">4dp</dimen>
+    <dimen name="bottom_sheet_indicator_margin_top">8dp</dimen>
+
+    <dimen name="empty_search_text_margin">32dp</dimen>
+    <dimen name="empty_search_text_size">20sp</dimen>
+    <dimen name="empty_search_screen_padding">16dp</dimen>
+
     <!--Movies details screen-->
 
     <dimen name="movie_details_size_score_layout">48dp</dimen>
@@ -58,6 +68,5 @@
     <dimen name="movie_details_text_size_score">22sp</dimen>
 
     <dimen name="movie_details_z_poster_card">-4dp</dimen>
-
 
 </resources>

@@ -9,6 +9,7 @@
     <!--Main Screen-->
     <color name="main_screen_text_color">#FFFFFF</color>
     <color name="main_screen_secondary_text_color">#76CA79</color>
+    <color name="main_screen_light_background_text_color">#012C42</color>
 
     <color name="movie_details_green">#76CA79</color>
     <color name="movie_details_white">#FFFFFF</color>

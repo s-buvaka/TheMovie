@@ -6,4 +6,10 @@
         android:icon="@drawable/ic_search"
         android:title="@android:string/search_go"
         yourapp:showAsAction="always" />
+
+    <item android:id="@+id/action_close"
+        android:icon="@drawable/ic_close"
+        android:visible="false"
+        android:title="@android:string/cancel"
+        yourapp:showAsAction="ifRoom" />
 </menu>

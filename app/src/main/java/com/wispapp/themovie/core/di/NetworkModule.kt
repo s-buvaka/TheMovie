@@ -2,6 +2,7 @@
 
 package com.wispapp.themovie.core.di
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.wispapp.themovie.core.model.network.ApiDataProvider
 import com.wispapp.themovie.core.model.network.ApiDataProviderImpl
@@ -31,6 +32,7 @@ private val loggingInterceptor = HttpLoggingInterceptor()
 
 private fun buildOkHttpClient(apiDataProvider: ApiDataProvider): OkHttpClient {
     return OkHttpClient.Builder()
+        .addNetworkInterceptor(StethoInterceptor())
         .addInterceptor(loggingInterceptor)
         .addInterceptor(getApiKeyInterceptor(apiDataProvider.provideApiKey()))
         .readTimeout(TIMEOUT_IN_SECOND.toLong(), TimeUnit.SECONDS)

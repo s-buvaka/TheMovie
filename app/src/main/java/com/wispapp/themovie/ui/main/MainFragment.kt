@@ -1,14 +1,18 @@
 package com.wispapp.themovie.ui.main
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -22,6 +26,7 @@ import com.wispapp.themovie.ui.recycler.GenericAdapter
 import kotlinx.android.synthetic.main.bottom_sheet_main_fragment.*
 import kotlinx.android.synthetic.main.content_main_fragment.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.view_empty_search_result.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,16 +45,23 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     private val upcomingMoviesAdapter by lazy { getMovieAdapter() }
     private val searchMovieAdapter by lazy { getSearchAdapter() }
 
-    private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(bottom_sheet) }
+    private var actionClose: MenuItem? = null
+    private var actionSearch: MenuItem? = null
+
+    private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_activity_main, menu)
+        actionClose = menu.findItem(R.id.action_close)
+        actionSearch = menu.findItem(R.id.action_search)
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> showSearch()
+            R.id.action_close -> closeSearch()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -85,6 +97,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         val bundle = Bundle()
         bundle.putInt(MOVIE_ID, data.id)
         findNavController().navigate(R.id.movieDetailsFragment, bundle)
+
+        search_field.setText("")
     }
 
     private fun moviesObserveLiveData() {
@@ -103,10 +117,16 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
             upcomingMoviesAdapter.update(it)
         })
         moviesViewModel.searchMovieLiveData.observe(this, Observer {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            searchMovieAdapter.update(it)
+            showSearchResult(it)
         })
+    }
+
+    private fun showSearchResult(searchResult: MutableList<MovieModel>) {
+        if (searchResult.isNotEmpty()) {
+            empty_search_result_screen.visibility = View.GONE
+            searchMovieAdapter.update(searchResult)
+        } else
+            empty_search_result_screen.visibility = View.VISIBLE
     }
 
     private fun initRecycler() {
@@ -126,7 +146,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     }
 
     private fun initBottomSheet() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     private fun getCurrentDate(): String {
@@ -143,21 +164,60 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     }
 
     private fun showSearch() {
-        search_field.visibility = View.VISIBLE
-        search_field.requestFocus()
-        search_field.showKeyboard(true)
-        search_field.addTextChangedListener(movieSearchTextWatcher)
+        search_field.apply {
+            visibility = View.VISIBLE
+            requestFocus()
+            showKeyboard(true)
+            addTextChangedListener(getMovieSearchTextWatcher())
+            setOnEditorActionListener(getOnEditorActionListener())
+        }
+
+        actionClose?.isVisible = true
+        actionSearch?.isVisible = false
     }
 
-    private val movieSearchTextWatcher = object : TextWatcher {
+    private fun closeSearch() {
+        search_field.apply {
+            showKeyboard(false)
+            search_field.setText("")
+            visibility = View.GONE
+        }
+
+        Handler().postDelayed({
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+        }, 100)
+
+        actionClose?.isVisible = false
+        actionSearch?.isVisible = true
+    }
+
+
+    private fun getMovieSearchTextWatcher() = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {
-            if (s.length >= 4 && s.length % 2 == 0)
+            if (s.length >= 4 && s.length % 2 == 0) {
                 moviesViewModel.searchMovie(s.toString())
+                expandBottomSheet()
+            }
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    }
+
+    private fun getOnEditorActionListener() =
+        TextView.OnEditorActionListener { view, actionID, _ ->
+            if (actionID == EditorInfo.IME_ACTION_DONE) {
+                moviesViewModel.searchMovie(view.text.toString())
+                search_field.showKeyboard(false)
+                expandBottomSheet()
+                true
+            } else
+                false
+        }
+
+    private fun expandBottomSheet() {
+        if (bottomSheetBehavior?.state == BottomSheetBehavior.STATE_COLLAPSED)
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun getMovieDiffUtilCallback() = object : GenericAdapter.GenericItemDiff<MovieModel> {
