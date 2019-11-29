@@ -4,11 +4,13 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.wispapp.themovie.R
+import com.wispapp.themovie.core.common.ApiConfigLinkProvider
+import com.wispapp.themovie.core.common.ConfigsHolder
 import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.database.models.GenresItemModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import com.wispapp.themovie.ui.base.BaseFragment
+import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,7 +45,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
 
     override fun exceptionObserve() {
         moviesViewModel.exception.observe(this, Observer { error ->
-            if (error != null &&error.errorMessage.isNotEmpty())
+            if (error != null && error.errorMessage.isNotEmpty())
                 showError(error.errorMessage, error.func)
         })
     }
@@ -56,7 +58,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
     }
 
     private fun updateUi(detailsModel: MovieDetailsModel) {
-        imageLoader.loadPoster(detailsModel.posterPath, poster_image)
+        loadPoster(detailsModel)
 
         detailsModel.apply {
             score_text.text = voteAverage.toString()
@@ -71,6 +73,12 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
         watched_list_button.setOnClickListener { showMessage("Watched button Clicked") }
         overview_button.setOnClickListener { showMessage("Overview button Clicked") }
         photos_button.setOnClickListener { showMessage("Photos button Clicked") }
+    }
+
+    private fun loadPoster(detailsModel: MovieDetailsModel) {
+        val configs = ConfigsHolder.getConfig()
+        val linkProvider = ApiConfigLinkProvider(detailsModel.posterPath, configs)
+        imageLoader.loadPoster(linkProvider, poster_image)
     }
 
     private fun getGenresText(genres: List<GenresItemModel>): String {

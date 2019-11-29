@@ -3,8 +3,8 @@ package com.wispapp.themovie.ui.recycler
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.wispapp.themovie.R
-import com.wispapp.themovie.ui.recycler.viewholders.MovieVH
-import com.wispapp.themovie.ui.recycler.viewholders.SearchMovieVH
+import com.wispapp.themovie.ui.main.viewholders.MovieVH
+import com.wispapp.themovie.ui.main.viewholders.SearchMovieVH
 
 abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView),
     GenericAdapter.Binder<T>

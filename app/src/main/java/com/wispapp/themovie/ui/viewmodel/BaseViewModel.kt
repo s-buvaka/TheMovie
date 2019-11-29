@@ -1,4 +1,4 @@
-package com.wispapp.themovie.core.viewmodel
+package com.wispapp.themovie.ui.viewmodel
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.MutableLiveData

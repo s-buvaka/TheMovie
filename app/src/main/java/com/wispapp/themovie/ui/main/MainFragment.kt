@@ -19,10 +19,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.application.showKeyboard
 import com.wispapp.themovie.core.model.database.models.MovieModel
-import com.wispapp.themovie.core.viewmodel.MoviesViewModel
 import com.wispapp.themovie.ui.base.BaseFragment
 import com.wispapp.themovie.ui.moviedetails.MOVIE_ID
 import com.wispapp.themovie.ui.recycler.GenericAdapter
+import com.wispapp.themovie.ui.viewmodel.ConfigsViewModel
+import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import kotlinx.android.synthetic.main.bottom_sheet_main_fragment.*
 import kotlinx.android.synthetic.main.content_main_fragment.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -38,6 +39,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     GenericAdapter.OnItemClickListener<MovieModel> {
 
     private val moviesViewModel: MoviesViewModel by viewModel()
+    private val configViewModel: ConfigsViewModel by viewModel()
 
     private val nowPlayingMoviesAdapter by lazy { getMovieAdapter() }
     private val popularMoviesAdapter by lazy { getMovieAdapter() }
@@ -67,6 +69,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     }
 
     override fun initViewModel() {
+        //todo Перенести позже в какой-нить сплеш экран
+        configViewModel.loadConfigs()
         moviesObserveLiveData()
     }
 
@@ -190,7 +194,6 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         actionClose?.isVisible = false
         actionSearch?.isVisible = true
     }
-
 
     private fun getMovieSearchTextWatcher() = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {

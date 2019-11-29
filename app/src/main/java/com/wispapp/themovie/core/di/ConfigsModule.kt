@@ -13,7 +13,7 @@ import com.wispapp.themovie.core.model.network.ApiInterface
 import com.wispapp.themovie.core.model.network.ConfigsRemoteProvider
 import com.wispapp.themovie.core.model.network.mappers.ConfigsMapper
 import com.wispapp.themovie.core.model.network.mappers.ImageConfigMapper
-import com.wispapp.themovie.core.viewmodel.ConfigsViewModel
+import com.wispapp.themovie.ui.viewmodel.ConfigsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -25,7 +25,7 @@ private const val NETWORK_PROVIDER_CONFIGS = "network_provider_configs"
 
 private const val CACHE_POLICY_CONFIGS = "cash_policy_default"
 
-const val DATA_SOURCE_CONFIGS = "data_source_configs"
+private const val DATA_SOURCE_CONFIGS = "data_source_configs"
 
 val configsModule = module {
 

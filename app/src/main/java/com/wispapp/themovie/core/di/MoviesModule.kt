@@ -3,7 +3,6 @@
 package com.wispapp.themovie.core.di
 
 import com.wispapp.themovie.core.application.Constants
-import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.cache.DataBaseSourceCacheProvider
 import com.wispapp.themovie.core.model.cache.TimeoutCachePolicyImpl
 import com.wispapp.themovie.core.model.database.MovieDetailsDao
@@ -17,7 +16,7 @@ import com.wispapp.themovie.core.model.datasource.MoviesDataSource
 import com.wispapp.themovie.core.model.datasource.SearchMovieDataSource
 import com.wispapp.themovie.core.model.network.*
 import com.wispapp.themovie.core.model.network.mappers.*
-import com.wispapp.themovie.core.viewmodel.MoviesViewModel
+import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -180,9 +179,7 @@ val moviesModule = module {
         MoviesViewModel(
             get(named(DATA_SOURCE_MOVIES)),
             get(named(DATA_SOURCE_MOVIE_DETAILS)),
-            get(named(DATA_SOURCE_CONFIGS)),
-            get(named(DATA_SOURCE_SEARCH_MOVIE)),
-            get<ImageLoader>()
+            get(named(DATA_SOURCE_SEARCH_MOVIE))
         )
     }
 }

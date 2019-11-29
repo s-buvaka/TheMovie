@@ -1,7 +1,7 @@
-package com.wispapp.themovie.core.viewmodel
+package com.wispapp.themovie.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import com.wispapp.themovie.core.common.ConfigsHolder
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.datasource.DataSource
 import com.wispapp.themovie.core.model.datasource.Result
@@ -12,12 +12,10 @@ private const val TAG = "ConfigsViewModel"
 
 class ConfigsViewModel(private val dataSource: DataSource<ConfigModel>) : BaseViewModel() {
 
-    val configLiveData = MutableLiveData<ConfigModel>()
-
-    fun getConfigs() {
+    fun loadConfigs() {
         backgroundScope.launch {
             when (val result = dataSource.get()) {
-                is Result.Success -> configLiveData.postValue(result.data)
+                is Result.Success -> ConfigsHolder.setConfigs(result.data.imagesConfig)
                 is Result.Error -> handleError(result.exception)
             }
         }

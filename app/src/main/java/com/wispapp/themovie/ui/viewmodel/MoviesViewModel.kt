@@ -1,11 +1,9 @@
-package com.wispapp.themovie.core.viewmodel
+package com.wispapp.themovie.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.database.models.CATEGORY
 import com.wispapp.themovie.core.model.database.models.CATEGORY.*
-import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.datasource.DataSource
@@ -13,18 +11,14 @@ import com.wispapp.themovie.core.model.datasource.Result
 import com.wispapp.themovie.core.model.network.MovieIdArgs
 import com.wispapp.themovie.core.model.network.SearchQueryArgs
 import com.wispapp.themovie.core.model.network.models.NetworkException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private const val TAG = "MoviesViewModel"
 
 class MoviesViewModel(
     private val movieDataSource: DataSource<List<MovieModel>>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
-    private val configDataSource: DataSource<ConfigModel>,
-    private val searchMovieDataSource: DataSource<List<MovieModel>>,
-    private val imageLoader: ImageLoader
+    private val searchMovieDataSource: DataSource<List<MovieModel>>
 ) : BaseViewModel() {
 
     val nowPlayingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
@@ -37,9 +31,7 @@ class MoviesViewModel(
     fun getMovies() {
         showLoader()
         backgroundScope.launch {
-            withContext(Dispatchers.IO) { getConfigs() }
-            withContext(Dispatchers.IO) { getAllMovies() }
-
+            getAllMovies()
             hideLoader()
         }
     }
@@ -61,13 +53,6 @@ class MoviesViewModel(
                 is Result.Success -> searchMovieLiveData.postValue(result.data.toMutableList())
                 is Result.Error -> handleError(result.exception) { searchMovie(query) }
             }
-        }
-    }
-
-    private suspend fun getConfigs() {
-        when (val result = configDataSource.get()) {
-            is Result.Success -> imageLoader.setConfigs(result.data.imagesConfig)
-            is Result.Error -> handleError(result.exception) { getMovies() }
         }
     }
 
