@@ -2,11 +2,8 @@ package com.wispapp.themovie.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.wispapp.themovie.core.model.database.models.CATEGORY
+import com.wispapp.themovie.core.model.database.models.*
 import com.wispapp.themovie.core.model.database.models.CATEGORY.*
-import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.MovieImageModel
-import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.datasource.DataSource
 import com.wispapp.themovie.core.model.datasource.Result
 import com.wispapp.themovie.core.model.network.MovieIdArgs
@@ -20,7 +17,7 @@ class MoviesViewModel(
     private val movieDataSource: DataSource<List<MovieModel>>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
     private val searchMovieDataSource: DataSource<List<MovieModel>>,
-    private val movieImagesDataSource: DataSource<List<MovieImageModel>>
+    private val movieImagesDataSource: DataSource<MovieImageModel>
 ) : BaseViewModel() {
 
     val nowPlayingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
@@ -29,7 +26,7 @@ class MoviesViewModel(
     val upcomingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
     val searchMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
-    val movieImagesLiveData = MutableLiveData<MutableList<MovieImageModel>>()
+    val movieImagesLiveData = MutableLiveData<MutableList<ImageModel>>()
 
     fun getMovies() {
         showLoader()
@@ -59,14 +56,12 @@ class MoviesViewModel(
         }
     }
 
-    fun getMovieImages(id: Int){
-        showLoader()
+    fun getMovieImages(id: Int) {
         backgroundScope.launch {
             when (val result = movieImagesDataSource.get(MovieIdArgs(id))) {
-                is Result.Success -> movieImagesLiveData.postValue(result.data.toMutableList())
+                is Result.Success -> movieImagesLiveData.postValue(mapImages(result.data))
                 is Result.Error -> handleError(result.exception) { getMovieImages(id) }
             }
-            hideLoader()
         }
     }
 
@@ -91,6 +86,12 @@ class MoviesViewModel(
 
     private fun filterByCategory(result: Result.Success<List<MovieModel>>, category: CATEGORY) =
         result.data.filter { it.category.contains(category) }.toMutableList()
+
+    private fun mapImages(imageModel: MovieImageModel): MutableList<ImageModel>? =
+        mutableListOf<ImageModel>().apply {
+            addAll(imageModel.backdrops)
+            addAll(imageModel.posters)
+        }
 
     private fun handleError(error: Exception, func: () -> Unit) {
         if (error is NetworkException) {

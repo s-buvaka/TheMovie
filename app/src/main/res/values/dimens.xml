@@ -48,7 +48,7 @@
     <dimen name="movie_details_margin_horizontal">16dp</dimen>
     <dimen name="movie_details_margin_top_year">8dp</dimen>
     <dimen name="movie_details_margin_top_poster_card">20dp</dimen>
-    <dimen name="movie_details_margin_top_genres">32dp</dimen>
+    <dimen name="movie_details_margin_top_bottom_layout">24dp</dimen>
     <dimen name="movie_details_margin_top_overview_title">16dp</dimen>
     <dimen name="movie_details_margin_top_overview">8dp</dimen>
     <dimen name="movie_details_margin_end_score">40dp</dimen>
@@ -68,5 +68,7 @@
     <dimen name="movie_details_text_size_score">22sp</dimen>
 
     <dimen name="movie_details_z_poster_card">-4dp</dimen>
+
+    <dimen name="item_movie_photo_padding">4dp</dimen>
 
 </resources>

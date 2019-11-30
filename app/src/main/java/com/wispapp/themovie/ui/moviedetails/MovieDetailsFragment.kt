@@ -1,16 +1,18 @@
 package com.wispapp.themovie.ui.moviedetails
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.common.ApiConfigLinkProvider
 import com.wispapp.themovie.core.common.ConfigsHolder
 import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.database.models.GenresItemModel
+import com.wispapp.themovie.core.model.database.models.ImageModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
 import com.wispapp.themovie.ui.base.BaseFragment
+import com.wispapp.themovie.ui.recycler.GenericAdapter
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import org.koin.android.ext.android.inject
@@ -20,10 +22,13 @@ private const val FIRST_LINE_TEXT_LENGTH = 15
 
 const val MOVIE_ID = "movie_id"
 
-class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
+class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
+    GenericAdapter.OnItemClickListener<ImageModel> {
 
     private val moviesViewModel: MoviesViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
+
+    private val photoAdapter by lazy { getImageAdapter() }
 
     override fun initViewModel() {
         var movieId = 0
@@ -36,7 +41,12 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
         movieImagesObserve(movieId)
     }
 
-    override fun initView(view: View) {}
+    override fun initView(view: View) {
+        initRecycler()
+
+        overview_button.setOnClickListener { showOverview() }
+        photos_button.setOnClickListener { showPhotos() }
+    }
 
     override fun dataLoadingObserve() {
         moviesViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
@@ -54,6 +64,10 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
         })
     }
 
+    override fun onClickItem(data: ImageModel) {
+        showMessage(data.filePath)
+    }
+
     private fun movieDetailsObserve(movieId: Int) {
         moviesViewModel.getMovieDetails(movieId)
         moviesViewModel.movieDetailsLiveData.observe(this, Observer {
@@ -64,8 +78,14 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
     private fun movieImagesObserve(movieId: Int) {
         moviesViewModel.getMovieImages(movieId)
         moviesViewModel.movieImagesLiveData.observe(this, Observer {
-            Log.d("XXX", it.map { it.posters.map { it.filePath } }.toString())
+            photoAdapter.update(it)
         })
+    }
+
+    private fun initRecycler() {
+        val layoutManager = GridLayoutManager(requireContext(), 3)
+        images_recycler.layoutManager = layoutManager
+        images_recycler.adapter = photoAdapter
     }
 
     private fun updateUi(detailsModel: MovieDetailsModel) {
@@ -82,8 +102,6 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
 
         play_trailer_button.setOnClickListener { showMessage("Play Trailer Clicked") }
         watched_list_button.setOnClickListener { showMessage("Watched button Clicked") }
-        overview_button.setOnClickListener { showMessage("Overview button Clicked") }
-        photos_button.setOnClickListener { showMessage("Photos button Clicked") }
     }
 
     private fun loadPoster(detailsModel: MovieDetailsModel) {
@@ -114,5 +132,25 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
 
     private fun showMessage(message: String) {
         Snackbar.make(poster_image, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun getImageAdapter() = object : GenericAdapter<ImageModel>(this) {
+        override fun getLayoutId(position: Int, obj: ImageModel): Int = R.layout.item_movie_photo
+    }
+
+    private fun showOverview() {
+        overview_button.isEnabled = false
+        photos_button.isEnabled = true
+
+        overview_layout.visibility = View.VISIBLE
+        images_recycler.visibility = View.GONE
+    }
+
+    private fun showPhotos() {
+        overview_button.isEnabled = true
+        photos_button.isEnabled = false
+
+        overview_layout.visibility = View.GONE
+        images_recycler.visibility = View.VISIBLE
     }
 }
