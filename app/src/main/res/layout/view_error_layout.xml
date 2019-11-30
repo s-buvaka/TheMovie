@@ -54,7 +54,7 @@
             android:id="@+id/repeat_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_button_error_repeat"
+            android:background="@drawable/button_error_repeat"
             android:text="@string/view_error_button_repeat"
             android:textColor="@color/view_error_color_button_repeat_text"
             app:layout_constraintBottom_toBottomOf="parent"

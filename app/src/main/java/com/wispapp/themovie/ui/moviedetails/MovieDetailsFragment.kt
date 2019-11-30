@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_movie_details.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val FIRST_LINE_TEXT_LENGTH = 15
+
 const val MOVIE_ID = "movie_id"
 
 class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
@@ -62,7 +64,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
 
         detailsModel.apply {
             score_text.text = voteAverage.toString()
-            title_text.text = title
+            title_text.text = getWrappedTitleText(title)
             year_text.text = releaseDate
             genres_text.text = getGenresText(genres)
             overview_title_text.text
@@ -79,6 +81,16 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
         val configs = ConfigsHolder.getConfig()
         val linkProvider = ApiConfigLinkProvider(detailsModel.posterPath, configs)
         imageLoader.loadPoster(linkProvider, poster_image)
+    }
+
+    private fun getWrappedTitleText(title: String): String {
+        return if (title.length <= FIRST_LINE_TEXT_LENGTH)
+            title
+        else {
+            val firstLine = title.substring(0, FIRST_LINE_TEXT_LENGTH)
+            val enterIndex = firstLine.lastIndexOf(" ")
+            title.substring(0, enterIndex) + "\n" + title.substring(enterIndex + 1, title.length)
+        }
     }
 
     private fun getGenresText(genres: List<GenresItemModel>): String {

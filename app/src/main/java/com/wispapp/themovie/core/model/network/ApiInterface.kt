@@ -2,6 +2,7 @@ package com.wispapp.themovie.core.model.network
 
 import com.wispapp.themovie.core.model.network.models.ConfigResponse
 import com.wispapp.themovie.core.model.network.models.MovieDetailsResponse
+import com.wispapp.themovie.core.model.network.models.MovieImageResponse
 import com.wispapp.themovie.core.model.network.models.MoviesResultResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
@@ -28,6 +29,9 @@ interface ApiInterface {
 
     @GET("movie/{id}?")
     fun getMovieByIdAsync(@Path("id") movieId: Int): Deferred<Response<MovieDetailsResponse>>
+
+    @GET("movie/{id}/images?")
+    fun getMovieImagesAsync(@Path("id") movieId: Int): Deferred<Response<MovieImageResponse>>
 
     @GET("search/movie")
     fun searchMovieAsync(@Query("query") query: String): Deferred<Response<MoviesResultResponse>>

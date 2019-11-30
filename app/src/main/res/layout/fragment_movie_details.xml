@@ -1,209 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_theme_background">
+    android:background="@color/app_theme_background"
+    android:clipChildren="false"
+    tools:context=".ui.moviedetails.MovieDetailsFragment"
+    tools:ignore="ContentDescription">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".ui.moviedetails.MovieDetailsFragment"
-        tools:ignore="ContentDescription">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/info_card"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/movie_details_height_info_card"
+        android:layout_marginStart="@dimen/movie_details_margin_horizontal"
+        android:layout_marginTop="@dimen/movie_details_margin_top_poster_card"
+        android:layout_marginEnd="@dimen/movie_details_margin_horizontal"
+        android:translationZ="@dimen/movie_details_z_poster_card"
+        app:cardCornerRadius="@dimen/movie_details_corner_poster_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/poster_image_card" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/info_card"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/movie_details_height_info_card"
-            android:layout_marginStart="@dimen/movie_details_margin_horizontal"
-            android:layout_marginTop="@dimen/movie_details_margin_top_poster_card"
-            android:layout_marginEnd="@dimen/movie_details_margin_horizontal"
-            android:translationZ="@dimen/movie_details_z_poster_card"
-            app:cardCornerRadius="@dimen/movie_details_corner_poster_card"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/poster_image_card" />
-
-        <RelativeLayout
-            android:layout_width="@dimen/movie_details_size_score_layout"
-            android:layout_height="@dimen/movie_details_size_score_layout"
-            android:layout_marginEnd="@dimen/movie_details_margin_end_score"
-            android:background="@drawable/background_text_score"
-            android:orientation="vertical"
-            android:padding="@dimen/movie_details_padding_score"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/poster_image_card">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:fontFamily="sans-serif-black"
-                android:gravity="center"
-                android:text="@string/movie_details_score_text"
-                android:textColor="@color/movie_details_white"
-                android:textSize="@dimen/movie_details_text_size_score_label" />
-
-            <TextView
-                android:id="@+id/score_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:fontFamily="sans-serif-black"
-                android:gravity="center"
-                android:textColor="@color/movie_details_white"
-                android:textSize="@dimen/movie_details_text_size_score"
-                tools:text="6.6" />
-        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="@dimen/movie_details_size_score_layout"
+        android:layout_height="@dimen/movie_details_size_score_layout"
+        android:layout_marginEnd="@dimen/movie_details_margin_end_score"
+        android:background="@drawable/background_text_score"
+        android:orientation="vertical"
+        android:padding="@dimen/movie_details_padding_score"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/poster_image_card">
 
         <TextView
-            android:id="@+id/title_text"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/movie_details_margin_title"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/movie_details_text_size_title"
-            app:layout_constraintEnd_toEndOf="@id/info_card"
-            app:layout_constraintStart_toEndOf="@id/poster_image_card"
-            app:layout_constraintTop_toTopOf="@id/info_card"
-            tools:text="Pirates of the Caribbean: Dead Men Tell No Tales" />
-
-        <TextView
-            android:id="@+id/year_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/movie_details_margin_start_year"
-            android:layout_marginTop="@dimen/movie_details_margin_top_year"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/movie_details_text_size_year"
-            android:translationZ="0dp"
-            app:layout_constraintEnd_toEndOf="@id/info_card"
-            app:layout_constraintStart_toEndOf="@id/poster_image_card"
-            app:layout_constraintTop_toBottomOf="@id/title_text"
-            tools:text="2017" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/poster_image_card"
-            android:layout_width="@dimen/movie_details_width_poster"
-            android:layout_height="@dimen/movie_details_height_poster"
-            android:layout_marginStart="@dimen/movie_details_margin_poster"
-            android:layout_marginTop="@dimen/movie_details_margin_poster"
-            app:cardCornerRadius="@dimen/movie_details_corner_poster_card"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/poster_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_movie_details_poster"
-                android:scaleType="centerCrop"
-                tools:src="@tools:sample/backgrounds/scenic" />
-
-        </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/play_trailer_button"
-            style="@style/MovieDetailsInfoButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_button_play_trailer"
-            android:drawableStart="@drawable/ic_play_arrow_white"
-            android:text="@string/movie_details_label_play_trailer"
+            android:layout_alignParentTop="true"
+            android:elevation="@dimen/movie_details_elevation"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="@string/movie_details_score_text"
             android:textColor="@color/movie_details_white"
-            app:layout_constraintEnd_toStartOf="@id/watched_list_button"
-            app:layout_constraintStart_toStartOf="@id/info_card"
-            app:layout_constraintTop_toBottomOf="@id/poster_image_card" />
+            android:textSize="@dimen/movie_details_text_size_score_label" />
+
+        <TextView
+            android:id="@+id/score_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:textColor="@color/movie_details_white"
+            android:textSize="@dimen/movie_details_text_size_score"
+            tools:text="6.6" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/movie_details_margin_title"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/movie_details_text_size_title"
+        app:layout_constraintEnd_toEndOf="@id/info_card"
+        app:layout_constraintStart_toEndOf="@id/poster_image_card"
+        app:layout_constraintTop_toTopOf="@id/info_card"
+        tools:text="Pirates of the Caribbean: Dead Men Tell No Tales" />
+
+    <TextView
+        android:id="@+id/year_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/movie_details_margin_start_year"
+        android:layout_marginTop="@dimen/movie_details_margin_top_year"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/movie_details_text_size_year"
+        android:translationZ="0dp"
+        app:layout_constraintEnd_toEndOf="@id/info_card"
+        app:layout_constraintStart_toEndOf="@id/poster_image_card"
+        app:layout_constraintTop_toBottomOf="@id/title_text"
+        tools:text="2017" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/poster_image_card"
+        android:layout_width="@dimen/movie_details_width_poster"
+        android:layout_height="@dimen/movie_details_height_poster"
+        android:layout_marginStart="@dimen/movie_details_margin_poster"
+        android:layout_marginTop="@dimen/movie_details_margin_poster"
+        app:cardCornerRadius="@dimen/movie_details_corner_poster_card"
+        app:cardElevation="@dimen/movie_details_elevation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/poster_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_movie_details_poster"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/play_trailer_button"
+        style="@style/MovieDetailsInfoButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_play_trailer"
+        android:drawableStart="@drawable/ic_play_arrow_white"
+        android:elevation="@dimen/movie_details_elevation"
+        android:text="@string/movie_details_label_play_trailer"
+        android:textColor="@color/movie_details_white"
+        app:layout_constraintEnd_toStartOf="@id/watched_list_button"
+        app:layout_constraintStart_toStartOf="@id/info_card"
+        app:layout_constraintTop_toBottomOf="@id/poster_image_card" />
+
+    <Button
+        android:id="@+id/watched_list_button"
+        style="@style/MovieDetailsInfoButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_watched_list"
+        android:drawableStart="@drawable/ic_add_black"
+        android:elevation="@dimen/movie_details_elevation"
+        android:text="@string/movie_details_label_watched_list"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@id/info_card"
+        app:layout_constraintStart_toEndOf="@id/play_trailer_button"
+        app:layout_constraintTop_toBottomOf="@id/poster_image_card" />
+
+    <LinearLayout
+        android:id="@+id/overview_buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_margin="@dimen/movie_details_margin_horizontal"
+        android:background="@drawable/rounded_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/info_card">
 
         <Button
-            android:id="@+id/watched_list_button"
-            style="@style/MovieDetailsInfoButtonStyle"
+            android:id="@+id/overview_button"
+            style="@style/MovieDetailOverviewButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_button_watched_list"
-            android:drawableStart="@drawable/ic_add_black"
-            android:text="@string/movie_details_label_watched_list"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="@id/info_card"
-            app:layout_constraintStart_toEndOf="@id/play_trailer_button"
-            app:layout_constraintTop_toBottomOf="@id/poster_image_card" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_overview"
+            android:enabled="false"
+            android:text="@string/movie_details_label_overview"
+            android:textColor="@drawable/button_photo_overview_text_color" />
+
+        <Button
+            android:id="@+id/photos_button"
+            style="@style/MovieDetailOverviewButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_photos"
+            android:text="@string/movie_details_label_photos"
+            android:textColor="@drawable/button_photo_overview_text_color" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/overview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/movie_details_margin_horizontal"
+        android:layout_marginTop="@dimen/movie_details_margin_top_genres"
+        android:layout_marginEnd="@dimen/movie_details_margin_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/overview_buttons_layout">
 
         <LinearLayout
-            android:id="@+id/overview_buttons_layout"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_margin="@dimen/movie_details_margin_horizontal"
-            android:background="@drawable/rounded_border"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/info_card">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/overview_button"
-                style="@style/MovieDetailOverviewButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/background_button_overview"
-                android:text="@string/movie_details_label_overview"
-                android:textColor="@color/movie_details_white" />
+            <TextView
+                android:id="@+id/genres_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/movie_details_green"
+                tools:text="Action, Adventure, Comedy, Fantasy" />
 
-            <Button
-                android:id="@+id/photos_button"
-                style="@style/MovieDetailOverviewButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:text="@string/movie_details_label_photos"
-                android:textColor="@color/movie_details_green" />
+            <TextView
+                android:id="@+id/overview_title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/movie_details_margin_top_overview_title"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/movie_details_white"
+                android:textSize="20sp"
+                tools:text="Synopsis" />
 
+            <TextView
+                android:id="@+id/overview_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/movie_details_margin_top_overview"
+                android:textColor="@color/movie_details_white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/overview_title_text"
+                tools:text="Captain Jack Sparrow is pursued by an old rival, Captain Salazar, who along with his crew of ghost pirates has escaped from the Devils Triangle, and is determinated to kill every pirate at sea." />
         </LinearLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/genres_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/movie_details_margin_horizontal"
-            android:layout_marginTop="@dimen/movie_details_margin_top_genres"
-            android:layout_marginEnd="@dimen/movie_details_margin_horizontal"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@color/movie_details_green"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/overview_buttons_layout"
-            tools:text="Action, Adventure, Comedy, Fantasy" />
-
-        <TextView
-            android:id="@+id/overview_title_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/movie_details_margin_horizontal"
-            android:layout_marginTop="@dimen/movie_details_margin_top_overview_title"
-            android:layout_marginEnd="@dimen/movie_details_margin_horizontal"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@color/movie_details_white"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/genres_text"
-            tools:text="Synopsis" />
-
-        <TextView
-            android:id="@+id/overview_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/movie_details_margin_horizontal"
-            android:layout_marginTop="@dimen/movie_details_margin_top_overview"
-            android:layout_marginEnd="@dimen/movie_details_margin_horizontal"
-            android:textColor="@color/movie_details_white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/overview_title_text"
-            tools:text="Captain Jack Sparrow is pursued by an old rival, Captain Salazar, who along with his crew of ghost pirates has escaped from the Devils Triangle, and is determinated to kill every pirate at sea." />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/photo_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/overview_buttons_layout"
+        tools:listitem="@layout/item_movie_photo"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

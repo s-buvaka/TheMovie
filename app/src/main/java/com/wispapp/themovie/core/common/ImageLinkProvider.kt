@@ -38,10 +38,10 @@ class ApiConfigLinkProvider(
         val isXXHDPI = 3 <= density
 
         return when {
-            isMDPI -> if (size >= 3) size - 4 else 0
-            isHDPI -> if (size >= 2) size - 3 else 0
-            isXHDPI -> if (size >= 1) size - 2 else 0
-            isXXHDPI -> size - 1
+            isMDPI -> if (size > 3) size - 4 else 0
+            isHDPI -> if (size > 2) size - 3 else 0
+            isXHDPI -> if (size > 1) size - 2 else 0
+            isXXHDPI -> if (size > 0) size - 1 else 0
             else -> size
         }
     }

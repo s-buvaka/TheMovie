@@ -52,3 +52,9 @@ class CategoryConverter : TypeConverter<MutableSet<CATEGORY>> {
         get() = object : TypeToken<MutableSet<CATEGORY>>() {}.type
 }
 
+class ImagesConverter: TypeConverter<List<ImageModel>> {
+
+    override val clazz: Type
+        get() = object : TypeToken<List<ImageModel>>() {}.type
+}
+

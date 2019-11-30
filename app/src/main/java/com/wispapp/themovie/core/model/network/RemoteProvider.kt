@@ -5,12 +5,10 @@ import com.google.gson.reflect.TypeToken
 import com.wispapp.themovie.core.common.Mapper
 import com.wispapp.themovie.core.model.database.models.ConfigModel
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
+import com.wispapp.themovie.core.model.database.models.MovieImageModel
 import com.wispapp.themovie.core.model.database.models.MoviesResultModel
 import com.wispapp.themovie.core.model.datasource.Result
-import com.wispapp.themovie.core.model.network.models.ConfigResponse
-import com.wispapp.themovie.core.model.network.models.MovieDetailsResponse
-import com.wispapp.themovie.core.model.network.models.MoviesResultResponse
-import com.wispapp.themovie.core.model.network.models.NetworkException
+import com.wispapp.themovie.core.model.network.models.*
 import retrofit2.Response
 import java.net.ConnectException
 import java.net.UnknownHostException
@@ -117,6 +115,19 @@ class MoviesDetailsProvider(
         else throw IllegalArgumentException("Invalid object type received")
 
         return api.getMovieByIdAsync(movieId).await()
+    }
+}
+
+class MoviesImagesProvider(
+    mapper: Mapper<MovieImageResponse, MovieImageModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<MovieImageResponse, MovieImageModel>(mapper){
+
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MovieImageResponse> {
+        val movieId = if (args is MovieIdArgs) args.movieId
+        else throw IllegalArgumentException("Invalid object type received")
+
+        return api.getMovieImagesAsync(movieId).await()
     }
 }
 

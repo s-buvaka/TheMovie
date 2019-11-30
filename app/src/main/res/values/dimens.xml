@@ -59,7 +59,7 @@
     <dimen name="movie_details_corners_view_poster">8dp</dimen>
     <dimen name="movie_details_corner_poster_card">16dp</dimen>
 
-    <dimen name="movie_details_elevation_poster_card">16dp</dimen>
+    <dimen name="movie_details_elevation">16dp</dimen>
 
     <dimen name="movie_details_text_size_title">20sp</dimen>
     <dimen name="movie_details_text_size_year">16sp</dimen>

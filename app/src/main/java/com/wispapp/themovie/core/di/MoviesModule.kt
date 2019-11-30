@@ -38,12 +38,15 @@ private const val MAPPER_MOVIES_GENRES = "mapper_movies_genres"
 private const val MAPPER_MOVIES_COMPANIES = "mapper_movies_companies"
 private const val MAPPER_MOVIES_COUNTRIES = "mapper_movies_countries"
 private const val MAPPER_MOVIES_LANGUAGE = "mapper_movies_language"
+private const val MAPPER_IMAGES = "mapper_images"
+private const val MAPPER_MOVIES_IMAGES = "mapper_movies_images"
 
 private const val NETWORK_PROVIDER_NOW_PLAYING_MOVIES = "network_provider_now_playing_movies"
 private const val NETWORK_PROVIDER_POPULAR_MOVIES = "network_provider_popular_movies"
 private const val NETWORK_PROVIDER_TOP_RATED_MOVIES = "network_provider_top_rated_movies"
 private const val NETWORK_PROVIDER_UPCOMING_MOVIES = "network_provider_upcoming_movies"
 private const val NETWORK_PROVIDER_SEARCH_MOVIE = "network_provider_search_movie"
+private const val NETWORK_PROVIDER_MOVIE_IMAGES = "network_provider_movie_images"
 
 private const val NETWORK_PROVIDER_MOVIE_DETAILS = "network_provider_movie_details"
 
@@ -94,6 +97,10 @@ val moviesModule = module {
         )
     }
 
+    single(named(MAPPER_IMAGES)) { ImagesMapper() }
+
+    single(named(MAPPER_MOVIES_IMAGES)) { MovieImagesMapper(get(named(MAPPER_IMAGES))) }
+
     factory(named(CACHE_POLICY_MOVIES)) { TimeoutCachePolicyImpl(Constants.CACHE_TIMEOUT_MOVIES_DATA) }
 
     factory(named(NETWORK_PROVIDER_NOW_PLAYING_MOVIES)) {
@@ -134,6 +141,13 @@ val moviesModule = module {
     factory(named(NETWORK_PROVIDER_SEARCH_MOVIE)) {
         SearchMovieProvider(
             get(named(MAPPER_MOVIES_RESULT_NON_CATEGORY)),
+            get<ApiInterface>()
+        )
+    }
+
+    factory(named(NETWORK_PROVIDER_MOVIE_IMAGES)) {
+        MoviesImagesProvider(
+            get(named(MAPPER_MOVIES_IMAGES)),
             get<ApiInterface>()
         )
     }
