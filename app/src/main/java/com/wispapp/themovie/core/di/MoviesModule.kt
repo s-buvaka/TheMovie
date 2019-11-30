@@ -6,12 +6,11 @@ import com.wispapp.themovie.core.application.Constants
 import com.wispapp.themovie.core.model.cache.DataBaseSourceCacheProvider
 import com.wispapp.themovie.core.model.cache.TimeoutCachePolicyImpl
 import com.wispapp.themovie.core.model.database.MovieDetailsDao
+import com.wispapp.themovie.core.model.database.MovieImagesDao
 import com.wispapp.themovie.core.model.database.MoviesDao
-import com.wispapp.themovie.core.model.database.models.CATEGORY
-import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.MovieModel
-import com.wispapp.themovie.core.model.database.models.SourceType
+import com.wispapp.themovie.core.model.database.models.*
 import com.wispapp.themovie.core.model.datasource.MovieDetailsDataSource
+import com.wispapp.themovie.core.model.datasource.MovieImagesDataSource
 import com.wispapp.themovie.core.model.datasource.MoviesDataSource
 import com.wispapp.themovie.core.model.datasource.SearchMovieDataSource
 import com.wispapp.themovie.core.model.network.*
@@ -52,10 +51,12 @@ private const val NETWORK_PROVIDER_MOVIE_DETAILS = "network_provider_movie_detai
 
 private const val DATABASE_SOURCE_MOVIES = "database_source_movies"
 private const val DATABASE_SOURCE_MOVIE_DETAILS = "database_source_movie_details"
+private const val DATABASE_SOURCE_MOVIE_IMAGES = "database_source_movie_images"
 
 private const val DATA_SOURCE_MOVIES = "data_source_movies"
 private const val DATA_SOURCE_SEARCH_MOVIE = "data_source_search_movie"
 private const val DATA_SOURCE_MOVIE_DETAILS = "data_source_movie_details"
+private const val DATA_SOURCE_MOVIE_IMAGES = "data_source_movie_images"
 
 private const val CACHE_POLICY_MOVIES = "cash_policy_movies"
 
@@ -168,6 +169,14 @@ val moviesModule = module {
         )
     }
 
+    factory(named(DATABASE_SOURCE_MOVIE_IMAGES)) {
+        DataBaseSourceCacheProvider<MovieImageModel>(
+            get(named(CACHE_POLICY_MOVIES)),
+            SourceType.MOVIE_IMAGES,
+            get<MovieImagesDao>()
+        )
+    }
+
     factory(named(DATA_SOURCE_MOVIES)) {
         MoviesDataSource(
             get(named(NETWORK_PROVIDER_NOW_PLAYING_MOVIES)),
@@ -185,6 +194,13 @@ val moviesModule = module {
         )
     }
 
+    factory(named(DATA_SOURCE_MOVIE_IMAGES)) {
+        MovieImagesDataSource(
+            get(named(NETWORK_PROVIDER_MOVIE_IMAGES)),
+            get(named(DATABASE_SOURCE_MOVIE_IMAGES))
+        )
+    }
+
     factory(named(DATA_SOURCE_SEARCH_MOVIE)) {
         SearchMovieDataSource(get(named(NETWORK_PROVIDER_SEARCH_MOVIE)))
     }
@@ -193,7 +209,8 @@ val moviesModule = module {
         MoviesViewModel(
             get(named(DATA_SOURCE_MOVIES)),
             get(named(DATA_SOURCE_MOVIE_DETAILS)),
-            get(named(DATA_SOURCE_SEARCH_MOVIE))
+            get(named(DATA_SOURCE_SEARCH_MOVIE)),
+            get(named(DATA_SOURCE_MOVIE_IMAGES))
         )
     }
 }

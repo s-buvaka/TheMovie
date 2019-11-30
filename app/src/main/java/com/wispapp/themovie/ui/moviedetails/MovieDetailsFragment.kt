@@ -1,5 +1,6 @@
 package com.wispapp.themovie.ui.moviedetails
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
@@ -32,6 +33,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
 
         dataLoadingObserve()
         movieDetailsObserve(movieId)
+        movieImagesObserve(movieId)
     }
 
     override fun initView(view: View) {}
@@ -56,6 +58,13 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details) {
         moviesViewModel.getMovieDetails(movieId)
         moviesViewModel.movieDetailsLiveData.observe(this, Observer {
             updateUi(it[0])
+        })
+    }
+
+    private fun movieImagesObserve(movieId: Int) {
+        moviesViewModel.getMovieImages(movieId)
+        moviesViewModel.movieImagesLiveData.observe(this, Observer {
+            Log.d("XXX", it.map { it.posters.map { it.filePath } }.toString())
         })
     }
 

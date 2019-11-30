@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.wispapp.themovie.core.model.database.models.CATEGORY
 import com.wispapp.themovie.core.model.database.models.CATEGORY.*
 import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
+import com.wispapp.themovie.core.model.database.models.MovieImageModel
 import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.core.model.datasource.DataSource
 import com.wispapp.themovie.core.model.datasource.Result
@@ -18,7 +19,8 @@ private const val TAG = "MoviesViewModel"
 class MoviesViewModel(
     private val movieDataSource: DataSource<List<MovieModel>>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
-    private val searchMovieDataSource: DataSource<List<MovieModel>>
+    private val searchMovieDataSource: DataSource<List<MovieModel>>,
+    private val movieImagesDataSource: DataSource<List<MovieImageModel>>
 ) : BaseViewModel() {
 
     val nowPlayingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
@@ -27,6 +29,7 @@ class MoviesViewModel(
     val upcomingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
     val searchMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
+    val movieImagesLiveData = MutableLiveData<MutableList<MovieImageModel>>()
 
     fun getMovies() {
         showLoader()
@@ -53,6 +56,17 @@ class MoviesViewModel(
                 is Result.Success -> searchMovieLiveData.postValue(result.data.toMutableList())
                 is Result.Error -> handleError(result.exception) { searchMovie(query) }
             }
+        }
+    }
+
+    fun getMovieImages(id: Int){
+        showLoader()
+        backgroundScope.launch {
+            when (val result = movieImagesDataSource.get(MovieIdArgs(id))) {
+                is Result.Success -> movieImagesLiveData.postValue(result.data.toMutableList())
+                is Result.Error -> handleError(result.exception) { getMovieImages(id) }
+            }
+            hideLoader()
         }
     }
 
