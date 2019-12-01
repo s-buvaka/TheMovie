@@ -16,7 +16,7 @@ import com.wispapp.themovie.ui.recycler.GenericAdapter
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 private const val FIRST_LINE_TEXT_LENGTH = 15
 
@@ -25,7 +25,7 @@ const val MOVIE_ID = "movie_id"
 class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     GenericAdapter.OnItemClickListener<ImageModel> {
 
-    private val moviesViewModel: MoviesViewModel by viewModel()
+    private val moviesViewModel: MoviesViewModel by sharedViewModel()
     private val imageLoader: ImageLoader by inject()
 
     private val photoAdapter by lazy { getImageAdapter() }
@@ -65,7 +65,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     }
 
     override fun onClickItem(data: ImageModel) {
-        showMessage(data.filePath)
+        navigateTo(R.id.moviePhotoFragment)
     }
 
     private fun movieDetailsObserve(movieId: Int) {
@@ -135,7 +135,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     }
 
     private fun getImageAdapter() = object : GenericAdapter<ImageModel>(this) {
-        override fun getLayoutId(position: Int, obj: ImageModel): Int = R.layout.item_movie_photo
+        override fun getLayoutId(position: Int, obj: ImageModel): Int = R.layout.item_movie_image
     }
 
     private fun showOverview() {

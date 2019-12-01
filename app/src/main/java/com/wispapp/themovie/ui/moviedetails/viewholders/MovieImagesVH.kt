@@ -1,4 +1,4 @@
-package com.wispapp.themovie.ui.moviedetails
+package com.wispapp.themovie.ui.moviedetails.viewholders
 
 import android.view.View
 import com.wispapp.themovie.core.common.ApiConfigLinkProvider
@@ -7,7 +7,7 @@ import com.wispapp.themovie.core.common.ImageLoader
 import com.wispapp.themovie.core.model.database.models.ImageModel
 import com.wispapp.themovie.ui.recycler.BaseViewHolder
 import com.wispapp.themovie.ui.recycler.GenericAdapter
-import kotlinx.android.synthetic.main.item_movie_photo.view.*
+import kotlinx.android.synthetic.main.item_movie_image.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 

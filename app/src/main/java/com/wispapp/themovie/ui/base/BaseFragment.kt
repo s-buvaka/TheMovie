@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 
 abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : Fragment(),
     BaseView {
@@ -49,4 +51,8 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
 
     override fun hideError() =
         (activity as BaseActivity).hideError()
+
+    protected fun navigateTo(@IdRes resId: Int, args: Bundle? = null) {
+        findNavController().navigate(resId, args)
+    }
 }

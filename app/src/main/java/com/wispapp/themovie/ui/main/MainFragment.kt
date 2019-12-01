@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.application.showKeyboard
@@ -26,8 +25,9 @@ import com.wispapp.themovie.ui.viewmodel.ConfigsViewModel
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import kotlinx.android.synthetic.main.bottom_sheet_main_fragment.*
 import kotlinx.android.synthetic.main.content_main_fragment.*
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.toolbar_main.*
 import kotlinx.android.synthetic.main.view_empty_search_result.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,7 +38,7 @@ private const val DATE_FORMAT = "EEEE, MMMM d"
 class MainFragment : BaseFragment(R.layout.fragment_main),
     GenericAdapter.OnItemClickListener<MovieModel> {
 
-    private val moviesViewModel: MoviesViewModel by viewModel()
+    private val moviesViewModel: MoviesViewModel by sharedViewModel()
     private val configViewModel: ConfigsViewModel by viewModel()
 
     private val nowPlayingMoviesAdapter by lazy { getMovieAdapter() }
@@ -53,7 +53,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_activity_main, menu)
+        inflater.inflate(R.menu.menu_main, menu)
         actionClose = menu.findItem(R.id.action_close)
         actionSearch = menu.findItem(R.id.action_search)
 
@@ -100,7 +100,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     override fun onClickItem(data: MovieModel) {
         val bundle = Bundle()
         bundle.putInt(MOVIE_ID, data.id)
-        findNavController().navigate(R.id.movieDetailsFragment, bundle)
+        navigateTo(R.id.movieDetailsFragment, bundle)
 
         search_field.setText("")
     }

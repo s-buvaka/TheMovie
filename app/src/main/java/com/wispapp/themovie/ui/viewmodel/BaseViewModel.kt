@@ -53,8 +53,6 @@ abstract class BaseViewModel : ViewModel() {
     private fun setError(errorMessage: ErrorWrapper) {
         exception.value = errorMessage
     }
-
-    fun cancelAllRequest() = parentJob.cancel()
 }
 
 data class ErrorWrapper(val errorMessage: String, val func: () -> Unit)
