@@ -27,6 +27,7 @@ class MoviesViewModel(
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
     val searchMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
     val movieImagesLiveData = MutableLiveData<MutableList<ImageModel>>()
+    val selectedImageLiveData = MutableLiveData<MutableList<ImageModel>>()
 
     fun getMovies() {
         showLoader()

@@ -30,6 +30,8 @@ abstract class GenericAdapter<T>(listener: OnItemClickListener<T>? = null) :
         diffUtil = diffUtilImpl
     }
 
+    fun getItem(position: Int) = itemList[position]
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> =
         getViewHolder(
             LayoutInflater.from(parent.context)

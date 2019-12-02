@@ -15,21 +15,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/movie_title_text"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:textColor="@color/movie_details_white"
                 tools:text="Джокер" />
 
             <TextView
                 android:id="@+id/number_image_text"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:textColor="@color/movie_details_white"
                 tools:text="202/204" />
         </LinearLayout>

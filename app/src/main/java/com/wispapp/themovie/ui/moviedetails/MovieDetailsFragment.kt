@@ -31,12 +31,8 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     private val photoAdapter by lazy { getImageAdapter() }
 
     override fun initViewModel() {
-        var movieId = 0
+        val movieId = getMovieId()
 
-        if (arguments == null) showError("Error movie loading", null)
-        arguments?.let { movieId = it.getInt(MOVIE_ID) }
-
-        dataLoadingObserve()
         movieDetailsObserve(movieId)
         movieImagesObserve(movieId)
     }
@@ -65,7 +61,17 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     }
 
     override fun onClickItem(data: ImageModel) {
+        moviesViewModel.selectedImageLiveData.postValue(mutableListOf(data))
         navigateTo(R.id.moviePhotoFragment)
+    }
+
+    private fun getMovieId(): Int {
+        var movieId = 0
+
+        if (arguments == null) showError("Error movie loading", null)
+
+        arguments?.let { movieId = it.getInt(MOVIE_ID) }
+        return movieId
     }
 
     private fun movieDetailsObserve(movieId: Int) {
@@ -79,7 +85,14 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         moviesViewModel.getMovieImages(movieId)
         moviesViewModel.movieImagesLiveData.observe(this, Observer {
             photoAdapter.update(it)
+            scrollToSelectedImage(it)
         })
+    }
+
+    private fun scrollToSelectedImage(imageList: MutableList<ImageModel>) {
+        val image = moviesViewModel.selectedImageLiveData.value?.get(0)
+        val position = imageList.indexOf(image)
+        images_recycler.layoutManager?.scrollToPosition(position)
     }
 
     private fun initRecycler() {
