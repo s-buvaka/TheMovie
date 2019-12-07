@@ -22,4 +22,10 @@
         android:name="com.wispapp.themovie.ui.moviedetails.MoviePhotoFragment"
         android:label="fragment_movie_image"
         tools:layout="@layout/fragment_movie_image" />
+
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.wispapp.themovie.ui.moviedetails.VideoFragment"
+        android:label="fragment_viedeo"
+        tools:layout="@layout/fragment_video" />
 </navigation>

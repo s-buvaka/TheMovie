@@ -35,7 +35,7 @@ class MoviesDetailsMapper(
             status = source.status,
             tagLine = source.tagLine,
             title = source.title,
-            video = source.video,
+            hasVideo = source.video,
             voteAverage = source.voteAverage,
             voteCount = source.voteCount
         )

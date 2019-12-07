@@ -113,7 +113,9 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
             overview_text.text = overview
         }
 
-        play_trailer_button.setOnClickListener { showMessage("Play Trailer Clicked") }
+        play_trailer_button.setOnClickListener {
+            navigateTo(R.id.videoFragment)
+        }
         watched_list_button.setOnClickListener { showMessage("Watched button Clicked") }
     }
 

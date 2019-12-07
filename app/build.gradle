@@ -94,4 +94,8 @@ dependencies {
 
     // Transparent status
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
+
+    // Youtube
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev181-1.22.0'
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }

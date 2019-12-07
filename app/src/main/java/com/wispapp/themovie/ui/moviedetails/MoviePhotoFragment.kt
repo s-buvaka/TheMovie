@@ -78,13 +78,14 @@ class MoviePhotoFragment : BaseFragment(R.layout.fragment_movie_image) {
             val imageUrl = ApiConfigLinkProvider(it, ConfigsHolder.getConfig()).getUrl()
             val share = Intent.createChooser(Intent().apply {
                 action = Intent.ACTION_SEND
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                type = MIME_TYPE_TEXT_HTML
+
                 putExtra(Intent.EXTRA_TEXT, imageUrl)
                 putExtra(
                     Intent.EXTRA_TITLE,
                     getString(R.string.movie_share_text_placeholder, movieTitle)
                 )
-                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                type = MIME_TYPE_TEXT_HTML
             }, null)
             startActivity(share)
         }

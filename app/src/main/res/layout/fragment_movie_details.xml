@@ -223,4 +223,5 @@
         app:layout_constraintTop_toBottomOf="@id/overview_buttons_layout"
         tools:listitem="@layout/item_movie_image"
         tools:visibility="visible" />
+    
 </androidx.constraintlayout.widget.ConstraintLayout>
