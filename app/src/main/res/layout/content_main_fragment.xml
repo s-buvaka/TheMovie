@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="?android:actionBarSize"
-    android:background="@color/app_theme_background">
+    android:background="@color/app_primary_color">
 
     <TextView
         android:id="@+id/current_date_text"
@@ -13,7 +13,7 @@
         android:fontFamily="sans-serif-medium"
         android:padding="@dimen/main_current_date_padding"
         android:textAllCaps="true"
-        android:textColor="@color/main_screen_secondary_text_color"
+        android:textColor="@color/app_secondary_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

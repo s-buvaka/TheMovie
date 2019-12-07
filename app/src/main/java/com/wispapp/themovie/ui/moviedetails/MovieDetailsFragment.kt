@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.wispapp.themovie.R
+import com.wispapp.themovie.core.application.Constants.REMOTE_DATE_FORMATE
 import com.wispapp.themovie.core.common.ApiConfigLinkProvider
 import com.wispapp.themovie.core.common.ConfigsHolder
 import com.wispapp.themovie.core.common.ImageLoader
@@ -17,8 +18,11 @@ import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val FIRST_LINE_TEXT_LENGTH = 15
+private const val OUTPUT_DATE_FORMAT = "MMMM d, yyyy"
 
 const val MOVIE_ID = "movie_id"
 
@@ -107,15 +111,12 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         detailsModel.apply {
             score_text.text = voteAverage.toString()
             title_text.text = getWrappedTitleText(title)
-            year_text.text = releaseDate
+            year_text.text = getDate(releaseDate)
             genres_text.text = getGenresText(genres)
-            overview_title_text.text
             overview_text.text = overview
         }
 
-        play_trailer_button.setOnClickListener {
-            navigateTo(R.id.videoFragment)
-        }
+        play_trailer_button.setOnClickListener { openTrailerFragment() }
         watched_list_button.setOnClickListener { showMessage("Watched button Clicked") }
     }
 
@@ -135,6 +136,16 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         }
     }
 
+    private fun getDate(releaseDate: String): String {
+        val remoteDateFormat = SimpleDateFormat(REMOTE_DATE_FORMATE, Locale.ENGLISH)
+        val outPutDateFormat = SimpleDateFormat(OUTPUT_DATE_FORMAT, Locale.ENGLISH)
+        val date = remoteDateFormat.parse(releaseDate)
+
+        return date?.let {
+            outPutDateFormat.format(date)
+        } ?: run { "" }
+    }
+
     private fun getGenresText(genres: List<GenresItemModel>): String {
         var genresText = ""
         for (i in genres.indices) {
@@ -143,6 +154,11 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
 
         }
         return genresText
+    }
+
+    private fun openTrailerFragment() {
+
+        navigateTo(R.id.videoFragment)
     }
 
     private fun showMessage(message: String) {

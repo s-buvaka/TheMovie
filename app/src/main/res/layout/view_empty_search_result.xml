@@ -18,7 +18,7 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="@string/empty_search_text"
-        android:textColor="@color/main_screen_light_background_text_color"
+        android:textColor="@color/app_primary_color"
         android:textSize="@dimen/empty_search_text_size" />
 
     <ImageView

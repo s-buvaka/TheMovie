@@ -6,4 +6,6 @@ object Constants {
     const val CACHE_TIMEOUT_MOVIES_DATA = 60 * 1000 * 60L
 
     const val MIME_TYPE_TEXT_HTML = "text/html"
+
+    const val REMOTE_DATE_FORMATE = "yyyy-MM-dd"
 }

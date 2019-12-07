@@ -43,7 +43,7 @@
             android:layout_margin="@dimen/view_error_margin_message_text"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:textColor="@color/view_error_margin_message_text_color"
+            android:textColor="@color/app_primary_color"
             android:textSize="@dimen/view_error_margin_message_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

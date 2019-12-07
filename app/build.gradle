@@ -88,6 +88,7 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
     //AdvRecyclerView (https://github.com/h6ah4i/android-advancedrecyclerview)
     implementation('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0')
