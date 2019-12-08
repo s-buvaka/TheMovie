@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_error_repeat"
             android:text="@string/view_error_button_repeat"
-            android:textColor="@color/view_error_color_button_repeat_text"
+            android:textColor="@color/app_secondary_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

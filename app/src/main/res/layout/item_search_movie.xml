@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:elevation="4dp"
-    app:cardCornerRadius="16dp"
+    android:layout_height="@dimen/item_search_movie_height"
+    android:elevation="@dimen/item_search_movie_elevation"
+    app:cardCornerRadius="@dimen/item_search_movie_corners"
     app:cardUseCompatPadding="true"
     tools:ignore="ContentDescription">
 

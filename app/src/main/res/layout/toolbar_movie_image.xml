@@ -22,14 +22,14 @@
                 android:id="@+id/movie_title_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/movie_details_white"
+                android:textColor="@color/app_secondary_text_color"
                 tools:text="Джокер" />
 
             <TextView
                 android:id="@+id/number_image_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/movie_details_white"
+                android:textColor="@color/app_secondary_text_color"
                 tools:text="202/204" />
         </LinearLayout>
 

@@ -7,6 +7,7 @@ import com.wispapp.themovie.ui.main.viewholders.MovieVH
 import com.wispapp.themovie.ui.main.viewholders.SearchMovieVH
 import com.wispapp.themovie.ui.moviedetails.viewholders.FullScreenImageVH
 import com.wispapp.themovie.ui.moviedetails.viewholders.MovieImagesVH
+import com.wispapp.themovie.ui.moviedetails.viewholders.ReviewVH
 
 abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView),
     GenericAdapter.Binder<T>
@@ -19,6 +20,7 @@ object ViewHolderFactory {
             R.layout.item_search_movie -> SearchMovieVH(view)
             R.layout.item_movie_image -> MovieImagesVH(view)
             R.layout.item_fullscreen_image -> FullScreenImageVH(view)
+            R.layout.item_review -> ReviewVH(view)
             else -> throw Exception("Wrong view type")
         }
 }

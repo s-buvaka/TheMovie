@@ -69,7 +69,19 @@
 
     <dimen name="movie_details_z_poster_card">-4dp</dimen>
 
+    <dimen name="movie_trailer_padding_button">8dp</dimen>
+
     <dimen name="item_movie_photo_padding">4dp</dimen>
 
-    <dimen name="movie_trailer_padding_button">8dp</dimen>
+    <dimen name="item_search_movie_height">250dp</dimen>
+    <dimen name="item_search_movie_elevation">8dp</dimen>
+    <dimen name="item_search_movie_corners">16dp</dimen>
+
+    <dimen name="item_review_corner">8dp</dimen>
+    <dimen name="item_review_elevation">4dp</dimen>
+    <dimen name="item_review_padding">8dp</dimen>
+    <dimen name="item_review_text_size_author">20sp</dimen>
+    <dimen name="item_review_text_size_content">16sp</dimen>
+    <dimen name="item_review_margin_top_content">16dp</dimen>
+    <dimen name="item_review_padding_more_button">8dp</dimen>
 </resources>

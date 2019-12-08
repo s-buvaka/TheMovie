@@ -40,6 +40,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         movieDetailsObserve(movieId)
         movieImagesObserve(movieId)
         moviesViewModel.getTrailers(movieId)
+        moviesViewModel.getReviews(movieId)
     }
 
     override fun initView(view: View) {
@@ -118,7 +119,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         }
 
         play_trailer_button.setOnClickListener { openTrailerFragment() }
-        watched_list_button.setOnClickListener { showMessage("Watched button Clicked") }
+        watched_list_button.setOnClickListener { openReviewFragment() }
     }
 
     private fun loadPoster(detailsModel: MovieDetailsModel) {
@@ -131,7 +132,8 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         return if (title.length <= FIRST_LINE_TEXT_LENGTH)
             title
         else {
-            val firstLine = title.substring(0,
+            val firstLine = title.substring(
+                0,
                 FIRST_LINE_TEXT_LENGTH
             )
             val enterIndex = firstLine.lastIndexOf(" ")
@@ -160,8 +162,11 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     }
 
     private fun openTrailerFragment() {
-
         navigateTo(R.id.action_details_to_video)
+    }
+
+    private fun openReviewFragment() {
+        navigateTo(R.id.action_details_to_reviews)
     }
 
     private fun showMessage(message: String) {

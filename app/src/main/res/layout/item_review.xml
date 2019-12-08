@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_light_background"
+    app:cardCornerRadius="@dimen/item_review_corner"
+    app:cardElevation="@dimen/item_review_elevation"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/item_review_padding">
+
+        <TextView
+            android:id="@+id/author_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/app_primary_text_color"
+            android:textSize="@dimen/item_review_text_size_author"
+            tools:text="A review by SWITCH." />
+
+        <TextView
+            android:id="@+id/content_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/item_review_margin_top_content"
+            android:maxLines="10"
+            android:textColor="@color/app_primary_text_color"
+            android:textSize="@dimen/item_review_text_size_content"
+            tools:text="*A Masterpiece*.\r\n\r\nThe movie shows the escalating events that made Arthur become the Joker. Initially an inoffensive poor and sick man, Arthur suffered a tide of unfortunate events that pushed him closer and closer to the edge. \r\n\r\nIgnored and despised by everyone, sick and alone in the world, and neglected by the State, Arthur becomes progressively more violent until he breaks.\r\n\r\nMuch more than one more Super-hero movie, *Joker* uses well-known characters to promote the reflection on the ones. At least, ignored until they become a Joker." />
+
+        <TextView
+            android:id="@+id/more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:padding="@dimen/item_review_padding_more_button"
+            android:text="@string/item_review_text_more" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

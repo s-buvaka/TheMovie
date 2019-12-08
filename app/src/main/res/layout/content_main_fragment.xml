@@ -40,7 +40,7 @@
                 android:fontFamily="sans-serif-black"
                 android:gravity="center_vertical"
                 android:text="@string/main_category_now_playing"
-                android:textColor="@color/main_screen_text_color"
+                android:textColor="@color/app_secondary_text_color"
                 android:textSize="@dimen/category_text_size" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -62,7 +62,7 @@
                 android:fontFamily="sans-serif-black"
                 android:gravity="center_vertical"
                 android:text="@string/main_category_popular"
-                android:textColor="@color/main_screen_text_color"
+                android:textColor="@color/app_secondary_text_color"
                 android:textSize="@dimen/category_text_size" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -84,7 +84,7 @@
                 android:fontFamily="sans-serif-black"
                 android:gravity="center_vertical"
                 android:text="@string/main_category_top_rated"
-                android:textColor="@color/main_screen_text_color"
+                android:textColor="@color/app_secondary_text_color"
                 android:textSize="@dimen/category_text_size" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -106,7 +106,7 @@
                 android:fontFamily="sans-serif-black"
                 android:gravity="center_vertical"
                 android:text="@string/main_category_upcoming"
-                android:textColor="@color/main_screen_text_color"
+                android:textColor="@color/app_secondary_text_color"
                 android:textSize="@dimen/category_text_size" />
 
             <androidx.recyclerview.widget.RecyclerView

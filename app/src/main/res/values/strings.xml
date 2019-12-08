@@ -15,7 +15,7 @@
 
     <!--Movies details screen-->
 
-    <string name="movie_details_label_watched_list">Watched list</string>
+    <string name="movie_details_label_watched_list">Reviews</string>
     <string name="movie_details_label_play_trailer">Play Trailer</string>
     <string name="movie_details_label_overview">Overview</string>
     <string name="movie_details_label_photos">Photos</string>
@@ -27,5 +27,6 @@
 
     <string name="video_upload_error">Video upload Error</string>
     <string name="empty_search_text">Your search returned no results.</string>
+    <string name="item_review_text_more">more…</string>
 
 </resources>

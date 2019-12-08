@@ -41,7 +41,15 @@
             app:enterAnim="@animator/enter_out_right"
             app:exitAnim="@animator/exit_in_left"
             app:popEnterAnim="@animator/enter_out_left"
-            app:popExitAnim="@animator/exit_in_right"/>
+            app:popExitAnim="@animator/exit_in_right" />
+
+        <action
+            android:id="@+id/action_details_to_reviews"
+            app:destination="@id/reviewsFragment"
+            app:enterAnim="@animator/enter_out_right"
+            app:exitAnim="@animator/exit_in_left"
+            app:popEnterAnim="@animator/enter_out_left"
+            app:popExitAnim="@animator/exit_in_right" />
 
     </fragment>
 
@@ -56,5 +64,10 @@
         android:name="com.wispapp.themovie.ui.moviedetails.fragments.TrailersPagerFragment"
         android:label="fragment_video"
         tools:layout="@layout/fragment_trailer" />
+    <fragment
+        android:id="@+id/reviewsFragment"
+        android:name="com.wispapp.themovie.ui.moviedetails.fragments.ReviewsFragment"
+        android:label="fragment_reviews"
+        tools:layout="@layout/fragment_reviews" />
 
 </navigation>

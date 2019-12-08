@@ -7,9 +7,9 @@
     <color name="app_primary_color">#000B1D</color>
     <color name="app_secondary_color">#3F7041</color>
 
-    <!--Main Screen-->
-    <color name="main_screen_text_color">#FFFFFF</color>
+    <color name="app_light_background">#FFFFFF</color>
 
-    <color name="movie_details_white">#FFFFFF</color>
-    <color name="view_error_color_button_repeat_text">#FFFFFF</color>
+    <color name="app_primary_text_color">#000000</color>
+    <color name="app_secondary_text_color">#FFFFFF</color>
+
 </resources>
