@@ -1,6 +1,6 @@
 package com.wispapp.themovie.core.model.database.models
 
-data class MovieTrailersModel(
+data class TrailersResultModel(
     val id: Int,
     val results: List<TrailerModel>
 )

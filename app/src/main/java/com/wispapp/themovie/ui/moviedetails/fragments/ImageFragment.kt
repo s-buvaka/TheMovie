@@ -1,4 +1,4 @@
-package com.wispapp.themovie.ui.moviedetails
+package com.wispapp.themovie.ui.moviedetails.fragments
 
 import android.content.Intent
 import android.view.Menu

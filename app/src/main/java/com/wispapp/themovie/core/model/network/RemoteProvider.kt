@@ -10,6 +10,8 @@ import retrofit2.Response
 import java.net.ConnectException
 import java.net.UnknownHostException
 
+private const val INVALID_OBJECT_ERROR_MESSAGE = "Invalid object type received"
+
 interface NetworkProvider<T> {
 
     suspend fun get(args: ArgumentsWrapper? = null): Result<T>?
@@ -105,37 +107,37 @@ class UpcomingMoviesRemoteProvider(
 class MoviesDetailsProvider(
     mapper: Mapper<MovieDetailsResponse, MovieDetailsModel>,
     private val api: ApiInterface
-) : BaseRemoteProvider<MovieDetailsResponse, MovieDetailsModel>(mapper){
+) : BaseRemoteProvider<MovieDetailsResponse, MovieDetailsModel>(mapper) {
 
     override suspend fun getResponse(args: ArgumentsWrapper?): Response<MovieDetailsResponse> {
         val movieId = if (args is MovieIdArgs) args.movieId
-        else throw IllegalArgumentException("Invalid object type received")
+        else throw IllegalArgumentException(INVALID_OBJECT_ERROR_MESSAGE)
 
         return api.getMovieByIdAsync(movieId).await()
     }
 }
 
-class MoviesImagesProvider(
-    mapper: Mapper<MovieImageResponse, MovieImageModel>,
+class ImagesProvider(
+    mapper: Mapper<ImagesResultResponse, ImagesResultModel>,
     private val api: ApiInterface
-) : BaseRemoteProvider<MovieImageResponse, MovieImageModel>(mapper){
+) : BaseRemoteProvider<ImagesResultResponse, ImagesResultModel>(mapper) {
 
-    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MovieImageResponse> {
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<ImagesResultResponse> {
         val movieId = if (args is MovieIdArgs) args.movieId
-        else throw IllegalArgumentException("Invalid object type received")
+        else throw IllegalArgumentException(INVALID_OBJECT_ERROR_MESSAGE)
 
         return api.getMovieImagesAsync(movieId).await()
     }
 }
 
-class MoviesTrailersProvider(
-    mapper: Mapper<MovieTrailersResponse, MovieTrailersModel>,
+class TrailersProvider(
+    mapper: Mapper<TrailersResultResponse, TrailersResultModel>,
     private val api: ApiInterface
-) : BaseRemoteProvider<MovieTrailersResponse, MovieTrailersModel>(mapper){
+) : BaseRemoteProvider<TrailersResultResponse, TrailersResultModel>(mapper) {
 
-    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MovieTrailersResponse> {
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<TrailersResultResponse> {
         val movieId = if (args is MovieIdArgs) args.movieId
-        else throw IllegalArgumentException("Invalid object type received")
+        else throw IllegalArgumentException(INVALID_OBJECT_ERROR_MESSAGE)
 
         return api.getMovieTrailersAsync(movieId).await()
     }
@@ -148,8 +150,21 @@ class SearchMovieProvider(
 
     override suspend fun getResponse(args: ArgumentsWrapper?): Response<MoviesResultResponse> {
         val query = if (args is SearchQueryArgs) args.query
-        else throw IllegalArgumentException("Invalid object type received")
+        else throw IllegalArgumentException(INVALID_OBJECT_ERROR_MESSAGE)
 
         return api.searchMovieAsync(query).await()
+    }
+}
+
+class ReviewsProvider(
+    mapper: Mapper<ReviewResultResponse, ReviewResultModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<ReviewResultResponse, ReviewResultModel>(mapper) {
+
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<ReviewResultResponse> {
+        val movieId = if (args is MovieIdArgs) args.movieId
+        else throw IllegalArgumentException(INVALID_OBJECT_ERROR_MESSAGE)
+
+        return api.getMovieReviewsAsync(movieId).await()
     }
 }

@@ -9,7 +9,7 @@ import com.wispapp.themovie.core.model.database.models.*
         ConfigModel::class,
         MovieModel::class,
         MovieDetailsModel::class,
-        MovieImageModel::class,
+        ImagesResultModel::class,
         SourcesTimeStamp::class],
     version = 1
 )

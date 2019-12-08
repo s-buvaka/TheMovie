@@ -1,4 +1,4 @@
-package com.wispapp.themovie.ui.moviedetails
+package com.wispapp.themovie.ui.moviedetails.fragments
 
 import android.view.View
 import androidx.lifecycle.Observer
@@ -39,7 +39,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
 
         movieDetailsObserve(movieId)
         movieImagesObserve(movieId)
-        moviesViewModel.getMovieTrailers(movieId)
+        moviesViewModel.getTrailers(movieId)
     }
 
     override fun initView(view: View) {
@@ -87,7 +87,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     }
 
     private fun movieImagesObserve(movieId: Int) {
-        moviesViewModel.getMovieImages(movieId)
+        moviesViewModel.getImages(movieId)
         moviesViewModel.imagesLiveData.observe(this, Observer {
             photoAdapter.update(it)
             scrollToSelectedImage(it)
@@ -131,7 +131,9 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         return if (title.length <= FIRST_LINE_TEXT_LENGTH)
             title
         else {
-            val firstLine = title.substring(0, FIRST_LINE_TEXT_LENGTH)
+            val firstLine = title.substring(0,
+                FIRST_LINE_TEXT_LENGTH
+            )
             val enterIndex = firstLine.lastIndexOf(" ")
             title.substring(0, enterIndex) + "\n" + title.substring(enterIndex + 1, title.length)
         }

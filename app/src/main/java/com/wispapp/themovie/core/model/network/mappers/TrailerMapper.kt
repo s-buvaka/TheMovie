@@ -1,18 +1,18 @@
 package com.wispapp.themovie.core.model.network.mappers
 
 import com.wispapp.themovie.core.common.Mapper
-import com.wispapp.themovie.core.model.database.models.MovieTrailersModel
+import com.wispapp.themovie.core.model.database.models.TrailersResultModel
 import com.wispapp.themovie.core.model.database.models.TrailerModel
-import com.wispapp.themovie.core.model.network.models.MovieTrailersResponse
+import com.wispapp.themovie.core.model.network.models.TrailersResultResponse
 import com.wispapp.themovie.core.model.network.models.TrailerResponse
 
-class MovieTrailerResultMapper(private val mapper: Mapper<TrailerResponse, TrailerModel>) :
-    Mapper<MovieTrailersResponse, MovieTrailersModel> {
-    override fun mapFrom(source: MovieTrailersResponse): MovieTrailersModel =
-        MovieTrailersModel(id = source.id, results = source.results.map { mapper.mapFrom(it) })
+class TrailerResultMapper(private val mapper: Mapper<TrailerResponse, TrailerModel>) :
+    Mapper<TrailersResultResponse, TrailersResultModel> {
+    override fun mapFrom(source: TrailersResultResponse): TrailersResultModel =
+        TrailersResultModel(id = source.id, results = source.results.map { mapper.mapFrom(it) })
 }
 
-class MovieTrailerMapper : Mapper<TrailerResponse, TrailerModel> {
+class TrailerMapper : Mapper<TrailerResponse, TrailerModel> {
     override fun mapFrom(source: TrailerResponse): TrailerModel =
         TrailerModel(
             id = source.id,

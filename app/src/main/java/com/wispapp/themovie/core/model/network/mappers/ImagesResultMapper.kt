@@ -2,15 +2,15 @@ package com.wispapp.themovie.core.model.network.mappers
 
 import com.wispapp.themovie.core.common.Mapper
 import com.wispapp.themovie.core.model.database.models.ImageModel
-import com.wispapp.themovie.core.model.database.models.MovieImageModel
+import com.wispapp.themovie.core.model.database.models.ImagesResultModel
 import com.wispapp.themovie.core.model.network.models.ImageResponse
-import com.wispapp.themovie.core.model.network.models.MovieImageResponse
+import com.wispapp.themovie.core.model.network.models.ImagesResultResponse
 
-class MovieImagesMapper(private val mapper: Mapper<ImageResponse, ImageModel>) :
-    Mapper<MovieImageResponse, MovieImageModel> {
+class ImagesResultMapper(private val mapper: Mapper<ImageResponse, ImageModel>) :
+    Mapper<ImagesResultResponse, ImagesResultModel> {
 
-    override fun mapFrom(source: MovieImageResponse): MovieImageModel =
-        MovieImageModel(
+    override fun mapFrom(source: ImagesResultResponse): ImagesResultModel =
+        ImagesResultModel(
             id = source.id,
             backdrops = source.backdrops.map { mapper.mapFrom(it) },
             posters = source.posters.map { mapper.mapFrom(it) }

@@ -37,6 +37,7 @@ class KoinStarter {
             configsModule,
             dataModule,
             moviesModule,
-            networkModule
+            networkModule,
+            searchModule
         )
 }

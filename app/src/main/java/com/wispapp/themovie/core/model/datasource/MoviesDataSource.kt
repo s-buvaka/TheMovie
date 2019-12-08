@@ -68,7 +68,7 @@ class MoviesDataSource(
                 return Result.Success(result)
             }
             is Result.Error -> return response
-            else -> Result.Error(Exception("Something was wrong"))
+            else -> Result.Error(Exception("Data Source: Error receiving data"))
         }
     }
 

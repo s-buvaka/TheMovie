@@ -1,4 +1,4 @@
-package com.wispapp.themovie.ui.moviedetails
+package com.wispapp.themovie.ui.moviedetails.fragments
 
 import android.view.View
 import androidx.lifecycle.Observer

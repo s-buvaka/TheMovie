@@ -81,16 +81,16 @@ interface MovieDetailsDao : SourceDatabase<MovieDetailsModel> {
 }
 
 @Dao
-interface MovieImagesDao : SourceDatabase<MovieImageModel> {
+interface MovieImagesDao : SourceDatabase<ImagesResultModel> {
 
     @Query("SELECT * FROM movie_images")
-    override fun getAll(): List<MovieImageModel>
+    override fun getAll(): List<ImagesResultModel>
 
     @Query("DELETE FROM movie_images")
     override fun deleteAll()
 
     @Query("SELECT * FROM movie_images WHERE id=:id")
-    override fun getById(id: Int): MovieImageModel
+    override fun getById(id: Int): ImagesResultModel
 
     @Query("DELETE FROM movie_images WHERE id=:id")
     override fun deleteById(id: Int)

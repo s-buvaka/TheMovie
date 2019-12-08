@@ -24,7 +24,7 @@ class ConfigsDataSource(
                 return response
             }
             is Result.Error -> return response
-            else -> Result.Error(Exception("Something was wrong"))
+            else -> Result.Error(Exception("Data Source: Error receiving data"))
         }
     }
 

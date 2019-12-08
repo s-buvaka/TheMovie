@@ -19,10 +19,11 @@ import com.wispapp.themovie.R
 import com.wispapp.themovie.core.application.showKeyboard
 import com.wispapp.themovie.core.model.database.models.MovieModel
 import com.wispapp.themovie.ui.base.BaseFragment
-import com.wispapp.themovie.ui.moviedetails.MOVIE_ID
+import com.wispapp.themovie.ui.moviedetails.fragments.MOVIE_ID
 import com.wispapp.themovie.ui.recycler.GenericAdapter
 import com.wispapp.themovie.ui.viewmodel.ConfigsViewModel
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
+import com.wispapp.themovie.ui.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.bottom_sheet_main_fragment.*
 import kotlinx.android.synthetic.main.content_main_fragment.*
 import kotlinx.android.synthetic.main.toolbar_main.*
@@ -40,6 +41,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
 
     private val moviesViewModel: MoviesViewModel by sharedViewModel()
     private val configViewModel: ConfigsViewModel by viewModel()
+    private val searchViewModel: SearchViewModel by viewModel()
 
     private val nowPlayingMoviesAdapter by lazy { getMovieAdapter() }
     private val popularMoviesAdapter by lazy { getMovieAdapter() }
@@ -88,10 +90,20 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
             else
                 hideLoading()
         })
+        searchViewModel.isDataLoading.observe(this, Observer { isDataLoaded ->
+            if (isDataLoaded)
+                showLoading()
+            else
+                hideLoading()
+        })
     }
 
     override fun exceptionObserve() {
         moviesViewModel.exception.observe(this, Observer { error ->
+            if (error != null && error.errorMessage.isNotEmpty())
+                showError(error.errorMessage, error.func)
+        })
+        searchViewModel.exception.observe(this, Observer { error ->
             if (error != null && error.errorMessage.isNotEmpty())
                 showError(error.errorMessage, error.func)
         })
@@ -120,7 +132,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         moviesViewModel.upcomingMoviesLiveData.observe(this, Observer {
             upcomingMoviesAdapter.update(it)
         })
-        moviesViewModel.searchMovieLiveData.observe(this, Observer {
+        searchViewModel.searchMovieLiveData.observe(this, Observer {
             showSearchResult(it)
         })
     }
@@ -198,7 +210,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     private fun getMovieSearchTextWatcher() = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {
             if (s.length >= 4 && s.length % 2 == 0) {
-                moviesViewModel.searchMovie(s.toString())
+                searchViewModel.searchMovie(s.toString())
                 expandBottomSheet()
             }
         }
@@ -210,7 +222,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     private fun getOnEditorActionListener() =
         TextView.OnEditorActionListener { view, actionID, _ ->
             if (actionID == EditorInfo.IME_ACTION_DONE) {
-                moviesViewModel.searchMovie(view.text.toString())
+                searchViewModel.searchMovie(view.text.toString())
                 search_field.showKeyboard(false)
                 expandBottomSheet()
                 true

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.adapter.FragmentViewHolder
 import com.wispapp.themovie.core.model.database.models.TrailerModel
-import com.wispapp.themovie.ui.moviedetails.TrailerFragment
+import com.wispapp.themovie.ui.moviedetails.fragments.TrailerFragment
 import com.wispapp.themovie.ui.moviedetails.interfaces.PlaybackYouTubeListener
 
 class TrailersPagerAdapter(private val listener: PlaybackYouTubeListener, fragment: Fragment) :

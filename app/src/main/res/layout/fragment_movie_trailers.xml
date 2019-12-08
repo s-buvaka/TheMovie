@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.moviedetails.TrailersPagerFragment"
+    tools:context=".ui.moviedetails.fragments.TrailersPagerFragment"
     tools:ignore="ContentDescription">
 
     <androidx.viewpager2.widget.ViewPager2

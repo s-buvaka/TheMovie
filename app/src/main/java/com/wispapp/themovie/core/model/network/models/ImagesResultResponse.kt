@@ -2,7 +2,7 @@ package com.wispapp.themovie.core.model.network.models
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieImageResponse(
+data class ImagesResultResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("backdrops") val backdrops: List<ImageResponse>,
     @SerializedName("posters") val posters: List<ImageResponse>

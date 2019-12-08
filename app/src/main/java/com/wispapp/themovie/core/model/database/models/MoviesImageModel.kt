@@ -8,7 +8,7 @@ import com.wispapp.themovie.core.model.database.converters.ImagesConverter
 
 @Entity(tableName = "movie_images")
 @TypeConverters(ImagesConverter::class)
-data class MovieImageModel(
+data class ImagesResultModel(
     @PrimaryKey(autoGenerate = false) val id: Int,
     @ColumnInfo(name = "backdrops") val backdrops: List<ImageModel>,
     @ColumnInfo(name = "posters") val posters: List<ImageModel>

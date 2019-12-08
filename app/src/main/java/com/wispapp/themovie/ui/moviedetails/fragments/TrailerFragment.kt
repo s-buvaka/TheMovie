@@ -1,4 +1,4 @@
-package com.wispapp.themovie.ui.moviedetails
+package com.wispapp.themovie.ui.moviedetails.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -103,7 +103,10 @@ class TrailerFragment(private val playbackListener: PlaybackYouTubeListener) :
             listener: PlaybackYouTubeListener,
             trailerId: String
         ): TrailerFragment {
-            val fragment = TrailerFragment(listener)
+            val fragment =
+                TrailerFragment(
+                    listener
+                )
             val bundle = Bundle()
             bundle.putString(MOVIE_ID, trailerId)
             fragment.arguments = bundle

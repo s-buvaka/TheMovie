@@ -8,6 +8,11 @@ interface DataSource<T> {
     suspend fun get(args: ArgumentsWrapper? = null): Result<T>
 }
 
+sealed class Result<out T> {
+    data class Success<out T>(val data: T) : Result<T>()
+    data class Error(val exception: Exception) : Result<Nothing>()
+}
+
 abstract class BaseDataSource<T> : DataSource<T> {
 
     override suspend fun get(args: ArgumentsWrapper?): Result<T> {

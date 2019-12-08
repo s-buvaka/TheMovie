@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_primary_color"
-        tools:context=".ui.moviedetails.MovieDetailsFragment"
+        tools:context=".ui.moviedetails.fragments.MovieDetailsFragment"
         tools:ignore="ContentDescription">
 
         <androidx.cardview.widget.CardView

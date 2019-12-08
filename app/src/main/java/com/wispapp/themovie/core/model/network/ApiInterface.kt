@@ -28,11 +28,14 @@ interface ApiInterface {
     fun getMovieByIdAsync(@Path("id") movieId: Int): Deferred<Response<MovieDetailsResponse>>
 
     @GET("movie/{id}/images?")
-    fun getMovieImagesAsync(@Path("id") movieId: Int): Deferred<Response<MovieImageResponse>>
+    fun getMovieImagesAsync(@Path("id") movieId: Int): Deferred<Response<ImagesResultResponse>>
 
     @GET("movie/{id}/videos?")
-    fun getMovieTrailersAsync(@Path("id") movieId: Int): Deferred<Response<MovieTrailersResponse>>
+    fun getMovieTrailersAsync(@Path("id") movieId: Int): Deferred<Response<TrailersResultResponse>>
 
     @GET("search/movie")
     fun searchMovieAsync(@Query("query") query: String): Deferred<Response<MoviesResultResponse>>
+
+    @GET("movie/{id}/reviews?")
+    fun getMovieReviewsAsync(@Path("id") movieId: Int): Deferred<Response<ReviewResultResponse>>
 }

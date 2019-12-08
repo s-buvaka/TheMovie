@@ -1,24 +1,21 @@
 package com.wispapp.themovie.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.wispapp.themovie.core.model.database.models.*
 import com.wispapp.themovie.core.model.database.models.CATEGORY.*
 import com.wispapp.themovie.core.model.datasource.DataSource
 import com.wispapp.themovie.core.model.datasource.Result
 import com.wispapp.themovie.core.model.network.MovieIdArgs
-import com.wispapp.themovie.core.model.network.SearchQueryArgs
 import com.wispapp.themovie.core.model.network.models.NetworkException
 import kotlinx.coroutines.launch
-
-private const val TAG = "MoviesViewModel"
+import timber.log.Timber
 
 class MoviesViewModel(
     private val movieDataSource: DataSource<List<MovieModel>>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
-    private val searchMovieDataSource: DataSource<List<MovieModel>>,
-    private val movieImagesDataSource: DataSource<MovieImageModel>,
-    private val movieTrailersDataSource: DataSource<List<TrailerModel>>
+    private val imagesDataSource: DataSource<ImagesResultModel>,
+    private val trailersDataSource: DataSource<List<TrailerModel>>,
+    private val reviewsDataSource: DataSource<List<ReviewModel>>
 ) : BaseViewModel() {
 
     val nowPlayingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
@@ -26,10 +23,10 @@ class MoviesViewModel(
     val topRatedMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
     val upcomingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
-    val searchMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
     val imagesLiveData = MutableLiveData<MutableList<ImageModel>>()
     val selectedImageLiveData = MutableLiveData<MutableList<ImageModel>>()
     val trailersLiveData = MutableLiveData<MutableList<TrailerModel>>()
+    val reviewsLiveData = MutableLiveData<MutableList<ReviewModel>>()
 
     fun getMovies() {
         showLoader()
@@ -50,29 +47,29 @@ class MoviesViewModel(
         }
     }
 
-    fun searchMovie(query: String) {
+    fun getImages(id: Int) {
         backgroundScope.launch {
-            when (val result = searchMovieDataSource.get((SearchQueryArgs(query)))) {
-                is Result.Success -> searchMovieLiveData.postValue(result.data.toMutableList())
-                is Result.Error -> handleError(result.exception) { searchMovie(query) }
-            }
-        }
-    }
-
-    fun getMovieImages(id: Int) {
-        backgroundScope.launch {
-            when (val result = movieImagesDataSource.get(MovieIdArgs(id))) {
+            when (val result = imagesDataSource.get(MovieIdArgs(id))) {
                 is Result.Success -> imagesLiveData.postValue(mapImages(result.data))
-                is Result.Error -> handleError(result.exception) { getMovieImages(id) }
+                is Result.Error -> handleError(result.exception) { getImages(id) }
             }
         }
     }
 
-    fun getMovieTrailers(id: Int) {
+    fun getTrailers(id: Int) {
         backgroundScope.launch {
-            when (val result = movieTrailersDataSource.get(MovieIdArgs(id))) {
+            when (val result = trailersDataSource.get(MovieIdArgs(id))) {
                 is Result.Success -> trailersLiveData.postValue(result.data.toMutableList())
-                is Result.Error -> handleError(result.exception) { getMovieTrailers(id) }
+                is Result.Error -> handleError(result.exception) { getTrailers(id) }
+            }
+        }
+    }
+
+    fun getReviews(id: Int) {
+        backgroundScope.launch {
+            when (val result = reviewsDataSource.get(MovieIdArgs(id))) {
+                is Result.Success -> reviewsLiveData.postValue(result.data.toMutableList())
+                is Result.Error -> handleError(result.exception) { getTrailers(id) }
             }
         }
     }
@@ -99,7 +96,7 @@ class MoviesViewModel(
     private fun filterByCategory(result: Result.Success<List<MovieModel>>, category: CATEGORY) =
         result.data.filter { it.category.contains(category) }.toMutableList()
 
-    private fun mapImages(imageModel: MovieImageModel): MutableList<ImageModel>? =
+    private fun mapImages(imageModel: ImagesResultModel): MutableList<ImageModel>? =
         mutableListOf<ImageModel>().apply {
             addAll(imageModel.backdrops)
             addAll(imageModel.posters)
@@ -108,8 +105,8 @@ class MoviesViewModel(
     private fun handleError(error: Exception, func: () -> Unit) {
         if (error is NetworkException) {
             showError(error.statusMessage, func)
-            Log.d(TAG, error.statusMessage)
+            Timber.d(error.statusMessage)
         } else
-            showError(error.message ?: "Something was wrong", func)
+            showError(error.message ?: "Movie View Model: Error receiving data", func)
     }
 }
