@@ -100,7 +100,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     override fun onClickItem(data: MovieModel) {
         val args = Bundle()
         args.putInt(MOVIE_ID, data.id)
-        navigateTo(R.id.movieDetailsFragment, args)
+        navigateTo(R.id.action_main_to_details, args)
 
         search_field.setText("")
     }

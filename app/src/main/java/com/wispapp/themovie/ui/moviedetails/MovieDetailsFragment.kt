@@ -66,7 +66,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
 
     override fun onClickItem(data: ImageModel) {
         moviesViewModel.selectedImageLiveData.postValue(mutableListOf(data))
-        navigateTo(R.id.moviePhotoFragment)
+        navigateTo(R.id.action_details_to_image)
     }
 
     private fun getMovieId(): Int {
@@ -158,7 +158,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
 
     private fun openTrailerFragment() {
 
-        navigateTo(R.id.videoFragment)
+        navigateTo(R.id.action_details_to_video)
     }
 
     private fun showMessage(message: String) {
