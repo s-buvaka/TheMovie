@@ -17,7 +17,8 @@ class MoviesViewModel(
     private val movieDataSource: DataSource<List<MovieModel>>,
     private val movieDetailsDataSource: DataSource<MovieDetailsModel>,
     private val searchMovieDataSource: DataSource<List<MovieModel>>,
-    private val movieImagesDataSource: DataSource<MovieImageModel>
+    private val movieImagesDataSource: DataSource<MovieImageModel>,
+    private val movieTrailersDataSource: DataSource<List<TrailerModel>>
 ) : BaseViewModel() {
 
     val nowPlayingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
@@ -26,8 +27,9 @@ class MoviesViewModel(
     val upcomingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
     val movieDetailsLiveData = MutableLiveData<MutableList<MovieDetailsModel>>()
     val searchMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
-    val movieImagesLiveData = MutableLiveData<MutableList<ImageModel>>()
+    val imagesLiveData = MutableLiveData<MutableList<ImageModel>>()
     val selectedImageLiveData = MutableLiveData<MutableList<ImageModel>>()
+    val trailersLiveData = MutableLiveData<MutableList<TrailerModel>>()
 
     fun getMovies() {
         showLoader()
@@ -60,8 +62,17 @@ class MoviesViewModel(
     fun getMovieImages(id: Int) {
         backgroundScope.launch {
             when (val result = movieImagesDataSource.get(MovieIdArgs(id))) {
-                is Result.Success -> movieImagesLiveData.postValue(mapImages(result.data))
+                is Result.Success -> imagesLiveData.postValue(mapImages(result.data))
                 is Result.Error -> handleError(result.exception) { getMovieImages(id) }
+            }
+        }
+    }
+
+    fun getMovieTrailers(id: Int) {
+        backgroundScope.launch {
+            when (val result = movieTrailersDataSource.get(MovieIdArgs(id))) {
+                is Result.Success -> trailersLiveData.postValue(result.data.toMutableList())
+                is Result.Error -> handleError(result.exception) { getMovieTrailers(id) }
             }
         }
     }

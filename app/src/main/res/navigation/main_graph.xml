@@ -10,6 +10,7 @@
         android:name="com.wispapp.themovie.ui.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
+
         <action
             android:id="@+id/action_main_to_details"
             app:destination="@id/movieDetailsFragment"
@@ -17,6 +18,7 @@
             app:exitAnim="@animator/exit_in_left"
             app:popEnterAnim="@animator/enter_out_left"
             app:popExitAnim="@animator/exit_in_right" />
+
     </fragment>
 
     <fragment
@@ -24,6 +26,7 @@
         android:name="com.wispapp.themovie.ui.moviedetails.MovieDetailsFragment"
         android:label="MovieDetailsFragment"
         tools:layout="@layout/fragment_movie_details">
+
         <action
             android:id="@+id/action_details_to_image"
             app:destination="@id/moviePhotoFragment"
@@ -31,24 +34,27 @@
             app:exitAnim="@animator/exit_in_top"
             app:popEnterAnim="@animator/enter_out_top"
             app:popExitAnim="@animator/exit_in_bottom" />
+
         <action
             android:id="@+id/action_details_to_video"
-            app:destination="@id/videoFragment"
+            app:destination="@id/trailersPagerFragment"
             app:enterAnim="@animator/enter_out_right"
             app:exitAnim="@animator/exit_in_left"
             app:popEnterAnim="@animator/enter_out_left"
             app:popExitAnim="@animator/exit_in_right"/>
+
     </fragment>
 
     <fragment
         android:id="@+id/moviePhotoFragment"
-        android:name="com.wispapp.themovie.ui.moviedetails.MoviePhotoFragment"
+        android:name="com.wispapp.themovie.ui.moviedetails.ImageFragment"
         android:label="fragment_movie_image"
         tools:layout="@layout/fragment_movie_image" />
 
     <fragment
-        android:id="@+id/videoFragment"
-        android:name="com.wispapp.themovie.ui.moviedetails.VideoFragment"
+        android:id="@+id/trailersPagerFragment"
+        android:name="com.wispapp.themovie.ui.moviedetails.TrailersPagerFragment"
         android:label="fragment_video"
-        tools:layout="@layout/fragment_video" />
+        tools:layout="@layout/fragment_trailer" />
+
 </navigation>

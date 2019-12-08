@@ -71,4 +71,5 @@
 
     <dimen name="item_movie_photo_padding">4dp</dimen>
 
+    <dimen name="movie_trailer_padding_button">8dp</dimen>
 </resources>

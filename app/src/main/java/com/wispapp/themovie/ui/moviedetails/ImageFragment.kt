@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_movie_image.*
 import kotlinx.android.synthetic.main.toolbar_movie_image.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class MoviePhotoFragment : BaseFragment(R.layout.fragment_movie_image) {
+class ImageFragment : BaseFragment(R.layout.fragment_movie_image) {
 
     private val moviesViewModel: MoviesViewModel by sharedViewModel()
 
@@ -44,7 +44,7 @@ class MoviePhotoFragment : BaseFragment(R.layout.fragment_movie_image) {
     }
 
     override fun initViewModel() {
-        moviesViewModel.movieImagesLiveData.observe(this, Observer {
+        moviesViewModel.imagesLiveData.observe(this, Observer {
             showImage(it)
         })
     }
@@ -103,7 +103,7 @@ class MoviePhotoFragment : BaseFragment(R.layout.fragment_movie_image) {
             }
 
             private fun setToolbarPagePosition(position: Int) {
-                val photoCount = moviesViewModel.movieImagesLiveData.value?.size ?: 0
+                val photoCount = moviesViewModel.imagesLiveData.value?.size ?: 0
                 number_image_text.text = getString(
                     R.string.movie_image_position_placeholder,
                     position + 1,

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.moviedetails.MoviePhotoFragment">
+    tools:context=".ui.moviedetails.ImageFragment">
 
     <include layout="@layout/toolbar_movie_image"/>
 

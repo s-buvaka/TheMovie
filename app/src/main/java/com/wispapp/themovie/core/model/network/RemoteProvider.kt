@@ -3,10 +3,7 @@ package com.wispapp.themovie.core.model.network
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wispapp.themovie.core.common.Mapper
-import com.wispapp.themovie.core.model.database.models.ConfigModel
-import com.wispapp.themovie.core.model.database.models.MovieDetailsModel
-import com.wispapp.themovie.core.model.database.models.MovieImageModel
-import com.wispapp.themovie.core.model.database.models.MoviesResultModel
+import com.wispapp.themovie.core.model.database.models.*
 import com.wispapp.themovie.core.model.datasource.Result
 import com.wispapp.themovie.core.model.network.models.*
 import retrofit2.Response
@@ -128,6 +125,19 @@ class MoviesImagesProvider(
         else throw IllegalArgumentException("Invalid object type received")
 
         return api.getMovieImagesAsync(movieId).await()
+    }
+}
+
+class MoviesTrailersProvider(
+    mapper: Mapper<MovieTrailersResponse, MovieTrailersModel>,
+    private val api: ApiInterface
+) : BaseRemoteProvider<MovieTrailersResponse, MovieTrailersModel>(mapper){
+
+    override suspend fun getResponse(args: ArgumentsWrapper?): Response<MovieTrailersResponse> {
+        val movieId = if (args is MovieIdArgs) args.movieId
+        else throw IllegalArgumentException("Invalid object type received")
+
+        return api.getMovieTrailersAsync(movieId).await()
     }
 }
 

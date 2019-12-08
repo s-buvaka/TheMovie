@@ -21,12 +21,11 @@
     <string name="movie_details_label_photos">Photos</string>
     <string name="movie_details_score_text">score</string>
     <string name="toolbar_search_movie_field_hint">Search movie</string>
-    <string name="empty_search_text">Поиск по вашему запросу не дал результатов.</string>
 
     <string name="movie_image_position_placeholder">%1$d/%2$d</string>
     <string name="movie_share_text_placeholder">Look at the screen from the movie %1$s</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="video_upload_error">Video upload Error</string>
+    <string name="empty_search_text">Your search returned no results.</string>
 
 </resources>

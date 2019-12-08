@@ -9,10 +9,7 @@ import com.wispapp.themovie.core.model.database.MovieDetailsDao
 import com.wispapp.themovie.core.model.database.MovieImagesDao
 import com.wispapp.themovie.core.model.database.MoviesDao
 import com.wispapp.themovie.core.model.database.models.*
-import com.wispapp.themovie.core.model.datasource.MovieDetailsDataSource
-import com.wispapp.themovie.core.model.datasource.MovieImagesDataSource
-import com.wispapp.themovie.core.model.datasource.MoviesDataSource
-import com.wispapp.themovie.core.model.datasource.SearchMovieDataSource
+import com.wispapp.themovie.core.model.datasource.*
 import com.wispapp.themovie.core.model.network.*
 import com.wispapp.themovie.core.model.network.mappers.*
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
@@ -39,15 +36,17 @@ private const val MAPPER_MOVIES_COUNTRIES = "mapper_movies_countries"
 private const val MAPPER_MOVIES_LANGUAGE = "mapper_movies_language"
 private const val MAPPER_IMAGES = "mapper_images"
 private const val MAPPER_MOVIES_IMAGES = "mapper_movies_images"
+private const val MAPPER_MOVIES_TRAILER_RESULT = "mapper_movies_trailer_result"
+private const val MAPPER_MOVIES_TRAILER = "mapper_movies_trailer"
 
 private const val NETWORK_PROVIDER_NOW_PLAYING_MOVIES = "network_provider_now_playing_movies"
 private const val NETWORK_PROVIDER_POPULAR_MOVIES = "network_provider_popular_movies"
 private const val NETWORK_PROVIDER_TOP_RATED_MOVIES = "network_provider_top_rated_movies"
 private const val NETWORK_PROVIDER_UPCOMING_MOVIES = "network_provider_upcoming_movies"
 private const val NETWORK_PROVIDER_SEARCH_MOVIE = "network_provider_search_movie"
-private const val NETWORK_PROVIDER_MOVIE_IMAGES = "network_provider_movie_images"
-
 private const val NETWORK_PROVIDER_MOVIE_DETAILS = "network_provider_movie_details"
+private const val NETWORK_PROVIDER_MOVIE_IMAGES = "network_provider_movie_images"
+private const val NETWORK_PROVIDER_MOVIE_TRAILERS = "network_provider_movie_trailers"
 
 private const val DATABASE_SOURCE_MOVIES = "database_source_movies"
 private const val DATABASE_SOURCE_MOVIE_DETAILS = "database_source_movie_details"
@@ -57,6 +56,7 @@ private const val DATA_SOURCE_MOVIES = "data_source_movies"
 private const val DATA_SOURCE_SEARCH_MOVIE = "data_source_search_movie"
 private const val DATA_SOURCE_MOVIE_DETAILS = "data_source_movie_details"
 private const val DATA_SOURCE_MOVIE_IMAGES = "data_source_movie_images"
+private const val DATA_SOURCE_MOVIE_TRAILERS = "data_source_movie_trailers"
 
 private const val CACHE_POLICY_MOVIES = "cash_policy_movies"
 
@@ -101,6 +101,12 @@ val moviesModule = module {
     single(named(MAPPER_IMAGES)) { ImagesMapper() }
 
     single(named(MAPPER_MOVIES_IMAGES)) { MovieImagesMapper(get(named(MAPPER_IMAGES))) }
+
+    single(named(MAPPER_MOVIES_TRAILER)) { MovieTrailerMapper() }
+
+    single(named(MAPPER_MOVIES_TRAILER_RESULT)) {
+        MovieTrailerResultMapper(get(named(MAPPER_MOVIES_TRAILER)))
+    }
 
     factory(named(CACHE_POLICY_MOVIES)) { TimeoutCachePolicyImpl(Constants.CACHE_TIMEOUT_MOVIES_DATA) }
 
@@ -153,6 +159,13 @@ val moviesModule = module {
         )
     }
 
+    factory(named(NETWORK_PROVIDER_MOVIE_TRAILERS)) {
+        MoviesTrailersProvider(
+            get(named(MAPPER_MOVIES_TRAILER_RESULT)),
+            get<ApiInterface>()
+        )
+    }
+
     factory(named(DATABASE_SOURCE_MOVIES)) {
         DataBaseSourceCacheProvider<MovieModel>(
             get(named(CACHE_POLICY_MOVIES)),
@@ -201,6 +214,10 @@ val moviesModule = module {
         )
     }
 
+    factory(named(DATA_SOURCE_MOVIE_TRAILERS)) {
+        MovieTrailersDataSource(get(named(NETWORK_PROVIDER_MOVIE_TRAILERS)))
+    }
+
     factory(named(DATA_SOURCE_SEARCH_MOVIE)) {
         SearchMovieDataSource(get(named(NETWORK_PROVIDER_SEARCH_MOVIE)))
     }
@@ -210,7 +227,8 @@ val moviesModule = module {
             get(named(DATA_SOURCE_MOVIES)),
             get(named(DATA_SOURCE_MOVIE_DETAILS)),
             get(named(DATA_SOURCE_SEARCH_MOVIE)),
-            get(named(DATA_SOURCE_MOVIE_IMAGES))
+            get(named(DATA_SOURCE_MOVIE_IMAGES)),
+            get(named(DATA_SOURCE_MOVIE_TRAILERS))
         )
     }
 }

@@ -39,6 +39,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
 
         movieDetailsObserve(movieId)
         movieImagesObserve(movieId)
+        moviesViewModel.getMovieTrailers(movieId)
     }
 
     override fun initView(view: View) {
@@ -87,7 +88,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
 
     private fun movieImagesObserve(movieId: Int) {
         moviesViewModel.getMovieImages(movieId)
-        moviesViewModel.movieImagesLiveData.observe(this, Observer {
+        moviesViewModel.imagesLiveData.observe(this, Observer {
             photoAdapter.update(it)
             scrollToSelectedImage(it)
         })
