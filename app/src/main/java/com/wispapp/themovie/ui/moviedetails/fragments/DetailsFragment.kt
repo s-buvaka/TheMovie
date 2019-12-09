@@ -1,9 +1,11 @@
 package com.wispapp.themovie.ui.moviedetails.fragments
 
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.wispapp.themovie.R
 import com.wispapp.themovie.core.application.Constants.REMOTE_DATE_FORMATE
 import com.wispapp.themovie.core.common.ApiConfigLinkProvider
@@ -21,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 private const val FIRST_LINE_TEXT_LENGTH = 15
 private const val OUTPUT_DATE_FORMAT = "MMMM d, yyyy"
 
@@ -33,6 +36,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     private val imageLoader: ImageLoader by inject()
 
     private val photoAdapter by lazy { getImageAdapter() }
+    private var tab = TAB.OVERVIEW
 
     override fun initViewModel() {
         val movieId = getMovieId()
@@ -44,10 +48,9 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     }
 
     override fun initView(view: View) {
+        initToolbar(view)
         initRecycler()
-
-        overview_button.setOnClickListener { showOverview() }
-        photos_button.setOnClickListener { showPhotos() }
+        setOverviewButtons()
     }
 
     override fun dataLoadingObserve() {
@@ -98,13 +101,35 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     private fun scrollToSelectedImage(imageList: MutableList<ImageModel>) {
         val image = moviesViewModel.selectedImageLiveData.value?.get(0)
         val position = imageList.indexOf(image)
-        images_recycler.layoutManager?.scrollToPosition(position)
+
+        images_recycler.getChildAt(position)?.let {
+        val yPosition = it.y + resources.getDimension(R.dimen.details_scroll_dimension)
+        nested_scroll_view.scrollTo(0, yPosition.toInt())}
+    }
+
+    private fun initToolbar(view: View) {
+        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+        setHasOptionsMenu(true)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
+        toolbar.setTitle(R.string.movie_details_label_toolbar)
     }
 
     private fun initRecycler() {
         val layoutManager = GridLayoutManager(requireContext(), 3)
         images_recycler.layoutManager = layoutManager
         images_recycler.adapter = photoAdapter
+    }
+
+    private fun setOverviewButtons() {
+        overview_button.setOnClickListener { showOverview() }
+        photos_button.setOnClickListener { showPhotos() }
+
+        when (tab) {
+            TAB.OVERVIEW -> showOverview()
+            TAB.PHOTO -> showPhotos()
+        }
     }
 
     private fun updateUi(detailsModel: MovieDetailsModel) {
@@ -169,15 +194,13 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         navigateTo(R.id.action_details_to_reviews)
     }
 
-    private fun showMessage(message: String) {
-        Snackbar.make(poster_image, message, Snackbar.LENGTH_SHORT).show()
-    }
-
     private fun getImageAdapter() = object : GenericAdapter<ImageModel>(this) {
         override fun getLayoutId(position: Int, obj: ImageModel): Int = R.layout.item_movie_image
     }
 
     private fun showOverview() {
+        tab = TAB.OVERVIEW
+
         overview_button.isEnabled = false
         photos_button.isEnabled = true
 
@@ -186,10 +209,14 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
     }
 
     private fun showPhotos() {
+        tab = TAB.PHOTO
+
         overview_button.isEnabled = true
         photos_button.isEnabled = false
 
         overview_layout.visibility = View.GONE
         images_recycler.visibility = View.VISIBLE
     }
+
+    private enum class TAB { OVERVIEW, PHOTO }
 }

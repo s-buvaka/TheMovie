@@ -66,6 +66,7 @@
     <dimen name="movie_details_text_size_info_button">14sp</dimen>
     <dimen name="movie_details_text_size_score_label">12sp</dimen>
     <dimen name="movie_details_text_size_score">22sp</dimen>
+    <dimen name="movie_details_text_size_overview">16sp</dimen>
 
     <dimen name="movie_details_z_poster_card">-4dp</dimen>
 
@@ -84,4 +85,6 @@
     <dimen name="item_review_text_size_content">16sp</dimen>
     <dimen name="item_review_margin_top_content">16dp</dimen>
     <dimen name="item_review_padding_more_button">8dp</dimen>
+
+    <dimen name="details_scroll_dimension">180dp</dimen>
 </resources>
