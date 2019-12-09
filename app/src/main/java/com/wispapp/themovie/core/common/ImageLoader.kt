@@ -1,10 +1,9 @@
 package com.wispapp.themovie.core.common
 
 import android.widget.ImageView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.wispapp.themovie.R
-import com.wispapp.themovie.core.application.App
-import jp.wasabeef.picasso.transformations.BlurTransformation
 import org.koin.core.KoinComponent
 
 interface ImageLoader {
@@ -14,10 +13,11 @@ interface ImageLoader {
     fun loadBluredImage(linkProvider: ImageLinkProvider, targetView: ImageView, blurRadius: Int)
 }
 
-class ImageLoaderImpl(private val picasso: Picasso) : ImageLoader, KoinComponent {
+class ImageLoaderImpl : ImageLoader, KoinComponent {
 
     override fun loadPoster(linkProvider: ImageLinkProvider, targetView: ImageView) {
-        picasso
+        Glide
+            .with(targetView)
             .load(linkProvider.getUrl())
             .placeholder(R.drawable.poster_paceholder)
             .into(targetView)
@@ -28,9 +28,10 @@ class ImageLoaderImpl(private val picasso: Picasso) : ImageLoader, KoinComponent
         targetView: ImageView,
         blurRadius: Int
     ) {
-        picasso
+        Glide
+            .with(targetView)
             .load(linkProvider.getUrl())
-            .transform(BlurTransformation(App.applicationContext(), blurRadius))
+            .apply(bitmapTransform(jp.wasabeef.glide.transformations.BlurTransformation(blurRadius, 3)))
             .into(targetView)
     }
 }
