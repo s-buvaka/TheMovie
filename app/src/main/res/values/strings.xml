@@ -27,6 +27,8 @@
 
     <string name="video_upload_error">Video upload Error</string>
     <string name="empty_search_text">Your search returned no results.</string>
+
     <string name="item_review_text_more">more…</string>
+    <string name="item_review_author_placeholder">A review by %1$s</string>
 
 </resources>

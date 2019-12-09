@@ -41,5 +41,7 @@
             android:layout_gravity="end"
             android:padding="@dimen/item_review_padding_more_button"
             android:text="@string/item_review_text_more" />
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

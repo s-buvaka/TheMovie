@@ -1,6 +1,7 @@
 package com.wispapp.themovie.ui.moviedetails.viewholders
 
 import android.view.View
+import com.wispapp.themovie.R
 import com.wispapp.themovie.core.model.database.models.ReviewModel
 import com.wispapp.themovie.ui.recycler.BaseViewHolder
 import com.wispapp.themovie.ui.recycler.GenericAdapter
@@ -14,8 +15,15 @@ class ReviewVH(private val rootView: View) : BaseViewHolder<ReviewModel>(rootVie
         listener: GenericAdapter.OnItemClickListener<ReviewModel>?
     ) {
         rootView.apply {
-            author_text.text = data.author
+            author_text.text = rootView.context.getString(R.string.item_review_author_placeholder, data.author)
             content_text.text = data.content
+        }
+
+        rootView.apply {
+            more_button.setOnClickListener {
+                content_text.maxLines = Int.MAX_VALUE
+                more_button.visibility = View.GONE
+            }
         }
     }
 }
