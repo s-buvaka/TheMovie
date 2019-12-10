@@ -48,8 +48,8 @@ class TrailerFragment(private val playbackListener: PlaybackYouTubeListener) :
 
     private fun startTrailer(trailer: TrailerModel) {
         @Suppress("CAST_NEVER_SUCCEEDS")
-        val youtube =
-            childFragmentManager.findFragmentById(R.id.youtube_player) as YouTubePlayerSupportFragment
+        val youtube = childFragmentManager
+            .findFragmentById(R.id.youtube_player) as YouTubePlayerSupportFragment
 
         youtube.initialize(KEY, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(
@@ -96,17 +96,14 @@ class TrailerFragment(private val playbackListener: PlaybackYouTubeListener) :
 
     companion object {
 
-        const val KEY = "AIzaSyACvygu6rqrc3l2KT7eu8Zygqfr_pT_Qo8"
+        private const val KEY = "AIzaSyACvygu6rqrc3l2KT7eu8Zygqfr_pT_Qo8"
         private const val MOVIE_ID = "movie_id"
 
         fun newInstance(
             listener: PlaybackYouTubeListener,
             trailerId: String
         ): TrailerFragment {
-            val fragment =
-                TrailerFragment(
-                    listener
-                )
+            val fragment = TrailerFragment(listener)
             val bundle = Bundle()
             bundle.putString(MOVIE_ID, trailerId)
             fragment.arguments = bundle

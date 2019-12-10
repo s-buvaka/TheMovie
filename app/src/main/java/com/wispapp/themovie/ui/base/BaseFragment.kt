@@ -46,8 +46,8 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
     override fun hideLoading() =
         (activity as BaseActivity).hideLoading()
 
-    override fun showError(errorMessage: String, func: (() -> Unit)?) =
-        (activity as BaseActivity).showError(errorMessage, func)
+    override fun showError(errorMessage: String, repeatFunc: (() -> Unit)?) =
+        (activity as BaseActivity).showError(errorMessage, repeatFunc)
 
     override fun hideError() =
         (activity as BaseActivity).hideError()
