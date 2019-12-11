@@ -39,6 +39,7 @@
                 android:layout_marginEnd="@dimen/movie_details_margin_end_score"
                 android:background="@drawable/background_text_score"
                 android:orientation="vertical"
+                android:elevation="4dp"
                 android:padding="@dimen/movie_details_padding_score"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/poster_image_card">

@@ -14,4 +14,6 @@
         tools:listitem="@layout/item_review"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+    <include layout="@layout/view_empty_data" />
+
 </FrameLayout>

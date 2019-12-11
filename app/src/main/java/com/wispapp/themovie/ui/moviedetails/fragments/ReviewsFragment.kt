@@ -8,6 +8,7 @@ import com.wispapp.themovie.ui.base.BaseFragment
 import com.wispapp.themovie.ui.recycler.GenericAdapter
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import kotlinx.android.synthetic.main.fragment_reviews.*
+import kotlinx.android.synthetic.main.view_empty_data.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ReviewsFragment : BaseFragment(R.layout.fragment_reviews) {
@@ -18,7 +19,7 @@ class ReviewsFragment : BaseFragment(R.layout.fragment_reviews) {
 
     override fun initViewModel() {
         moviesViewModel.reviewsLiveData.observe(this, Observer {
-            reviewAdapter.update(it)
+            updateUi(it)
         })
     }
 
@@ -40,6 +41,25 @@ class ReviewsFragment : BaseFragment(R.layout.fragment_reviews) {
             if (error != null && error.errorMessage.isNotEmpty())
                 showError(error.errorMessage, error.func)
         })
+    }
+
+    private fun updateUi(reviewsList: MutableList<ReviewModel>) {
+        if (reviewsList.isNotEmpty())
+            showReviews(reviewsList)
+        else
+            showEmptyScreen()
+    }
+
+    private fun showReviews(reviewsList: MutableList<ReviewModel>) {
+        reviews_recycler.visibility = View.VISIBLE
+        empty_data_screen.visibility = View.GONE
+        reviewAdapter.update(reviewsList)
+    }
+
+    private fun showEmptyScreen() {
+        reviews_recycler.visibility = View.GONE
+        empty_data_screen.visibility = View.VISIBLE
+        message_text.text = getString(R.string.empty_reviews_text)
     }
 
     private fun getAdapter() = object : GenericAdapter<ReviewModel>() {
