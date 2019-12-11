@@ -4,12 +4,120 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?android:actionBarSize"
         android:background="@color/app_primary_color"
         android:padding="@dimen/main_padding">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/upcoming_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/upcoming_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_movie" />
+
+        <TextView
+            android:id="@+id/upcoming_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/category_text_margin"
+            android:background="@color/app_primary_color"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_vertical"
+            android:text="@string/main_category_upcoming"
+            android:textColor="@color/app_secondary_text_color"
+            android:textSize="@dimen/category_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_rated_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/top_rated_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/top_rated_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_movie" />
+
+        <TextView
+            android:id="@+id/top_rated_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/category_text_margin"
+            android:background="@color/app_primary_color"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_vertical"
+            android:text="@string/main_category_top_rated"
+            android:textColor="@color/app_secondary_text_color"
+            android:textSize="@dimen/category_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/popular_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popular_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/popular_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_movie" />
+
+        <TextView
+            android:id="@+id/popular_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/category_text_margin"
+            android:background="@color/app_primary_color"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_vertical"
+            android:text="@string/main_category_popular"
+            android:textColor="@color/app_secondary_text_color"
+            android:textSize="@dimen/category_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/in_theatres_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/now_playing_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/in_theatres_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_movie" />
+
+        <TextView
+            android:id="@+id/in_theatres_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/category_text_margin"
+            android:background="@color/app_primary_color"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_vertical"
+            android:text="@string/main_category_now_playing"
+            android:textColor="@color/app_secondary_text_color"
+            android:textSize="@dimen/category_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/current_date_text" />
 
         <TextView
             android:id="@+id/current_date_text"
@@ -24,106 +132,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Tuesday, June 1" />
 
-        <TextView
-            android:id="@+id/in_theatres_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/category_text_margin"
-            android:fontFamily="sans-serif-black"
-            android:gravity="center_vertical"
-            android:text="@string/main_category_now_playing"
-            android:textColor="@color/app_secondary_text_color"
-            android:textSize="@dimen/category_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/current_date_text" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/now_playing_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/in_theatres_title"
-            tools:listitem="@layout/item_movie" />
-
-        <TextView
-            android:id="@+id/popular_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/category_text_margin"
-            android:fontFamily="sans-serif-black"
-            android:gravity="center_vertical"
-            android:text="@string/main_category_popular"
-            android:textColor="@color/app_secondary_text_color"
-            android:textSize="@dimen/category_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/now_playing_recycler" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/popular_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/popular_title"
-            tools:listitem="@layout/item_movie" />
-
-        <TextView
-            android:id="@+id/top_rated_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/category_text_margin"
-            android:fontFamily="sans-serif-black"
-            android:gravity="center_vertical"
-            android:text="@string/main_category_top_rated"
-            android:textColor="@color/app_secondary_text_color"
-            android:textSize="@dimen/category_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/popular_recycler" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/top_rated_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_rated_title"
-            tools:listitem="@layout/item_movie" />
-
-        <TextView
-            android:id="@+id/upcoming_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/category_text_margin"
-            android:fontFamily="sans-serif-black"
-            android:gravity="center_vertical"
-            android:text="@string/main_category_upcoming"
-            android:textColor="@color/app_secondary_text_color"
-            android:textSize="@dimen/category_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_rated_recycler" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/upcoming_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/upcoming_title"
-            tools:listitem="@layout/item_movie" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
@@ -132,5 +140,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/current_date_text" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </androidx.core.widget.NestedScrollView>
