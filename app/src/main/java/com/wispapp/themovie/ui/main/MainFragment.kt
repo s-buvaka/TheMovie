@@ -118,20 +118,29 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
     }
 
     private fun moviesObserveLiveData() {
-        moviesViewModel.getMovies()
+        moviesViewModel.apply {
+            getMovies()
 
-        moviesViewModel.nowPlayingMoviesLiveData.observe(this, Observer {
-            nowPlayingMoviesAdapter.update(it)
-        })
-        moviesViewModel.popularMoviesLiveData.observe(this, Observer {
-            popularMoviesAdapter.update(it)
-        })
-        moviesViewModel.topRatedMovieLiveData.observe(this, Observer {
-            topRatedMoviesAdapter.update(it)
-        })
-        moviesViewModel.upcomingMoviesLiveData.observe(this, Observer {
-            upcomingMoviesAdapter.update(it)
-        })
+            nowPlayingMoviesLiveData.observe(this@MainFragment, Observer {
+                nowPlayingMoviesAdapter.update(it)
+            })
+            popularMoviesLiveData.observe(this@MainFragment, Observer {
+                popularMoviesAdapter.update(it)
+            })
+            topRatedMovieLiveData.observe(this@MainFragment, Observer {
+                topRatedMoviesAdapter.update(it)
+            })
+            upcomingMoviesLiveData.observe(this@MainFragment, Observer {
+                upcomingMoviesAdapter.update(it)
+            })
+            expandAnimationLiveData.observe(this@MainFragment, Observer { isFirstLaunch ->
+                if (isFirstLaunch[0])
+                    main_motion_layout.transitionToEnd()
+                else {
+                    main_motion_layout.setTransition(R.id.end, R.id.end)
+                }
+            })
+        }
         searchViewModel.searchMovieLiveData.observe(this, Observer {
             showSearchResult(it)
         })
