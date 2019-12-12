@@ -17,10 +17,18 @@ class TrailerFragment(private val playbackListener: PlaybackYouTubeListener) :
     BaseFragment(R.layout.fragment_trailer) {
 
     private val moviesViewModel: MoviesViewModel by sharedViewModel()
+    private val youtube : YouTubePlayerSupportFragment by lazy{ childFragmentManager
+        .findFragmentById(R.id.youtube_player) as YouTubePlayerSupportFragment}
 
     override fun onResume() {
         super.onResume()
         getTrailerData()
+        youtube.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        youtube.onPause()
     }
 
     override fun initViewModel() {
@@ -48,9 +56,6 @@ class TrailerFragment(private val playbackListener: PlaybackYouTubeListener) :
 
     private fun startTrailer(trailer: TrailerModel) {
         @Suppress("CAST_NEVER_SUCCEEDS")
-        val youtube = childFragmentManager
-            .findFragmentById(R.id.youtube_player) as YouTubePlayerSupportFragment
-
         youtube.initialize(KEY, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(
                 provider: YouTubePlayer.Provider?,

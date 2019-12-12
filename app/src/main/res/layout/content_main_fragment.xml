@@ -16,7 +16,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/upcoming_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_movie" />
@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:background="@color/app_primary_color"
             android:fontFamily="sans-serif-black"
+            android:padding="@dimen/category_text_margin"
             android:gravity="center_vertical"
             android:text="@string/main_category_upcoming"
             android:textColor="@color/app_secondary_text_color"
@@ -35,7 +36,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/top_rated_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_movie" />
@@ -43,6 +44,7 @@
         <TextView
             android:id="@+id/top_rated_title"
             android:layout_width="0dp"
+            android:padding="@dimen/category_text_margin"
             android:layout_height="wrap_content"
             android:background="@color/app_primary_color"
             android:fontFamily="sans-serif-black"
@@ -54,7 +56,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/popular_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_movie" />
@@ -63,6 +65,7 @@
             android:id="@+id/popular_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:padding="@dimen/category_text_margin"
             android:background="@color/app_primary_color"
             android:fontFamily="sans-serif-black"
             android:gravity="center_vertical"
@@ -73,7 +76,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/now_playing_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_movie" />
@@ -82,6 +85,7 @@
             android:id="@+id/in_theatres_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:padding="@dimen/category_text_margin"
             android:background="@color/app_primary_color"
             android:fontFamily="sans-serif-black"
             android:gravity="center_vertical"
@@ -115,7 +119,7 @@
         <FrameLayout
             android:id="@+id/space"
             android:layout_width="match_parent"
-            android:layout_height="1500dp"/>
+            android:layout_height="1520dp"/>
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </androidx.core.widget.NestedScrollView>
