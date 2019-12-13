@@ -1,5 +1,8 @@
 package com.wispapp.themovie.ui.moviedetails.fragments
 
+import android.content.pm.ActivityInfo
+import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.lifecycle.Observer
 import com.wispapp.themovie.R
@@ -10,6 +13,8 @@ import com.wispapp.themovie.ui.moviedetails.interfaces.PlaybackYouTubeListener
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import kotlinx.android.synthetic.main.fragment_movie_trailers.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+
+private const val CURRENT_PAGE = "current_page"
 
 class TrailersPagerFragment : BaseFragment(R.layout.fragment_movie_trailers),
     PlaybackYouTubeListener {
@@ -24,8 +29,8 @@ class TrailersPagerFragment : BaseFragment(R.layout.fragment_movie_trailers),
         })
     }
 
-    override fun initView(view: View) {
-        initTrailersViewPager()
+    override fun initView(view: View, savedInstanceState: Bundle?) {
+        initTrailersViewPager(savedInstanceState)
     }
 
     override fun dataLoadingObserve() {
@@ -44,15 +49,17 @@ class TrailersPagerFragment : BaseFragment(R.layout.fragment_movie_trailers),
         })
     }
 
-    private fun initTrailersViewPager() {
-        trailer_pager.adapter = pagerAdapter
+    override fun onBackPressed() {
+        if (requireActivity().requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE) {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } else {
+            parentFragmentManager.popBackStack()
+        }
+    }
 
-        next_trailer_button.setOnClickListener {
-            trailer_pager.currentItem = trailer_pager.currentItem + 1
-        }
-        previous_trailer_button.setOnClickListener {
-            trailer_pager.currentItem = trailer_pager.currentItem - 1
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(CURRENT_PAGE, trailer_pager.currentItem)
     }
 
     override fun onStartPlay() {
@@ -77,6 +84,26 @@ class TrailersPagerFragment : BaseFragment(R.layout.fragment_movie_trailers),
             SINGLE_PAGE -> {
                 next_trailer_button.visibility = View.GONE
                 previous_trailer_button.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun initTrailersViewPager(savedInstanceState: Bundle?) {
+        trailer_pager.adapter = pagerAdapter
+        loadPagerPosition(savedInstanceState)
+
+        next_trailer_button.setOnClickListener {
+            trailer_pager.currentItem = trailer_pager.currentItem + 1
+        }
+        previous_trailer_button.setOnClickListener {
+            trailer_pager.currentItem = trailer_pager.currentItem - 1
+        }
+    }
+
+    private fun loadPagerPosition(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            Handler().post {
+                trailer_pager.currentItem = it.getInt(CURRENT_PAGE)
             }
         }
     }

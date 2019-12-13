@@ -1,5 +1,6 @@
 package com.wispapp.themovie.ui.moviedetails.fragments
 
+import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.wispapp.themovie.R
@@ -23,7 +24,7 @@ class ReviewsFragment : BaseFragment(R.layout.fragment_reviews) {
         })
     }
 
-    override fun initView(view: View) {
+    override fun initView(view: View, savedInstanceState: Bundle?) {
         reviews_recycler.adapter = reviewAdapter
     }
 

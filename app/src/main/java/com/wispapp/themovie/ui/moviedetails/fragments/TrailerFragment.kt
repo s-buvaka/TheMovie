@@ -1,5 +1,6 @@
 package com.wispapp.themovie.ui.moviedetails.fragments
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -13,28 +14,35 @@ import com.wispapp.themovie.ui.moviedetails.interfaces.PlaybackYouTubeListener
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class TrailerFragment(private val playbackListener: PlaybackYouTubeListener) :
+private const val POS = "timer_position"
+
+class TrailerFragment(private val playbackListener: PlaybackYouTubeListener? = null) :
     BaseFragment(R.layout.fragment_trailer) {
 
     private val moviesViewModel: MoviesViewModel by sharedViewModel()
-    private val youtube : YouTubePlayerSupportFragment by lazy{ childFragmentManager
-        .findFragmentById(R.id.youtube_player) as YouTubePlayerSupportFragment}
+    private var youtubePlayer: YouTubePlayer? = null
+    private var videoTimer = 0
 
     override fun onResume() {
         super.onResume()
         getTrailerData()
-        youtube.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        youtube.onPause()
+       // youtubePlayer?.release()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(POS, youtubePlayer?.currentTimeMillis ?: 0)
     }
 
     override fun initViewModel() {
     }
 
-    override fun initView(view: View) {
+    override fun initView(view: View, savedInstanceState: Bundle?) {
+        videoTimer = savedInstanceState?.getInt(POS)?:0
     }
 
     override fun dataLoadingObserve() {
@@ -56,30 +64,43 @@ class TrailerFragment(private val playbackListener: PlaybackYouTubeListener) :
 
     private fun startTrailer(trailer: TrailerModel) {
         @Suppress("CAST_NEVER_SUCCEEDS")
+        val youtube = childFragmentManager.findFragmentById(R.id.youtube_player) as YouTubePlayerSupportFragment
         youtube.initialize(KEY, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(
                 provider: YouTubePlayer.Provider?,
                 player: YouTubePlayer?,
                 wasRestored: Boolean
             ) {
+
+                youtubePlayer = player
                 player?.loadVideo(trailer.key)
+                player?.seekToMillis(videoTimer)
+
+                if (requireActivity().requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
+                    youtubePlayer?.setFullscreen(true)
+
+                player?.setOnFullscreenListener { isFullscreen ->
+                    if (!isFullscreen)
+                        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
+
                 player?.setPlaybackEventListener(object : YouTubePlayer.PlaybackEventListener {
                     override fun onSeekTo(p0: Int) {}
 
                     override fun onBuffering(p0: Boolean) {
-                        playbackListener.onStopPlayback()
+                        playbackListener?.onStopPlayback()
                     }
 
                     override fun onPlaying() {
-                        playbackListener.onStartPlay()
+                        playbackListener?.onStartPlay()
                     }
 
                     override fun onStopped() {
-                        playbackListener.onStopPlayback()
+                        playbackListener?.onStopPlayback()
                     }
 
                     override fun onPaused() {
-                        playbackListener.onStopPlayback()
+                        playbackListener?.onStopPlayback()
                     }
                 })
             }

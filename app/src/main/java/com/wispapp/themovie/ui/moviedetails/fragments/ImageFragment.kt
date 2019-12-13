@@ -1,6 +1,7 @@
 package com.wispapp.themovie.ui.moviedetails.fragments
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -49,7 +50,7 @@ class ImageFragment : BaseFragment(R.layout.fragment_movie_image) {
         })
     }
 
-    override fun initView(view: View) {
+    override fun initView(view: View, savedInstanceState: Bundle?) {
         initImageViewPager()
         initToolbar(view)
     }

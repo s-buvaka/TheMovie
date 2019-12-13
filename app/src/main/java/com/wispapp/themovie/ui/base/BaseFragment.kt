@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : Fragment(),
-    BaseView {
+    BaseView, OnBackPressed {
 
     protected abstract fun initViewModel()
 
-    protected abstract fun initView(view: View)
+    protected abstract fun initView(view: View, savedInstanceState: Bundle?)
 
     protected abstract fun dataLoadingObserve()
 
@@ -37,7 +37,7 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView(view)
+        initView(view, savedInstanceState)
     }
 
     override fun showLoading() =
@@ -51,6 +51,10 @@ abstract class BaseFragment(@LayoutRes private val contentLayoutId: Int = 0) : F
 
     override fun hideError() =
         (activity as BaseActivity).hideError()
+
+    override fun onBackPressed() {
+        parentFragmentManager.popBackStack()
+    }
 
     protected fun navigateTo(@IdRes resId: Int, args: Bundle? = null) {
         findNavController().navigate(resId, args)

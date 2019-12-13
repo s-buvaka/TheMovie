@@ -1,5 +1,6 @@
 package com.wispapp.themovie.ui.moviedetails.fragments
 
+import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -47,7 +48,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details),
         moviesViewModel.getReviews(movieId)
     }
 
-    override fun initView(view: View) {
+    override fun initView(view: View, savedInstanceState: Bundle?) {
         initToolbar(view)
         initRecycler()
         setOverviewButtons()
