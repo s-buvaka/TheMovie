@@ -86,9 +86,6 @@ dependencies {
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
     implementation "com.facebook.stetho:stetho-js-rhino:$stetho_version"
 
-    //AdvRecyclerView (https://github.com/h6ah4i/android-advancedrecyclerview)
-    implementation('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0')
-
     // Transparent status
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
 
