@@ -49,6 +49,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
 
     private var actionClose: MenuItem? = null
     private var actionSearch: MenuItem? = null
+    private var isFirstLaunch = true
 
     private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
@@ -123,6 +124,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
         moviesViewModel.apply {
             nowPlayingMoviesLiveData.observe(this@MainFragment, Observer {
                 nowPlayingMoviesAdapter.update(it)
+                expandMovieList()
             })
             popularMoviesLiveData.observe(this@MainFragment, Observer {
                 popularMoviesAdapter.update(it)
@@ -133,17 +135,19 @@ class MainFragment : BaseFragment(R.layout.fragment_main),
             upcomingMoviesLiveData.observe(this@MainFragment, Observer {
                 upcomingMoviesAdapter.update(it)
             })
-            expandAnimationLiveData.observe(this@MainFragment, Observer { isFirstLaunch ->
-                if (isFirstLaunch[0])
-                    main_motion_layout.transitionToEnd()
-                else {
-                    main_motion_layout.setTransition(R.id.end, R.id.end)
-                }
-            })
         }
         searchViewModel.searchMovieLiveData.observe(this, Observer {
             showSearchResult(it)
         })
+    }
+
+    private fun expandMovieList() {
+        if (isFirstLaunch) {
+            main_motion_layout.transitionToEnd()
+            isFirstLaunch = false
+        } else {
+            main_motion_layout.setTransition(R.id.end, R.id.end)
+        }
     }
 
     private fun showSearchResult(searchResult: MutableList<MovieModel>) {

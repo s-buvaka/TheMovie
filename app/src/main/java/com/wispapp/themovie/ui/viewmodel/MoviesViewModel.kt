@@ -18,8 +18,6 @@ class MoviesViewModel(
     private val reviewsDataSource: DataSource<List<ReviewModel>>
 ) : BaseViewModel() {
 
-    private var isFirstLoading = true
-
     val nowPlayingMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
     val popularMoviesLiveData = MutableLiveData<MutableList<MovieModel>>()
     val topRatedMovieLiveData = MutableLiveData<MutableList<MovieModel>>()
@@ -29,10 +27,9 @@ class MoviesViewModel(
     val selectedImageLiveData = MutableLiveData<MutableList<ImageModel>>()
     val trailersLiveData = MutableLiveData<MutableList<TrailerModel>>()
     val reviewsLiveData = MutableLiveData<MutableList<ReviewModel>>()
-    val expandAnimationLiveData = MutableLiveData<MutableList<Boolean>>()
 
     fun getMovies() {
-        if (isFirstLoading) showLoader()
+        showLoader()
         backgroundScope.launch {
             getAllMovies()
             hideLoader()
@@ -94,13 +91,6 @@ class MoviesViewModel(
         popularMoviesLiveData.postValue(popular)
         topRatedMovieLiveData.postValue(topRated)
         upcomingMoviesLiveData.postValue(upcoming)
-
-        expandMovieList()
-    }
-
-    private fun expandMovieList() {
-        expandAnimationLiveData.postValue(mutableListOf(isFirstLoading))
-        isFirstLoading = false
     }
 
     private fun filterByCategory(result: Result.Success<List<MovieModel>>, category: CATEGORY) =

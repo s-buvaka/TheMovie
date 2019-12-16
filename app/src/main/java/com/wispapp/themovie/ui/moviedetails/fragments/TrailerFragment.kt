@@ -30,7 +30,7 @@ class TrailerFragment(private val playbackListener: PlaybackYouTubeListener? = n
 
     override fun onPause() {
         super.onPause()
-       // youtubePlayer?.release()
+        youtubePlayer?.release()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
