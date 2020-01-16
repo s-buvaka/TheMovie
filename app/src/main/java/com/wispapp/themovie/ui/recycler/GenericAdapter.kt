@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils.getViewHolder
 
 abstract class GenericAdapter<T>(listener: OnItemClickListener<T>? = null) :
     RecyclerView.Adapter<BaseViewHolder<*>>() {
