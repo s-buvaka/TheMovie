@@ -1,4 +1,4 @@
-package com.wispapp.themovie.core.model.network.mappers
+package com.wispapp.themovie.core.model.mappers
 
 import com.wispapp.themovie.core.common.Mapper
 import com.wispapp.themovie.core.model.database.models.ImageModel

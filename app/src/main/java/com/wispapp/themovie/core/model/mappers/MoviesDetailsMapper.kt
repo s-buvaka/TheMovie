@@ -1,4 +1,4 @@
-package com.wispapp.themovie.core.model.network.mappers
+package com.wispapp.themovie.core.model.mappers
 
 import com.wispapp.themovie.core.common.Mapper
 import com.wispapp.themovie.core.model.database.models.*
@@ -16,7 +16,6 @@ class MoviesDetailsMapper(
             id = source.id,
             adult = source.adult,
             backdropPath = source.backdropPath,
-            //belongsToCollection = source.belongsToCollection,
             budget = source.budget,
             genres = source.genres.map { genresMapper.mapFrom(it) },
             homepage = source.homepage ?: "",
@@ -26,8 +25,8 @@ class MoviesDetailsMapper(
             overview = source.overview,
             popularity = source.popularity,
             posterPath = source.posterPath,
-            productionCompanies = source.productionCompanies.map { companiesMapper.mapFrom(it) },
-            productionCountries = source.productionCountries.map { countriesMapper.mapFrom(it) },
+            companies = source.companies.map { companiesMapper.mapFrom(it) },
+            countries = source.countries.map { countriesMapper.mapFrom(it) },
             releaseDate = source.releaseDate,
             revenue = source.revenue,
             runtime = source.runtime,
@@ -35,7 +34,7 @@ class MoviesDetailsMapper(
             status = source.status,
             tagLine = source.tagLine,
             title = source.title,
-            hasVideo = source.video,
+            hasVideo = source.hasVideo,
             voteAverage = source.voteAverage,
             voteCount = source.voteCount
         )

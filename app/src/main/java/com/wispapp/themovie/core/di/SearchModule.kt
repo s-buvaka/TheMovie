@@ -6,8 +6,8 @@ import com.wispapp.themovie.core.model.database.models.CATEGORY
 import com.wispapp.themovie.core.model.datasource.SearchMovieDataSource
 import com.wispapp.themovie.core.model.network.ApiInterface
 import com.wispapp.themovie.core.model.network.SearchMovieProvider
-import com.wispapp.themovie.core.model.network.mappers.MovieResultMapper
-import com.wispapp.themovie.core.model.network.mappers.MoviesMapper
+import com.wispapp.themovie.core.model.mappers.MovieResultMapper
+import com.wispapp.themovie.core.model.mappers.MoviesMapper
 import com.wispapp.themovie.ui.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named

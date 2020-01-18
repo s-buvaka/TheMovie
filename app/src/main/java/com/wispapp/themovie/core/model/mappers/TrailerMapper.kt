@@ -1,10 +1,10 @@
-package com.wispapp.themovie.core.model.network.mappers
+package com.wispapp.themovie.core.model.mappers
 
 import com.wispapp.themovie.core.common.Mapper
-import com.wispapp.themovie.core.model.database.models.TrailersResultModel
 import com.wispapp.themovie.core.model.database.models.TrailerModel
-import com.wispapp.themovie.core.model.network.models.TrailersResultResponse
+import com.wispapp.themovie.core.model.database.models.TrailersResultModel
 import com.wispapp.themovie.core.model.network.models.TrailerResponse
+import com.wispapp.themovie.core.model.network.models.TrailersResultResponse
 
 class TrailerResultMapper(private val mapper: Mapper<TrailerResponse, TrailerModel>) :
     Mapper<TrailersResultResponse, TrailersResultModel> {

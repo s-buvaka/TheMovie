@@ -11,7 +11,7 @@ import com.wispapp.themovie.core.model.database.MoviesDao
 import com.wispapp.themovie.core.model.database.models.*
 import com.wispapp.themovie.core.model.datasource.*
 import com.wispapp.themovie.core.model.network.*
-import com.wispapp.themovie.core.model.network.mappers.*
+import com.wispapp.themovie.core.model.mappers.*
 import com.wispapp.themovie.ui.viewmodel.MoviesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named

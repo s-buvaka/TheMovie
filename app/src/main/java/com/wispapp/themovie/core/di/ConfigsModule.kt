@@ -11,8 +11,8 @@ import com.wispapp.themovie.core.model.database.models.SourceType
 import com.wispapp.themovie.core.model.datasource.ConfigsDataSource
 import com.wispapp.themovie.core.model.network.ApiInterface
 import com.wispapp.themovie.core.model.network.ConfigsRemoteProvider
-import com.wispapp.themovie.core.model.network.mappers.ConfigsMapper
-import com.wispapp.themovie.core.model.network.mappers.ImageConfigMapper
+import com.wispapp.themovie.core.model.mappers.ConfigsMapper
+import com.wispapp.themovie.core.model.mappers.ImageConfigMapper
 import com.wispapp.themovie.ui.viewmodel.ConfigsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named

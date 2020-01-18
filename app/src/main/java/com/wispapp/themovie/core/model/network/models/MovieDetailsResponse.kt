@@ -6,7 +6,6 @@ data class MovieDetailsResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("adult") val adult: Boolean,
     @SerializedName("backdrop_path") val backdropPath: String,
-    @SerializedName("belongs_to_collection") val belongsToCollection: Any,//TODO Понять какой тут объект приходит
     @SerializedName("budget") val budget: Int,
     @SerializedName("genres") val genres: List<GenresItemResponse>,
     @SerializedName("homepage") val homepage: String?,
@@ -16,8 +15,8 @@ data class MovieDetailsResponse(
     @SerializedName("overview") val overview: String,
     @SerializedName("popularity") val popularity: Double,
     @SerializedName("poster_path") val posterPath: String,
-    @SerializedName("production_companies") val productionCompanies: List<ProductionCompaniesItemResponse>,
-    @SerializedName("production_countries") val productionCountries: List<ProductionCountriesItemResponse>,
+    @SerializedName("production_companies") val companies: List<ProductionCompaniesItemResponse>,
+    @SerializedName("production_countries") val countries: List<ProductionCountriesItemResponse>,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("revenue") val revenue: Int,
     @SerializedName("runtime") val runtime: Int,
@@ -25,7 +24,7 @@ data class MovieDetailsResponse(
     @SerializedName("status") val status: String,
     @SerializedName("tagline") val tagLine: String,
     @SerializedName("title") val title: String,
-    @SerializedName("video") val video: Boolean,
+    @SerializedName("video") val hasVideo: Boolean,
     @SerializedName("vote_average") val voteAverage: Double,
     @SerializedName("vote_count") val voteCount: Int
 )

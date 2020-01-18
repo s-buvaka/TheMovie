@@ -1,4 +1,4 @@
-package com.wispapp.themovie.core.model.network.mappers
+package com.wispapp.themovie.core.model.mappers
 
 import com.wispapp.themovie.core.model.database.models.ReviewModel
 import com.wispapp.themovie.core.model.database.models.ReviewResultModel
@@ -9,7 +9,7 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.random.Random
 
-class ReviewResultMapperTest {
+class MovieReviewMapperTest {
 
     private val reviewMapper = ReviewMapper()
     private val reviewResultMapper = ReviewResultMapper(reviewMapper)
