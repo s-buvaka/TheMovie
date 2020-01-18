@@ -38,7 +38,7 @@ class MovieReviewMapperTest {
     }
 
     @Test
-    fun review_map_from_test() {
+    fun mapFrom() {
         val newReviewData = reviewMapper.mapFrom(mockReviewResponse)
         val newReviewResultData = reviewResultMapper.mapFrom(mockReviewResultResponse)
 

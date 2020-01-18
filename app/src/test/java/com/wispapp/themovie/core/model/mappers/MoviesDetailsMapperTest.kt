@@ -61,7 +61,7 @@ class MoviesDetailsMapperTest {
     }
 
     @Test
-    fun movies_details_map_from_test() {
+    fun mapFrom() {
         val newGenresData = genresMapper.mapFrom(mockGenresResponse)
         val newCompaniesData = companiesMapper.mapFrom(mockCompaniesResponse)
         val newCountriesData = countriesMapper.mapFrom(mockCountriesResponse)

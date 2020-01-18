@@ -49,7 +49,7 @@ class MoviesMapperTest {
     }
 
     @Test
-    fun movies_map_from_test() {
+    fun mapFrom() {
         val newMovieData = moviesMapper.mapFrom(mockMovieResponse)
         val newMovieResultData = movieResultMapper.mapFrom(mockMoviesResultResponse)
 

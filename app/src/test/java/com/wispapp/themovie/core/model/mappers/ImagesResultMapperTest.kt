@@ -29,7 +29,7 @@ class ImagesResultMapperTest {
     }
 
     @Test
-    fun image_result_map_from_test() {
+    fun mapFrom() {
         val newImageData = imagesMapper.mapFrom(mockImageResponse)
         val newImageResultData = imageResultMapper.mapFrom(mockImageResultResponse)
 

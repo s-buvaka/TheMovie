@@ -84,10 +84,6 @@ class DataBaseSourceCacheProvider<T>(
         database.insert(data)
     }
 
-    private fun updateData(data: T) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private fun innerSaveTimeStamp() {
         timeoutPolicy.setTimeStamp(System.currentTimeMillis())
         database.setTimestamp(

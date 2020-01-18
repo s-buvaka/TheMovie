@@ -44,7 +44,7 @@ class ConfigsMapperTest {
     }
 
     @Test
-    fun configs_map_from_test() {
+    fun mapFrom() {
         val newImagesConfigData = imageConfigMapper.mapFrom(mockImagesConfigResponse)
         val newConfigData = configMapper.mapFrom(mockConfigResponse)
 

@@ -37,7 +37,7 @@ class TrailerMapperTest {
     }
 
     @Test
-    fun trailer_map_from_test() {
+    fun mapFrom() {
         val newTrailerData = trailerMapper.mapFrom(mockTrailerResponse)
         val newTrailerResultData = trailerResultMapper.mapFrom(mockTrailerResultResponse)
 
