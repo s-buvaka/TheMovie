@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class GenericAdapter<T>(listener: OnItemClickListener<T>? = null) :
+abstract class GenericAdapter<T>(private val listener: OnItemClickListener<T>? = null) :
     RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     private var itemList = mutableListOf<T>()
-    private var itemClickListener: OnItemClickListener<T>? = listener
     private var diffUtil: GenericItemDiff<T>? = null
 
     protected abstract fun getLayoutId(position: Int, obj: T): Int
@@ -41,7 +40,7 @@ abstract class GenericAdapter<T>(listener: OnItemClickListener<T>? = null) :
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) =
         @Suppress("UNCHECKED_CAST")
-        (holder as Binder<T>).bind(itemList[position], itemClickListener)
+        (holder as Binder<T>).bind(itemList[position], listener)
 
     override fun getItemCount(): Int = itemList.size
 
